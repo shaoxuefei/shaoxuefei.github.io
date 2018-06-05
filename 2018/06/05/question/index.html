@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Sxf-Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Android 获取屏幕高度注意事项 在Activity里获取WindowManager   WindowManager windowManager = getWindowManager(); DisplayMetrics displayMetrics = new DisplayMetric(); Display defaultDisplay = windowManager.getDefaultD">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sxf-Blog">
+<meta property="og:url" content="https://shaoxuefei.github.io/2018/06/05/question/index.html">
+<meta property="og:site_name" content="Sxf-Blog">
+<meta property="og:description" content="Android 获取屏幕高度注意事项 在Activity里获取WindowManager   WindowManager windowManager = getWindowManager(); DisplayMetrics displayMetrics = new DisplayMetric(); Display defaultDisplay = windowManager.getDefaultD">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fpkk2t3fxbj20ar0iiq3w.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fpyhzbinlij20oa0gotbb.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fpyi01rzxaj20ht0fndi1.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fpyi0fyg00j20me0cvdhr.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fpyi0nhou1j20md0ctq4w.jpg">
+<meta property="og:updated_time" content="2018-04-02T11:01:35.132Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Sxf-Blog">
+<meta name="twitter:description" content="Android 获取屏幕高度注意事项 在Activity里获取WindowManager   WindowManager windowManager = getWindowManager(); DisplayMetrics displayMetrics = new DisplayMetric(); Display defaultDisplay = windowManager.getDefaultD">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fpkk2t3fxbj20ar0iiq3w.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Sxf-Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Sxf-Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://shaoxuefei.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-question" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/05/question/" class="article-date">
+  <time datetime="2018-06-05T01:51:59.933Z" itemprop="datePublished">2018-06-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="Android-获取屏幕高度注意事项"><a href="#Android-获取屏幕高度注意事项" class="headerlink" title="Android 获取屏幕高度注意事项"></a>Android 获取屏幕高度注意事项</h3><ul>
+<li><p>在Activity里获取WindowManager  </p>
+<pre><code>WindowManager windowManager = getWindowManager();
+DisplayMetrics displayMetrics = new DisplayMetric();
+Display defaultDisplay = windowManager.getDefaultDisplay();
+defaultDisplay.getMetrics(displayMetrics);
+int screenHeight=displayMetrics.heightPixels;
+</code></pre></li>
+<li><p>在非Activity对象实例中获取WindowManager-通过getSystenService(Context.WINDOW_SERVICE) </p>
+<pre><code>WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+</code></pre></li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fpkk2t3fxbj20ar0iiq3w.jpg" alt="高度区域分布图"></p>
+<ul>
+<li>通过DisplayMetrics获取的屏幕高度是屏幕全部界面的高度，但是除了有虚拟键盘的手机(例如：华为)<ul>
+<li><strong>displayMetrics.heightPixels=View绘制区+系统标题栏高度+状态栏高度</strong></li>
+<li><strong>华为手机displayMetrics.heightPixels=全部界面高度-底部虚拟键盘高度，通过displayMetrics.heightPixels获取的屏幕高度 其已经是减去软键盘的高度了</strong>（例如：一个带有虚拟键盘的华为手机分辨率为720*1280–那么其displayMetrics.heightPixels获取的值1208，通过计算其虚拟键盘的高度正好是72）</li>
+</ul>
+</li>
+</ul>
+<h3 id="NestedScroll嵌套滑动"><a href="#NestedScroll嵌套滑动" class="headerlink" title="NestedScroll嵌套滑动"></a>NestedScroll嵌套滑动</h3><ul>
+<li>主接口：NestedScrollingParent、NestedScrollingChild</li>
+<li>处理工具类：NestedScrollingParentHelper、NestedScrollingChildHelper</li>
+<li>原生实现的Parent <ul>
+<li>CoordinatorLayout</li>
+<li>NestedScrollView</li>
+</ul>
+</li>
+<li>原生实现的Child<ul>
+<li>RecyclerView</li>
+</ul>
+</li>
+</ul>
+<h4 id="CoordinatorLayout的基本使用–layout-behavior"><a href="#CoordinatorLayout的基本使用–layout-behavior" class="headerlink" title="CoordinatorLayout的基本使用–layout_behavior"></a>CoordinatorLayout的基本使用–layout_behavior</h4><ul>
+<li>使用需要和AppBarLayout(继承LinearLayout、@CoordinatorLayout.DefaultBehavior(AppBarLayout.Behavior.class))</li>
+<li>layout_behavior：也就是可以将控件大小绘制出超出屏幕的部分，超出的大小是基于设置的layout_behavior决定的；故也就是使用的默认的Behavior–AppBarLayout,而且CoordinateLayout是继承ViewGroup内部没有设置所谓的below、等所以用AppBarLayout（因为其是继承LinearLayout的）</li>
+</ul>
+<h4 id="AppBarLayout标签的使用layout-scrollFlags"><a href="#AppBarLayout标签的使用layout-scrollFlags" class="headerlink" title="AppBarLayout标签的使用layout_scrollFlags"></a>AppBarLayout标签的使用layout_scrollFlags</h4><ul>
+<li>scroll 该View会响应Scroll事件</li>
+<li>exitUntilCollapsed 该View上拉的时候，这个View会跟着滑动直到折叠。</li>
+</ul>
+<h4 id="CollapsingToolbarLayout标签使用layout-collapseMode"><a href="#CollapsingToolbarLayout标签使用layout-collapseMode" class="headerlink" title="CollapsingToolbarLayout标签使用layout_collapseMode"></a>CollapsingToolbarLayout标签使用layout_collapseMode</h4><ul>
+<li>是一种专门针对ToolBar设计的布局</li>
+<li>一般使用时结合AppBarLayout–当然AppBarLayout外部肯定是CoordinateLayout</li>
+<li>CollapsingToolbarLayout在设置AppBarLayout的标签exitUntilCollapsed后，在上拉时会随着滚动直到折叠-而折叠的高度就是CollapsingToolbarLayout内部设置ToolBar的高度，内部设置的其余View是不会有折叠效果的，故一般内部就是配合ToolBar的使用</li>
+<li>layout_collapseMode-pin 在滑动的时候该View会悬停在原地-直到CollapsingToolbarLayout的低部碰到该View的底部才会跟着一块滑</li>
+<li>layout_collapseMode-parallax 在滑动的过程中该View会是渐变效果-视觉特差效果</li>
+</ul>
+<h4 id="NestedScrollView与RecyclerView嵌套滑动"><a href="#NestedScrollView与RecyclerView嵌套滑动" class="headerlink" title="NestedScrollView与RecyclerView嵌套滑动"></a>NestedScrollView与RecyclerView嵌套滑动</h4><ul>
+<li>简单的拦截就是setNestedScrollingable(false);</li>
+<li>这时刚开始滑动的是父布局控件NestedScrollView,RecyclerView并没有获取事件、或者说不消费事件(recyclerView.setNestedScrollingable(false)),但这时如果需要根据NestedScrollView的滑动距离来判断什么时候把事件交给RecyclerView，也就是RecyclerView开始消费事件(setNestedScrollingable(true));</li>
+<li>如果需要刚开始滑动NestedScrollVIew-根据ScrollView的了解需要布局操出屏幕。跟RecyclerView和ListView是不同的，故底部RecyclerView控件需要设置其高度屏幕高度-需要滑动到要给RecyclerView手势时的距离高度、也就是悬停后的高度</li>
+<li><p>一开始渲染View就需要设置其高度，但是通过getHeight在刚渲染的时候拿不到，但有一个方法可以获取高度</p>
+<pre><code>linearLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+    //内部可以获取到该父布局和布局树-其内部子View的高度
+    }）；
+</code></pre></li>
+<li><p>判断手势超过临界值是向上滑动还是向下滑动–一般都是通过临界点的滑动值–例如滑到300就把手势交给子View，这时把ViewGroup的高度设置305这样当滑到301的时候判断滑动距离大于300就知道是向上滑动的</p>
+</li>
+</ul>
+<h3 id="OnTouchEvent"><a href="#OnTouchEvent" class="headerlink" title="OnTouchEvent()"></a>OnTouchEvent()</h3><ul>
+<li><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fpyhzbinlij20oa0gotbb.jpg" alt=""></li>
+<li><p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fpyi01rzxaj20ht0fndi1.jpg" alt=""></p>
+</li>
+<li><p>我们在ViewGroup 2 的onTouchEvent 返回true消费这次事件<br>红色的箭头代表ACTION_DOWN 事件的流向<br>蓝色的箭头代表ACTION_MOVE 和 ACTION_UP 事件的流向</p>
+</li>
+<li><p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fpyi0fyg00j20me0cvdhr.jpg" alt=""></p>
+</li>
+<li><p>我们在View 的onTouchEvent 返回true消费这次事件<br>红色的箭头代表ACTION_DOWN 事件的流向<br>蓝色的箭头代表ACTION_MOVE 和 ACTION_UP 事件的流向</p>
+</li>
+<li><p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fpyi0nhou1j20md0ctq4w.jpg" alt=""></p>
+</li>
+<li><p>首先看下ViewGroup 的dispatchTouchEvent，之前说的return true是终结传递。return false 是回溯到父View的onTouchEvent，然后ViewGroup怎样通过dispatchTouchEvent方法能把事件分发到自己的onTouchEvent处理呢，return true和false 都不行，那么只能通过Interceptor把事件拦截下来给自己的onTouchEvent，所以ViewGroup dispatchTouchEvent方法的super默认实现就是去调用onInterceptTouchEvent，记住这一点。<br>那么对于View的dispatchTouchEvent return super.dispatchTouchEvent()的时候呢事件会传到哪里呢，很遗憾View没有拦截器。但是同样的道理return true是终结。return false 是回溯会父类的onTouchEvent，怎样把事件分发给自己的onTouchEvent 处理呢，那只能return super.dispatchTouchEvent,View类的dispatchTouchEvent（）方法默认实现就是能帮你调用View自己的onTouchEvent方法的。</p>
+</li>
+<li><p>说了这么多，不知道有说清楚没有，我这边最后总结一下：</p>
+<ul>
+<li>对于 dispatchTouchEvent，onTouchEvent，return true是终结事件传递。return false 是回溯到父View的onTouchEvent方法。</li>
+<li>ViewGroup 想把自己分发给自己的onTouchEvent，需要拦截器onInterceptTouchEvent方法return true 把事件拦截下来。</li>
+<li>ViewGroup 的拦截器onInterceptTouchEvent 默认是不拦截的，所以return super.onInterceptTouchEvent()=return false；</li>
+<li>View 没有拦截器，为了让View可以把事件分发给自己的onTouchEvent，View的dispatchTouchEvent默认实现（super）就是把事件分发给自己的onTouchEvent。</li>
+</ul>
+</li>
+<li><p>自己消费，终结传递。——-&gt;return true ；</p>
+</li>
+<li>给自己的onTouchEvent处理——-&gt; 调用super.dispatchTouchEvent()系统默认会去调用 onInterceptTouchEvent，在onInterceptTouchEvent return true就会去把事件分给自己的onTouchEvent处理。</li>
+<li>传给子View——&gt;调用super.dispatchTouchEvent()默认实现会去调用 onInterceptTouchEvent 在onInterceptTouchEvent return false，就会把事件传给子类。</li>
+<li><p>不传给子View，事件终止往下传递，事件开始回溯，从父View的onTouchEvent开始事件从下到上回归执行每个控件的onTouchEvent——-&gt;return false；<br>注： 由于View没有子View所以不需要onInterceptTouchEvent 来控件是否把事件传递给子View还是拦截，所以View的事件分发调用super.dispatchTouchEvent()的时候默认把事件传给自己的onTouchEvent处理（相当于拦截），对比ViewGroup的dispatchTouchEvent 事件分发，View的事件分发没有上面提到的4个目标的第3点。</p>
+</li>
+<li><p>总结(从事件的方法函数调用顺序开始)：</p>
+<ul>
+<li>dispatchTouchEvent是事件分发：return true/false-表示都是直接消费，不往下分发，但是会直接传递给父级的onTouchEvent（）方法，return super.dispatchTouchEvent()-是向下调用：activity的会调用ViewGroup的dispatchTouchEvent，如果viewgroup的也是返回super,那么ViewGroup的super其实是调用自己的onInterceptTouchEvent（）方法-的返回值，如果onInterceptTouchEvent返回true表示给自己的View消费-会调用ViewGroup的onTouchEvent方法，如果onInterceptTouchEvent（）-return false/super，那么是调用的是View的dispatchTouchEvent()，如果view的该方法返回true、false直接消费不会传给自己的onTouchEvent()，如果返回super，那么其实调用的是自己的onTouchEvnet方法，</li>
+<li>onTouchEvent 方法 return true 表示消费事件，其down move up会传递到该View并停止，，如果返回false,,那么down会传递过来，以后的move up 事件就不会再传递给他，，view的onTouchEvent返回false  那么会向父ViewGroup的onTOuchEvent传递</li>
+</ul>
+</li>
+</ul>
+<p>###参考文献</p>
+<p><a href="https://www.jianshu.com/p/e99b5e8bd67b" target="_blank" rel="noopener">事件分发经典参考</a><br><a href="http://blog.csdn.net/a_running_wolf/article/details/50477965" target="_blank" rel="noopener">Android完美获取状态栏高度、标题栏高度、编辑区域高度的获取</a><br><a href="https://www.jianshu.com/p/f09723b7e887" target="_blank" rel="noopener">使用CoordinatorLayout打造各种炫酷的效果</a>   </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://shaoxuefei.github.io/2018/06/05/question/" data-id="cji1140jw00007sv3c6ac5n6d" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/06/05/question/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Sxf<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
