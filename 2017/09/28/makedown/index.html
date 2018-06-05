@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1级标题 区块引用–Fight for Hiphop in China  嵌套引用–GAI     2级标题void main(){        say(&amp;quot;helloworld&amp;quot;);   }  代码块：每行加4个空格      3级标题斜体 : 两边加”“斜体 : 两边加”_”粗体 : 两边加”*“粗体 : 两边加两个”_”   4级标题 列表     第一项 ：-加空格">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Markdown语法说明">
+<meta property="og:url" content="http://yoursite.com/2017/09/28/makedown/index.html">
+<meta property="og:site_name" content="Sxf">
+<meta property="og:description" content="1级标题 区块引用–Fight for Hiphop in China  嵌套引用–GAI     2级标题void main(){        say(&amp;quot;helloworld&amp;quot;);   }  代码块：每行加4个空格      3级标题斜体 : 两边加”“斜体 : 两边加”_”粗体 : 两边加”*“粗体 : 两边加两个”_”   4级标题 列表     第一项 ：-加空格">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=0ahUKEwiVsreE4L_WAhWBwrwKHQ7FBasQjRwIBw&url=http%3A%2F%2Fwww.tooopen.com%2Fimg%2F87_312.aspx&psig=AFQjCNHQpm77bywjUWp2MxldzdfnEVxtoA&ust=1506408744503582">
+<meta property="og:updated_time" content="2017-09-28T09:54:52.131Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Markdown语法说明">
+<meta name="twitter:description" content="1级标题 区块引用–Fight for Hiphop in China  嵌套引用–GAI     2级标题void main(){        say(&amp;quot;helloworld&amp;quot;);   }  代码块：每行加4个空格      3级标题斜体 : 两边加”“斜体 : 两边加”_”粗体 : 两边加”*“粗体 : 两边加两个”_”   4级标题 列表     第一项 ：-加空格">
+<meta name="twitter:image" content="https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=0ahUKEwiVsreE4L_WAhWBwrwKHQ7FBasQjRwIBw&url=http%3A%2F%2Fwww.tooopen.com%2Fimg%2F87_312.aspx&psig=AFQjCNHQpm77bywjUWp2MxldzdfnEVxtoA&ust=1506408744503582">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'İؼ��'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/28/makedown/"/>
+
+
+
+
+
+  <title>Markdown语法说明 | Sxf</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sxf</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/28/makedown/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Vampire">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sxf">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Markdown语法说明</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-28T10:45:52+08:00">
+                2017-09-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="1级标题"><a href="#1级标题" class="headerlink" title="1级标题"></a>1级标题</h1><blockquote>
+<p>区块引用–Fight for Hiphop in China</p>
+<blockquote>
+<p>嵌套引用–GAI  </p>
+</blockquote>
+</blockquote>
+<h1 id="2级标题"><a href="#2级标题" class="headerlink" title="2级标题"></a>2级标题</h1><pre><code>void main(){    
+   say(&quot;helloworld&quot;);  
+}
+</code></pre><blockquote>
+<p>代码块：每行加4个空格    </p>
+</blockquote>
+<h3 id="3级标题"><a href="#3级标题" class="headerlink" title="3级标题"></a>3级标题</h3><p><em>斜体</em> : 两边加”<em>“<br><em>斜体</em> : 两边加”_”<br><strong>粗体</strong> : 两边加”*</em>“<br><strong>粗体</strong> : 两边加两个”_”  </p>
+<h4 id="4级标题"><a href="#4级标题" class="headerlink" title="4级标题"></a>4级标题</h4><blockquote>
+<p>列表  </p>
+</blockquote>
+<ul>
+<li>第一项 ：-加空格   </li>
+</ul>
+<ul>
+<li>第二项 : +加空格</li>
+</ul>
+<ul>
+<li>第三项 ：*加空格 </li>
+</ul>
+<ol>
+<li>第一项 ：1.加上空格 </li>
+<li>第二项  ：2.加上空格</li>
+<li>第三项  ：3.加上空格  <blockquote>
+<p>分割线: &gt;=3  * or - or _</p>
+</blockquote>
+</li>
+</ol>
+<h2 id=""><a href="#" class="headerlink" title="**  "></a><em>**</em>  </h2><hr>
+<h5 id="5级标题"><a href="#5级标题" class="headerlink" title="5级标题"></a>5级标题</h5><blockquote>
+<p>链接行内式  </p>
+</blockquote>
+<p><a href="https://github.com/shaoxuefei/TizzyD" target="_blank" rel="external">Sxf的github</a>  </p>
+<blockquote>
+<blockquote>
+<p>链接参考式  </p>
+</blockquote>
+</blockquote>
+<p><a href="https://github.com/shaoxuefei/SdkDemo" target="_blank" rel="external">Sxf的github1</a><br><a href="https://github.com/shaoxuefei/SdkDemo" target="_blank" rel="external">Sxf的github2</a><br>区块 退出或者是段落开启需要两空格+Enter;<a href="https://github.com/shaoxuefei/SdkDemo" target="_blank" rel="external">1</a>:<a href="http://www.baidu.com不能写在区块内(配合链接参考式使用的话" target="_blank" rel="external">http://www.baidu.com不能写在区块内(配合链接参考式使用的话</a>)</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>图片  </p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><img src="https://www.google.com/url?sa=i&amp;rct=j&amp;q=&amp;esrc=s&amp;source=images&amp;cd=&amp;ved=0ahUKEwiVsreE4L_WAhWBwrwKHQ7FBasQjRwIBw&amp;url=http%3A%2F%2Fwww.tooopen.com%2Fimg%2F87_312.aspx&amp;psig=AFQjCNHQpm77bywjUWp2MxldzdfnEVxtoA&amp;ust=1506408744503582" alt="picture">  </p>
+<h6 id="6级标题"><a href="#6级标题" class="headerlink" title="6级标题"></a>6级标题</h6><blockquote>
+<p>标识作用  </p>
+</blockquote>
+<p><code>重点标识</code>  </p>
+<blockquote>
+<blockquote>
+<p>*反斜杠反编译注解*</p>
+</blockquote>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/28/Handler&HandlerThread/" rel="prev" title="Handler&HandlerThread">
+                Handler&HandlerThread <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Vampire" />
+            
+              <p class="site-author-name" itemprop="name">Vampire</p>
+              <p class="site-description motion-element" itemprop="description">Nothing to Say</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1级标题"><span class="nav-number">1.</span> <span class="nav-text">1级标题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2级标题"><span class="nav-number">2.</span> <span class="nav-text">2级标题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3级标题"><span class="nav-number">2.0.1.</span> <span class="nav-text">3级标题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4级标题"><span class="nav-number">2.0.1.1.</span> <span class="nav-text">4级标题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">2.1.</span> <span class="nav-text">**  </span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#5级标题"><span class="nav-number">2.1.0.0.1.</span> <span class="nav-text">5级标题</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#6级标题"><span class="nav-number">2.1.0.0.1.1.</span> <span class="nav-text">6级标题</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vampire</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

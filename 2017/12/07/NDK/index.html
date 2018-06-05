@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="JNI简介 定义：Java Native Interface,即Java本地接口 作用：使用Java与本地其他类语言(如c、c++)交互 即在Java代码里调用c、c++等语言的代码或c、c++代码调用Java代码  特别注意：  JNI是调用的Native语言的一种特性 JNI是属于Java，与Android无直接关系，需要通过NDK来与Android建立关系为什么要有JNI   背景：实际使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NDK">
+<meta property="og:url" content="http://yoursite.com/2017/12/07/NDK/index.html">
+<meta property="og:site_name" content="Sxf">
+<meta property="og:description" content="JNI简介 定义：Java Native Interface,即Java本地接口 作用：使用Java与本地其他类语言(如c、c++)交互 即在Java代码里调用c、c++等语言的代码或c、c++代码调用Java代码  特别注意：  JNI是调用的Native语言的一种特性 JNI是属于Java，与Android无直接关系，需要通过NDK来与Android建立关系为什么要有JNI   背景：实际使用">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-07T05:18:21.796Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NDK">
+<meta name="twitter:description" content="JNI简介 定义：Java Native Interface,即Java本地接口 作用：使用Java与本地其他类语言(如c、c++)交互 即在Java代码里调用c、c++等语言的代码或c、c++代码调用Java代码  特别注意：  JNI是调用的Native语言的一种特性 JNI是属于Java，与Android无直接关系，需要通过NDK来与Android建立关系为什么要有JNI   背景：实际使用">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'İؼ��'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/12/07/NDK/"/>
+
+
+
+
+
+  <title>NDK | Sxf</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sxf</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/07/NDK/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Vampire">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sxf">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">NDK</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-07T13:18:48+08:00">
+                2017-12-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="JNI"><a href="#JNI" class="headerlink" title="JNI"></a>JNI</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><ul>
+<li>定义：Java Native Interface,即Java本地接口</li>
+<li><p>作用：使用Java与本地其他类语言(如c、c++)交互</p>
+<pre><code>即在Java代码里调用c、c++等语言的代码或c、c++代码调用Java代码
+</code></pre></li>
+<li><p>特别注意：</p>
+<ul>
+<li>JNI是调用的Native语言的一种特性</li>
+<li>JNI是属于Java，与Android无直接关系，需要通过NDK来与Android建立关系<h3 id="为什么要有JNI"><a href="#为什么要有JNI" class="headerlink" title="为什么要有JNI"></a>为什么要有JNI</h3></li>
+</ul>
+</li>
+<li><p>背景：实际使用中，Java 需要与 本地代码 进行交互</p>
+</li>
+<li>问题：因为 Java 具备跨平台的特点（java的跨平台：Java可以定义其他语言的调用方法,也就是向外抛出调用的对接方法，也就是其他语言可以调用Java本地定义的方法），所以Java 与 本地代码交互的能力非常弱</li>
+<li>解决方案： 采用 JNI特性 增强 Java 与 本地代码交互的能力</li>
+</ul>
+<h3 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h3><ul>
+<li>在Java中声明Native方法（即需要调用的本地方法）</li>
+<li>编译上述 Java源文件javac（得到 .class文件）</li>
+<li>通过 javah 命令导出JNI的头文件（.h文件）</li>
+<li><p>使用 Java需要交互的本地代码 实现在 Java中声明的Native方法 </p>
+<pre><code>如 Java 需要与 C++ 交互，那么就用C++实现 Java的Native方法
+</code></pre></li>
+<li>编译.so库文件</li>
+<li>通过Java命令执行 Java程序，最终实现Java调用本地代码</li>
+</ul>
+<h2 id="NDK"><a href="#NDK" class="headerlink" title="NDK"></a>NDK</h2><h3 id="NDK简介"><a href="#NDK简介" class="headerlink" title="NDK简介"></a>NDK简介</h3><ul>
+<li><p>定义：Native Development Kit，是 Android的一个工具开发包 </p>
+<pre><code>NDK是属于 Android 的，与Java并无直接关系
+</code></pre></li>
+<li>作用：快速开发C、 C++的动态库，并自动将so和应用一起打包成 APK<br>即可通过 NDK在 Android中 使用 JNI与本地代码（如C、C++）交互</li>
+<li><p>应用场景：在Android的场景下 使用JNI</p>
+<pre><code>即 Android开发的功能需要本地代码（C/C++）实现
+</code></pre></li>
+<li>特点<ul>
+<li>性能方面<ul>
+<li>运行效率高 : 一般需要高性能的计算算法工作，会用c/c++，机器语言执行效率高(生成.so文件)</li>
+<li>代码安全性高 : java是办解释型语言，容易被反编译后得到源码，而使用本地的代码(如c、c++)则不会，可以提高系统的安全性</li>
+</ul>
+</li>
+<li>功能方面<ul>
+<li>功能拓展性好 ： 除了使用java的开源库，还可以使用c\c++的开源库</li>
+</ul>
+</li>
+<li>使用方面<ul>
+<li>易于代码复用和移植 ： 用c\c++开发的代码不仅可以在Android中使用，还可以在其他类型平台使用</li>
+</ul>
+</li>
+<li>额外注意<ul>
+<li>NDK提供了把.so和.apk打包的工具–而JNI开发并没有该功能，其只是生成.so文件，或者说是c\c++调用本地java方法依靠是JNI的原因，依靠JNI内部定义的本地java方法接口</li>
+<li>NDK 提供的库有限，仅用于处理算法效率和敏感的问题</li>
+<li>提供交叉编译，用于生成特定的cpu平台的动态库：也可已理解说是因为在androidstudio中jniLib中声明的支持cpu的型号中的.so文件并不是都是一样的，不可以直接创建文件夹然后将别的文件夹中.so文件赋值过去就可以了(<strong>此处应该可以看出jniLibs–命名的含义也就是看似JNI生成的.so的文件的集合命名的，其实JNI只是定义了跟c\c++交互的接口规则，最终是NDK将其打包成.so并和应用一起打包成apk</strong>)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h3><ul>
+<li>配置 Android NDK环境</li>
+<li>创建 Android 项目，并与 NDK进行关联</li>
+<li>在 Android 项目中声明所需要调用的 Native方法</li>
+<li><p>使用 Android需要交互的本地代码 实现在Android中声明的Native方法 </p>
+<pre><code>比如 Android 需要与 C++ 交互，那么就用C++ 实现 Java的Native方法
+</code></pre></li>
+<li>通过 ndk - bulid 命令编译产生.so库文件</li>
+<li>编译 Android Studio 工程，从而实现 Android 调用本地代码</li>
+</ul>
+<h2 id="具体使用"><a href="#具体使用" class="headerlink" title="具体使用"></a>具体使用</h2><ul>
+<li>暂无</li>
+</ul>
+<h2 id="Android-CPU"><a href="#Android-CPU" class="headerlink" title="Android CPU"></a>Android CPU</h2><ul>
+<li><p>获取手机的cpu架构信息</p>
+<pre><code>1、adb shell  
+2、cat /proc/cpuinfo
+</code></pre></li>
+<li><p>型号<br>Android系统目前支持以下七种不同的CPU架构：ARMv5，ARMv7 (从2010年起)，x86 (从2011年起)，MIPS (从2012年起)，ARMv8，MIPS64和x86_64 (从2014年起)，每一种都关联着一个相应的ABI-简称：<strong>应用程序二进制接口</strong>（Application Binary Interface）定义了<strong>二进制文件（尤其是.so文件）</strong>如何运行在相应的系统平台上，从使用的指令集，内存对齐到可用的系统函数库。在Android系统上，每一个CPU架构对应一个ABI：armeabi，armeabi-v7a，x86，mips，arm64-v8a，mips64，x86_64。</p>
+</li>
+<li><p>兼容<br>很多设备都支持多余一种的ABI：7中cpu的设备统一都可以运行含有arembi的<strong>二进制包</strong>(也就是apk文件),ARM64和x86设备也可以同时运行armeabi-v7a和armeabi的二进制包,但是最好是针对不同的平台，app中设置不同的.so文件，这样可以提高性能，比如你手机是x86_64,但是app中的.so只用x86的那么，相当于64手机系统运行32位的ART和Android组件，将丢失64的性能(webview,media,art)</p>
+</li>
+</ul>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ul>
+<li><a href="http://blog.csdn.net/carson_ho/article/details/73250163" target="_blank" rel="external">Android NDK JNI 是什么</a>    </li>
+<li><a href="https://segmentfault.com/a/1190000005646078#articleHeader13" target="_blank" rel="external">Android 动态加载使用so的注意事项</a>    </li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/09/Nexus User Roles/" rel="next" title="Nexus 用户权限管理">
+                <i class="fa fa-chevron-left"></i> Nexus 用户权限管理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/10/maidian/" rel="prev" title="Android埋点统计">
+                Android埋点统计 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Vampire" />
+            
+              <p class="site-author-name" itemprop="name">Vampire</p>
+              <p class="site-description motion-element" itemprop="description">Nothing to Say</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#JNI"><span class="nav-number">1.</span> <span class="nav-text">JNI</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么要有JNI"><span class="nav-number">1.2.</span> <span class="nav-text">为什么要有JNI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现步骤"><span class="nav-number">1.3.</span> <span class="nav-text">实现步骤</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NDK"><span class="nav-number">2.</span> <span class="nav-text">NDK</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NDK简介"><span class="nav-number">2.1.</span> <span class="nav-text">NDK简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用步骤"><span class="nav-number">2.2.</span> <span class="nav-text">使用步骤</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#具体使用"><span class="nav-number">3.</span> <span class="nav-text">具体使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android-CPU"><span class="nav-number">4.</span> <span class="nav-text">Android CPU</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考链接"><span class="nav-number"></span> <span class="nav-text">参考链接</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vampire</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
