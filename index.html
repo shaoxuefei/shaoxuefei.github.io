@@ -251,7 +251,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/21/ontouchevent/" itemprop="url">未命名</a></h1>
+                <a class="post-title-link" href="/2018/08/21/ontouchevent/" itemprop="url">事件分发</a></h1>
         
 
         <div class="post-meta">
@@ -303,9 +303,7 @@
       
         
           
-            <p>title :事件分发</p>
-<hr>
-<h3 id="事件传递的过程分析"><a href="#事件传递的过程分析" class="headerlink" title="事件传递的过程分析"></a>事件传递的过程分析</h3><ul>
+            <h3 id="事件传递的过程分析"><a href="#事件传递的过程分析" class="headerlink" title="事件传递的过程分析"></a>事件传递的过程分析</h3><ul>
 <li>事件传递 从最外层父View将事件 传递到 内部View  首先传递前 判断自己的<em>dispatchTouchEvent</em> 方法是否支持分发，支持分发的话，会传递自己View的<em>onInterceptTouchEvent</em> 方法，看自己是否进行拦截处理，若拦截则会传递到自己的<em>onTouchEvent</em>,若不拦截会传递到子View的<em>dispatchTouchEvent</em> 方法进行处理，内部处理流程和上一层View的处理流程一样：  dispatchTouchEvent–&gt;onInterceptTouchEvent–&gt;onTouchEvent</li>
 </ul>
 <h3 id="DispatchTouchEvent之return"><a href="#DispatchTouchEvent之return" class="headerlink" title="DispatchTouchEvent之return"></a>DispatchTouchEvent之return</h3><ul>
