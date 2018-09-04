@@ -79,21 +79,21 @@
 
 
 
-<meta name="description" content="图片尺寸压缩处理 所有的操作都是通过流完成的、转换成流后进行处理压缩、然后在吧处理好的流转换成Bitmap  尺寸压缩修改，只是修改该图片的宽高。并不是对该图片进行裁剪   file文件获取图片资源     Bitmap直接压缩处理    图片质量压缩处理 所有的操作都是通过流完成的、转换成流后进行处理压缩、然后在吧处理好的流转换成Bitmap    对图片进行裁剪  ###Bitmap的常见方法">
+<meta name="description" content="图片尺寸压缩处理 所有的操作都是通过流完成的、转换成流后进行处理压缩、然后在吧处理好的流转换成Bitmap  尺寸压缩修改，只是修改该图片的宽高。并不是对该图片进行裁剪   file文件获取图片资源     Bitmap直接压缩处理    图片质量压缩处理 所有的操作都是通过流完成的、转换成流后进行处理压缩、然后在吧处理好的流转换成Bitmap    对图片进行裁剪   这种需要图片自动延伸扩展的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="图片质量、尺寸压缩">
 <meta property="og:url" content="https://shaoxuefei.github.io/2018/09/04/bitmap_compress/index.html">
 <meta property="og:site_name" content="Sxf-Blog">
-<meta property="og:description" content="图片尺寸压缩处理 所有的操作都是通过流完成的、转换成流后进行处理压缩、然后在吧处理好的流转换成Bitmap  尺寸压缩修改，只是修改该图片的宽高。并不是对该图片进行裁剪   file文件获取图片资源     Bitmap直接压缩处理    图片质量压缩处理 所有的操作都是通过流完成的、转换成流后进行处理压缩、然后在吧处理好的流转换成Bitmap    对图片进行裁剪  ###Bitmap的常见方法">
+<meta property="og:description" content="图片尺寸压缩处理 所有的操作都是通过流完成的、转换成流后进行处理压缩、然后在吧处理好的流转换成Bitmap  尺寸压缩修改，只是修改该图片的宽高。并不是对该图片进行裁剪   file文件获取图片资源     Bitmap直接压缩处理    图片质量压缩处理 所有的操作都是通过流完成的、转换成流后进行处理压缩、然后在吧处理好的流转换成Bitmap    对图片进行裁剪   这种需要图片自动延伸扩展的">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fuxk498kdcj212e0ndwhd.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fuxkbcb686j21ch0kajud.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fuxl283i2tj21530dsgn5.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fuxmq42t1zj216h0bldh5.jpg">
-<meta property="og:updated_time" content="2018-09-04T09:22:07.993Z">
+<meta property="og:updated_time" content="2018-09-04T09:53:33.721Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="图片质量、尺寸压缩">
-<meta name="twitter:description" content="图片尺寸压缩处理 所有的操作都是通过流完成的、转换成流后进行处理压缩、然后在吧处理好的流转换成Bitmap  尺寸压缩修改，只是修改该图片的宽高。并不是对该图片进行裁剪   file文件获取图片资源     Bitmap直接压缩处理    图片质量压缩处理 所有的操作都是通过流完成的、转换成流后进行处理压缩、然后在吧处理好的流转换成Bitmap    对图片进行裁剪  ###Bitmap的常见方法">
+<meta name="twitter:description" content="图片尺寸压缩处理 所有的操作都是通过流完成的、转换成流后进行处理压缩、然后在吧处理好的流转换成Bitmap  尺寸压缩修改，只是修改该图片的宽高。并不是对该图片进行裁剪   file文件获取图片资源     Bitmap直接压缩处理    图片质量压缩处理 所有的操作都是通过流完成的、转换成流后进行处理压缩、然后在吧处理好的流转换成Bitmap    对图片进行裁剪   这种需要图片自动延伸扩展的">
 <meta name="twitter:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fuxk498kdcj212e0ndwhd.jpg">
 
 
@@ -324,6 +324,14 @@
 </li>
 </ul>
 <h3 id="对图片进行裁剪"><a href="#对图片进行裁剪" class="headerlink" title="对图片进行裁剪"></a>对图片进行裁剪</h3><p> <img src="http://ww1.sinaimg.cn/large/c82e4122gy1fuxmq42t1zj216h0bldh5.jpg" alt="picture"></p>
+<ul>
+<li>这种需要图片自动延伸扩展的一般用 scaleType来实现<ul>
+<li>centerCrop 会随着ImageView的宽高，自动进行图片的等比缩放，然后展示，当缩放后图片大于ImageView的话会进行自动裁剪显示图片中间区域</li>
+<li>fitXY 充满ImageView的大小，不会考虑图片本身的宽高比例</li>
+<li>其他的自行百度 </li>
+</ul>
+</li>
+</ul>
 <p>###Bitmap的常见方法介绍</p>
 <ul>
 <li><p>解析流</p>
