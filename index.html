@@ -232,6 +232,157 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2018/09/04/bitmap_compress/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sxf">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/user_icon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sxf-Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/04/bitmap_compress/" itemprop="url">图片质量、尺寸压缩</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-04T15:44:41+08:00">
+                2018-09-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="图片尺寸压缩处理"><a href="#图片尺寸压缩处理" class="headerlink" title="图片尺寸压缩处理"></a>图片尺寸压缩处理</h3><ul>
+<li><p>所有的操作都是通过流完成的、转换成流后进行处理压缩、然后在吧处理好的流转换成Bitmap</p>
+</li>
+<li><p>尺寸压缩修改，只是修改该图片的宽高。并不是对该图片进行裁剪 </p>
+</li>
+<li><p>file文件获取图片资源</p>
+<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fuxk498kdcj212e0ndwhd.jpg" alt="picture"></p>
+</li>
+</ul>
+<ul>
+<li><p>Bitmap直接压缩处理</p>
+<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fuxkbcb686j21ch0kajud.jpg" alt="picture"></p>
+</li>
+</ul>
+<h3 id="图片质量压缩处理"><a href="#图片质量压缩处理" class="headerlink" title="图片质量压缩处理"></a>图片质量压缩处理</h3><ul>
+<li><p>所有的操作都是通过流完成的、转换成流后进行处理压缩、然后在吧处理好的流转换成Bitmap</p>
+<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fuxl283i2tj21530dsgn5.jpg" alt="picture"></p>
+</li>
+</ul>
+<h3 id="对图片进行裁剪"><a href="#对图片进行裁剪" class="headerlink" title="对图片进行裁剪"></a>对图片进行裁剪</h3><p> <img src="http://ww1.sinaimg.cn/large/c82e4122gy1fuxmq42t1zj216h0bldh5.jpg" alt="picture"></p>
+<p>###Bitmap的常见方法介绍</p>
+<ul>
+<li><p>解析流</p>
+<pre><code>Bitmap bitmap=BitmapFactory.decodeStream（InputStream is, Rect outPadding, Options opts）
+</code></pre></li>
+<li><p>压缩Bitmap转换成输出流</p>
+<pre><code>bitmap.compress(CompressFormat format, int quality, OutputStream stream);//100表示不压缩,质量最好
+</code></pre></li>
+<li><p>裁剪Bitmap</p>
+<pre><code>Bitmap.createBitmap(@NonNull Bitmap source, int x, int y, int width, int height,@Nullable Matrix m, boolean filter)
+</code></pre></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2018/08/28/viewflipper_pager_fragment/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1381,7 +1532,7 @@ int screenHeight=displayMetrics.heightPixels;
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
