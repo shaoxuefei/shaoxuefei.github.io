@@ -79,20 +79,19 @@
 
 
 
-<meta name="description" content="Fragment生命周期 onCreateView() :每次加载Fragment的时候会执行该方法、配对的生命周期是： onDestroyView()  onCreateView() :onCreateView()方法执行完后进行执行，代表View绘制完成  onResume() :该Fragment被执行了show操作、或者是该页面从后台显示到前台，或者是其依赖的Activity的生命周期的改">
+<meta name="description" content="概述数据结构 就是以某种形式将数据存储在一起的集合，它不仅存储数据，而且还支持查找访问，删除，添加，数据处理等操作。  算法 是为了求解一个问题需要循环的，被清楚指定的简单的指令集合，也就是代码算法规则，为了更简洁方便的解决复杂的循环查找遍历等问题  数据表之数据结构体现方式线性表-线性存储结构 是最常用最简单的一种数据结构，它是n个数据元素的有限序列,这种是针对正常的线性表结构如：数组；其在创建">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Fragment生命周期之ViewPager懒加载">
-<meta property="og:url" content="https://shaoxuefei.github.io/2018/08/28/viewflipper_pager_fragment/index.html">
+<meta property="og:title" content="数据结构(表)和算法">
+<meta property="og:url" content="https://shaoxuefei.github.io/2018/09/05/data_structure/index.html">
 <meta property="og:site_name" content="Sxf-Blog">
-<meta property="og:description" content="Fragment生命周期 onCreateView() :每次加载Fragment的时候会执行该方法、配对的生命周期是： onDestroyView()  onCreateView() :onCreateView()方法执行完后进行执行，代表View绘制完成  onResume() :该Fragment被执行了show操作、或者是该页面从后台显示到前台，或者是其依赖的Activity的生命周期的改">
+<meta property="og:description" content="概述数据结构 就是以某种形式将数据存储在一起的集合，它不仅存储数据，而且还支持查找访问，删除，添加，数据处理等操作。  算法 是为了求解一个问题需要循环的，被清楚指定的简单的指令集合，也就是代码算法规则，为了更简洁方便的解决复杂的循环查找遍历等问题  数据表之数据结构体现方式线性表-线性存储结构 是最常用最简单的一种数据结构，它是n个数据元素的有限序列,这种是针对正常的线性表结构如：数组；其在创建">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fupinhsfx5j20f40o70vn.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fupjsp44faj21570jegnc.jpg">
-<meta property="og:updated_time" content="2018-08-28T09:39:45.074Z">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fuzrim5fa1j20mj0bp75e.jpg">
+<meta property="og:updated_time" content="2018-09-06T05:40:39.813Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Fragment生命周期之ViewPager懒加载">
-<meta name="twitter:description" content="Fragment生命周期 onCreateView() :每次加载Fragment的时候会执行该方法、配对的生命周期是： onDestroyView()  onCreateView() :onCreateView()方法执行完后进行执行，代表View绘制完成  onResume() :该Fragment被执行了show操作、或者是该页面从后台显示到前台，或者是其依赖的Activity的生命周期的改">
-<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fupinhsfx5j20f40o70vn.jpg">
+<meta name="twitter:title" content="数据结构(表)和算法">
+<meta name="twitter:description" content="概述数据结构 就是以某种形式将数据存储在一起的集合，它不仅存储数据，而且还支持查找访问，删除，添加，数据处理等操作。  算法 是为了求解一个问题需要循环的，被清楚指定的简单的指令集合，也就是代码算法规则，为了更简洁方便的解决复杂的循环查找遍历等问题  数据表之数据结构体现方式线性表-线性存储结构 是最常用最简单的一种数据结构，它是n个数据元素的有限序列,这种是针对正常的线性表结构如：数组；其在创建">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fuzrim5fa1j20mj0bp75e.jpg">
 
 
 
@@ -122,13 +121,13 @@
 
 
 
-  <link rel="canonical" href="https://shaoxuefei.github.io/2018/08/28/viewflipper_pager_fragment/"/>
+  <link rel="canonical" href="https://shaoxuefei.github.io/2018/09/05/data_structure/"/>
 
 
 
 
 
-  <title>Fragment生命周期之ViewPager懒加载 | Sxf-Blog</title>
+  <title>数据结构(表)和算法 | Sxf-Blog</title>
   
 
 
@@ -235,7 +234,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2018/08/28/viewflipper_pager_fragment/">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2018/09/05/data_structure/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sxf">
@@ -252,7 +251,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Fragment生命周期之ViewPager懒加载</h1>
+          <h1 class="post-title" itemprop="name headline">数据结构(表)和算法</h1>
         
 
         <div class="post-meta">
@@ -264,8 +263,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-28T16:34:51+08:00">
-                2018-08-28
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-05T14:56:46+08:00">
+                2018-09-05
               </time>
             
 
@@ -302,80 +301,56 @@
       
 
       
-        <h3 id="Fragment生命周期"><a href="#Fragment生命周期" class="headerlink" title="Fragment生命周期"></a>Fragment生命周期</h3><ul>
-<li><p>onCreateView() :每次加载Fragment的时候会执行该方法、配对的生命周期是： onDestroyView()</p>
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><ul>
+<li>就是以某种形式将数据存储在一起的集合，它不仅存储数据，而且还支持查找访问，删除，添加，数据处理等操作。</li>
+</ul>
+<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><ul>
+<li>是为了求解一个问题需要循环的，被清楚指定的简单的指令集合，也就是代码算法规则，为了更简洁方便的解决复杂的循环查找遍历等问题</li>
+</ul>
+<h2 id="数据表之数据结构体现方式"><a href="#数据表之数据结构体现方式" class="headerlink" title="数据表之数据结构体现方式"></a>数据表之数据结构体现方式</h2><h3 id="线性表-线性存储结构"><a href="#线性表-线性存储结构" class="headerlink" title="线性表-线性存储结构"></a>线性表-线性存储结构</h3><ul>
+<li><p>是最常用最简单的一种数据结构，它是n个数据元素的<strong>有限序列</strong>,这种是针对正常的线性表结构如：数组；其在创建的时候就需要指定该数组的长度;</p>
 </li>
-<li><p>onCreateView() :onCreateView()方法执行完后进行执行，代表View绘制完成</p>
+<li><p>代码中使用的体现方式</p>
+<ul>
+<li>数组 :最常见和最基本的线性结构存储方式</li>
+<li>ArrayList: 也就是可增加的<strong>动态数组</strong> </li>
+</ul>
 </li>
-<li><p>onResume() :该Fragment被执行了show操作、或者是<strong>该页面从后台显示到前台</strong>，或者是其依赖的Activity的生命周期的改变;那种ViewPager+Fragment的那种，ViewPager切换的时候，其Fragment是不执行onResume和onPause的，因为其Activity的声明周期没有改变，而且也没有执行hide和show操作,其移动就是将该Fragment进行了移动，并没有移出到后台?所以没有执行Fragment的生命周期</p>
+<li><p>优势：可以通过下标进行数据的查找，访问和修改该对象元素，比较搞笑</p>
+</li>
+<li><p>缺点：插入删除花费开销大，比如，当在第一个位置插入数据的时候，首先需要把所有的数据往后移动一个位置，然后在进行插入处理，比较耗时，为了提高插入删除处理的效率可以用链式结构来实现线性表</p>
 </li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fupinhsfx5j20f40o70vn.jpg" alt="picture"></p>
-<h3 id="ViewPager-Fragment-“预”加载方式解析"><a href="#ViewPager-Fragment-“预”加载方式解析" class="headerlink" title="ViewPager+Fragment “预”加载方式解析"></a>ViewPager+Fragment “预”加载方式解析</h3><ul>
-<li><p>viewPager.setOffscreenPageLimit(x): 不设置默认ViewPager会预加载相邻的1个Fragment，当切换Fragment时之前相邻的Fragment会执行onDestroyView()将Fragment销毁，当再次切换到该Fragment时其会重新生成该Fragment，也就是重新调用onCreateView()方法,<strong>也就是每次点击非相邻的Tab会重新加载渲染一次Fragment</strong></p>
+<h3 id="链表-链式存储结构"><a href="#链表-链式存储结构" class="headerlink" title="链表-链式存储结构"></a>链表-链式存储结构</h3><ul>
+<li><p>链表是物理存储单元上非连续、非顺序的存储结构，是由一系列“节点”组成，这些节点不必在内存中相连，其逻辑顺序是根据链表中的指针链接顺序来决定的，也就是根据指针来寻找自己指向的下一个节点</p>
 </li>
-<li><p>viewPager.setOffscreenPageLimit(n)：设置值后，一般设置fragmentList-1，这样其切换Fragment的时候所有的Fragment不会重走生命周期，也就是不会走onDestroyView()和onCreateView()进行Fragment的重复创建，这种的话刚启动加载第一个Fragment的时候，其余的都会执行onCreateView()、、onCreateView()方法进行预加载，当然这种当Activity执行生命周期onPause时，所有的都会执行onPause</p>
+<li><p>节点：是由数据部分:Data和链接部分指针Next组成，Next指向下一个节点，这样在添加删除数据时只需要改变指定的数据的Next的指向就可以了。</p>
 </li>
-<li><p>其实ViewPager就是ViewGroup就是一个View的容器，类似于容器也就是说不管内部有多少View其都会“一次全部”加载到容器内，也就是不管现在在屏幕中的还是没有在屏幕中显示的View，其已经全部加载到该容器中了，不会因为你不在该屏幕上显示就说你没有加载到ViewGroup中，排除外来因素(手动进行ViewGroup的移出添加、或者是手动调用内部View的相关方法)，勉强解释为什么setOffscreenPageLimit（n），切换Fragment的时候，不走Fragment的声明周期</p>
+<li><p>LinkedList: 双向链表结构，也就数有两个指针，一个指向上一个节点，一个指向下一个节点</p>
 </li>
-</ul>
-<h3 id="ViewPager-Fragment-“懒”加载方式解析"><a href="#ViewPager-Fragment-“懒”加载方式解析" class="headerlink" title="ViewPager+Fragment “懒”加载方式解析"></a>ViewPager+Fragment “懒”加载方式解析</h3><h4 id="Fragment的是否显示在前台方法-onResume-onPause在上边的那种情况代表不了"><a href="#Fragment的是否显示在前台方法-onResume-onPause在上边的那种情况代表不了" class="headerlink" title="Fragment的是否显示在前台方法(onResume\onPause在上边的那种情况代表不了)"></a>Fragment的是否显示在前台方法(onResume\onPause在上边的那种情况代表不了)</h4><ul>
-<li><p>setUserVisibleHint(boolean isVisibleToUser): isVisibleToUser为ture表示该Fragment在前台展示，isVisibleToUser为false表示该Frament没有在前台展示(并不代表其跑到了后台，如果都是这样那么Fragment的onResume和onPause就可以判断了)，在ViewPager+Fragment模式下设置了setOffscreenPageLimit(n)并且切换Tab的时候一样会改变该值</p>
+<li><p>其是数据单元在内存中存储的方式是没必要相连有序的存储类似于线性存储那样，并不是针对ArrayList使用时打印出来的就是有序的，LinkedList就是无需的，其只是内存中的存储，真正使用的时候，其遍历取值的时候也是经过转换有序的输出的，可能LinkedList查找更慢一点添加更快一点，ArrayList查找更快一点，添加更慢一点；</p>
 </li>
-<li><p>setUserVisibleHint: 该方法有可能会被多次回调，也就是说在判断是否显示在前台前，最好还是判断一下该View是否加载完成，然后在决定是否进行网络请求；当然为了防止每次点击都加载数据，还可以添加个别的变量isFirst来判断是否是第一次加载</p>
-</li>
-<li><p>这种一般设置在BaseFragment中，向外部抛出abstract方法</p>
-<p>  <code>public abstract void fragmentIsVisible(boolean isVisibleToUser);</code></p>
+<li><p>针对链式结构存储，所有的查找都是通过指针的，找到对应的指针，其实对应的指针就是下一个对象的索引对象(指向地址)</p>
 </li>
 </ul>
-<pre><code>  @Override
-public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-super.onViewCreated(view, savedInstanceState);
-isViewCreated = true;
-isFirstCreate = true;
-doLazyLoad();
-}
-
-..............................
-    /**
- * 返回True  表示当前View是否加载到窗口、就是是否是当前窗口展示
- *
- * @param isVisibleToUser
- */
-    @Override
-public void setUserVisibleHint(boolean isVisibleToUser) {
-super.setUserVisibleHint(isVisibleToUser);
-if (isVisibleToUser) {
-    //该方法有可能会调用多次、包括有可能View还没创建就进行调用、、、防止重复加载、防止View还没创建就进行View的调用操作
-    isViewVisible = true;
-    doLazyLoad();
-    } else {
-    isViewVisible = false;
-        }
-     }
-
-......................................
-
-   //需要区分是否是第一次加载、防止每次切换都进行数据的调用  更新
-private void doLazyLoad() {
-    if (isViewCreated &amp;&amp; isViewVisible) {
-        if (isFirstCreate) {
-        fragmentIsVisible(true);
-        isFirstCreate = false;
-        }
-    } else {
-        fragmentIsVisible(false);
-    }
-}
-</code></pre><h3 id="ViewPager-的进制左右滑动"><a href="#ViewPager-的进制左右滑动" class="headerlink" title="ViewPager 的进制左右滑动"></a>ViewPager 的进制左右滑动</h3><ul>
-<li><p>dispatchTouchEvent(MotionEvent ev):不变还是之前的 return super.dispatchTouchEvent(ev)-支持向下分发</p>
+<h3 id="特殊线性表-栈和队列存储结构"><a href="#特殊线性表-栈和队列存储结构" class="headerlink" title="特殊线性表-栈和队列存储结构"></a>特殊线性表-栈和队列存储结构</h3><ul>
+<li><p>栈 ：是限制插入和删除只能在一个位置上进行的表，该位置就是表的末端，就是栈顶；保持先进后出的数据存储方式，LIFO:last in first out，常见的运用存储是Activity的存储</p>
 </li>
-<li><p>onInterceptTouchEvent（MotionEvent ev）：改变return false；不进行事件拦截，进行向底部View传递</p>
-</li>
-<li><p>onTouchEvent(MotionEvent ev) ：改变 return false:底部View没有响应消费的话，事件回传过来自己也不进行消费，再往外传，不进行滑动响应</p>
+<li><p>队列：只能在表头进行数据的删除，在表尾部进行数据的添加；常见的运用是Handler的Message队列MessageQueen</p>
 </li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fupjsp44faj21570jegnc.jpg" alt="picture"></p>
+<h3 id="树与二叉树存储结构"><a href="#树与二叉树存储结构" class="headerlink" title="树与二叉树存储结构"></a>树与二叉树存储结构</h3><ul>
+<li>树： 是由n（n&gt;=1）个有限节点组成一个具有层次关系的集合。它具有以下特点：每个节点有零个或多个子节点；没有父节点的节点称为 根 节点；每一个非根节点有且只有一个 父节点 ；除了根节点外，每个子节点可以分为多个不相交的子树。：也就是每个节点可以有多个分支树</li>
+</ul>
+<ul>
+<li>二叉树：是每个节点最多有两棵子树的树结构。通常子树被称作“左子树”和“右子树”。二叉树常被用于实现二叉查找树和二叉堆。：也就是每个节点只有最多有两个分支树</li>
+</ul>
+<ul>
+<li><p>二叉树遍历</p>
+<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fuzrim5fa1j20mj0bp75e.jpg" alt="picture"></p>
+</li>
+</ul>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p><a href="https://www.cnblogs.com/wanghuaijun/p/7302303.html" target="_blank" rel="noopener">常见的数据结构和算法整理</a></p>
 
       
     </div>
@@ -400,8 +375,8 @@ private void doLazyLoad() {
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/21/ontouchevent/" rel="next" title="事件分发">
-                <i class="fa fa-chevron-left"></i> 事件分发
+              <a href="/2018/09/04/bitmap_compress/" rel="next" title="图片质量、尺寸压缩">
+                <i class="fa fa-chevron-left"></i> 图片质量、尺寸压缩
               </a>
             
           </div>
@@ -409,10 +384,6 @@ private void doLazyLoad() {
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/09/04/bitmap_compress/" rel="prev" title="图片质量、尺寸压缩">
-                图片质量、尺寸压缩 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -530,7 +501,7 @@ private void doLazyLoad() {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Fragment生命周期"><span class="nav-number">1.</span> <span class="nav-text">Fragment生命周期</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ViewPager-Fragment-“预”加载方式解析"><span class="nav-number">2.</span> <span class="nav-text">ViewPager+Fragment “预”加载方式解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ViewPager-Fragment-“懒”加载方式解析"><span class="nav-number">3.</span> <span class="nav-text">ViewPager+Fragment “懒”加载方式解析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Fragment的是否显示在前台方法-onResume-onPause在上边的那种情况代表不了"><span class="nav-number">3.1.</span> <span class="nav-text">Fragment的是否显示在前台方法(onResume\onPause在上边的那种情况代表不了)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ViewPager-的进制左右滑动"><span class="nav-number">4.</span> <span class="nav-text">ViewPager 的进制左右滑动</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据结构"><span class="nav-number">1.1.</span> <span class="nav-text">数据结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#算法"><span class="nav-number">1.2.</span> <span class="nav-text">算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据表之数据结构体现方式"><span class="nav-number">2.</span> <span class="nav-text">数据表之数据结构体现方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#线性表-线性存储结构"><span class="nav-number">2.1.</span> <span class="nav-text">线性表-线性存储结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#链表-链式存储结构"><span class="nav-number">2.2.</span> <span class="nav-text">链表-链式存储结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特殊线性表-栈和队列存储结构"><span class="nav-number">2.3.</span> <span class="nav-text">特殊线性表-栈和队列存储结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#树与二叉树存储结构"><span class="nav-number">2.4.</span> <span class="nav-text">树与二叉树存储结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文献"><span class="nav-number">2.5.</span> <span class="nav-text">参考文献</span></a></li></ol></li></ol></div>
             
 
           </div>
