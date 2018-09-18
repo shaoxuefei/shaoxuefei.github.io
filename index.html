@@ -635,7 +635,7 @@
 </li>
 <li><p>onCreateView() :onCreateView()方法执行完后进行执行，代表View绘制完成</p>
 </li>
-<li><p>onResume() :该Fragment被执行了show操作、或者是<strong>该页面从后台显示到前台</strong>，或者是其依赖的Activity的生命周期的改变;那种ViewPager+Fragment的那种，ViewPager切换的时候，其Fragment是不执行onResume和onPause的，因为其Activity的声明周期没有改变，而且也没有执行hide和show操作,其移动就是将该Fragment进行了移动，并没有移出到后台?所以没有执行Fragment的生命周期</p>
+<li><p>onResume() :该Fragment被执行了show操作、或者是<strong>该页面从后台显示到前台</strong>，或者是其依赖的Activity的生命周期的改变;那种ViewPager+Fragment的那种，ViewPager切换的时候，其Fragment是不执行onResume和onPause的，因为其Activity的声明周期没有改变，而且也没有执行hide和show操作,其移动就是将该Fragment进行了移动，并没有移出到后台?所以没有执行Fragment的生命周期、、、、、其实Fragment的生命周期都是根据Activity来的，除了自己的创建、尤其是onResume和onPause都是根据Activity的声明周期的onResume和onPause、、、、真正的判断实现的方法有两个:setUserVisibleHint（）和onHiddenChanged()—针对show\hide的Fragment</p>
 </li>
 </ul>
 <p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fupinhsfx5j20f40o70vn.jpg" alt="picture"></p>
