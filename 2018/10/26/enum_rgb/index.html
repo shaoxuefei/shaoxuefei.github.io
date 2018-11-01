@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Sxf-Blog">
 <meta property="og:description" content="枚举public enum EnumBean { //这些类别每个都是一个该EnumBean的类、也就是多个EnumBean的对象、只是这些枚举定义的方式有点不同、类似于EnumBean enumbean;只不过枚举调用是直接可以点出来的，也就是类似于static的     TAB01(0, &amp;quot;随性一笔&amp;quot;),     TAB02(1, &amp;quot;SeekBar&amp;quot;),">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-26T08:38:37.828Z">
+<meta property="og:updated_time" content="2018-11-01T03:27:22.186Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Enum&amp;RGB">
 <meta name="twitter:description" content="枚举public enum EnumBean { //这些类别每个都是一个该EnumBean的类、也就是多个EnumBean的对象、只是这些枚举定义的方式有点不同、类似于EnumBean enumbean;只不过枚举调用是直接可以点出来的，也就是类似于static的     TAB01(0, &amp;quot;随性一笔&amp;quot;),     TAB02(1, &amp;quot;SeekBar&amp;quot;),">
@@ -413,13 +413,20 @@ RGB_565就是R为5位，G为6位，B为5位共16位
 
 ARGB_4444 代表16位ARGB位图
 
-ARGB_8888 代表32位ARGB位图
+ARGB_8888 代表24位ARGB位图
 
 RGB_565 代表16位RGB位图
 </code></pre></li>
 </ul>
 <p><code>位图位数越高代表其可以存储的颜色信息越多，当然图像也就越逼真。</code></p>
-<ul>
+<pre><code>ps: 这里像素点大小（每个像素点占用内存的大小）以 4B 来计算是因为，当没有特别指定时，系统默认为 ARGB_8888 作为像素点的数据格式，其他的格式如下：
+
+    ALPHA_8 -- (1B)
+    RGB_565 -- (2B)
+    ARGB_4444 -- (2B)
+    ARGB_8888 -- (4B)
+    RGBA_F16 -- (8B)
+</code></pre><ul>
 <li><p>正常的颜色FFEECC:其也是由 FF\EE\CC ：256、256、256 所以正常是4<em>4  4</em>4 4*4等24位二进制数值组成</p>
 </li>
 <li><p>一切都源于二进制最后都会归于二进制：Android 内部资源文件id也是内部对应R对象内部的二进制值转换成16进制存储,,内部规则也是根据二进制转换;</p>
