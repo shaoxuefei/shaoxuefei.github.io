@@ -232,6 +232,165 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2018/11/15/leak_cancary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sxf">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/user_icon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sxf-Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/15/leak_cancary/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-15T15:42:13+08:00">
+                2018-11-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>title： 内存泄漏案例以及优化</p>
+<hr>
+<h3 id="Android内存泄漏"><a href="#Android内存泄漏" class="headerlink" title="Android内存泄漏"></a>Android内存泄漏</h3><ul>
+<li><p>页面A即将关闭、但是页面或者是对象B持有页面A的引用，这时就会导致页面A的对象多为Context无法回收，这时就会导致内存泄漏</p>
+<ul>
+<li><p>一般体现是：单例模式创建静态变量时-持有页面的context,也常用于MVP-Persenter。</p>
+<ul>
+<li>单例模式处理一般context获取其Application层面的context</li>
+<li>使用Application层面的context并不会因为持有context是系统级别的不会被回收，：回收是对象A回收时，没有其他对应引用A</li>
+</ul>
+</li>
+<li><p>使用内部类对象时没有对内部类引用进行弱引用处理。</p>
+<ul>
+<li>内部类在创建对象时内部会获取外部类的引用、这样其才可以不限制使用外部类的变量或者是方法（类与类的作用域方法变量是分开的即使是内部类与外部类），所以在创建内部类时一般会用静态内部类，因为静态内部类创建时不包含外部类的引用</li>
+</ul>
+</li>
+<li><p>内部类经典案例Handler</p>
+<ul>
+<li>不规范的handler</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>![picture](http://ww1.sinaimg.cn/large/c82e4122gy1fx8t3iv5udj20q00bxq3q.jpg)
+
+`这里的handler也是一个非静态匿名内部类，他跟上面的一样，也会持有Activity的引用，我们知道handler是运行在一个Looper线程中的，而Looper线程是轮询来处理消息队列中的消息的，假设我们处理的消息有十条，而当他执行到第6条的时候，用户点击了back返回键，销毁了当前的Activity，这个时候消息还没有处理完，handler还在持有Activity的引用，这个时候就会导致无法被GC回收，造成了内存泄漏。`
+</code></pre><ul>
+<li><p>正确的做法是：</p>
+<p>  <img src="http://ww1.sinaimg.cn/large/c82e4122gy1fx8tqe5ylzj20ps0njjtc.jpg" alt="picture"></p>
+<p>  `该案例也说明了两点：1、内部类创建时静态内部类操作外部类对象时需要外部类对象，这时对外部类对象进行弱引用    </p>
+<pre><code>2、内部类对象例如Handler正常第一种创建、其在使用的时候就是个内部类内部可以调用外部的对象就是持有外部的引用,这也是为什么会要继承Handler创建对象的原因`
+</code></pre></li>
+</ul>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><p><a href="https://blog.csdn.net/qq_35373333/article/details/74909811" target="_blank" rel="noopener">Android——内存篇：Android中5种最常见的内存泄漏问题以及解决办法</a></p>
+</li>
+<li><p><a href="https://www.cnblogs.com/aademeng/articles/6192954.html" target="_blank" rel="noopener">java 内部类和静态内部类的区别</a></p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2018/11/06/go_back/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1914,224 +2073,13 @@ git status
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2018/06/05/question/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sxf">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/user_icon.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sxf-Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/05/question/" itemprop="url">事件分发传递</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-05T09:51:59+08:00">
-                2018-06-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Android-获取屏幕高度注意事项"><a href="#Android-获取屏幕高度注意事项" class="headerlink" title="Android 获取屏幕高度注意事项"></a>Android 获取屏幕高度注意事项</h3><ul>
-<li><p>在Activity里获取WindowManager  </p>
-<pre><code>WindowManager windowManager = getWindowManager();
-DisplayMetrics displayMetrics = new DisplayMetric();
-Display defaultDisplay = windowManager.getDefaultDisplay();
-defaultDisplay.getMetrics(displayMetrics);
-int screenHeight=displayMetrics.heightPixels;
-</code></pre></li>
-<li><p>在非Activity对象实例中获取WindowManager-通过getSystenService(Context.WINDOW_SERVICE) </p>
-<pre><code>WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-</code></pre></li>
-</ul>
-<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fpkk2t3fxbj20ar0iiq3w.jpg" alt="高度区域分布图"></p>
-<ul>
-<li>通过DisplayMetrics获取的屏幕高度是屏幕全部界面的高度，但是除了有虚拟键盘的手机(例如：华为)<ul>
-<li><strong>displayMetrics.heightPixels=View绘制区+系统标题栏高度+状态栏高度</strong></li>
-<li><strong>华为手机displayMetrics.heightPixels=全部界面高度-底部虚拟键盘高度，通过displayMetrics.heightPixels获取的屏幕高度 其已经是减去软键盘的高度了</strong>（例如：一个带有虚拟键盘的华为手机分辨率为720*1280–那么其displayMetrics.heightPixels获取的值1208，通过计算其虚拟键盘的高度正好是72）</li>
-</ul>
-</li>
-</ul>
-<h3 id="NestedScroll嵌套滑动"><a href="#NestedScroll嵌套滑动" class="headerlink" title="NestedScroll嵌套滑动"></a>NestedScroll嵌套滑动</h3><ul>
-<li>主接口：NestedScrollingParent、NestedScrollingChild</li>
-<li>处理工具类：NestedScrollingParentHelper、NestedScrollingChildHelper</li>
-<li>原生实现的Parent <ul>
-<li>CoordinatorLayout</li>
-<li>NestedScrollView</li>
-</ul>
-</li>
-<li>原生实现的Child<ul>
-<li>RecyclerView</li>
-</ul>
-</li>
-</ul>
-<h4 id="CoordinatorLayout的基本使用–layout-behavior"><a href="#CoordinatorLayout的基本使用–layout-behavior" class="headerlink" title="CoordinatorLayout的基本使用–layout_behavior"></a>CoordinatorLayout的基本使用–layout_behavior</h4><ul>
-<li>使用需要和AppBarLayout(继承LinearLayout、@CoordinatorLayout.DefaultBehavior(AppBarLayout.Behavior.class))</li>
-<li>layout_behavior：也就是可以将控件大小绘制出超出屏幕的部分，超出的大小是基于设置的layout_behavior决定的；故也就是使用的默认的Behavior–AppBarLayout,而且CoordinateLayout是继承ViewGroup内部没有设置所谓的below、等所以用AppBarLayout（因为其是继承LinearLayout的）</li>
-</ul>
-<h4 id="AppBarLayout标签的使用layout-scrollFlags"><a href="#AppBarLayout标签的使用layout-scrollFlags" class="headerlink" title="AppBarLayout标签的使用layout_scrollFlags"></a>AppBarLayout标签的使用layout_scrollFlags</h4><ul>
-<li>scroll 该View会响应Scroll事件</li>
-<li>exitUntilCollapsed 该View上拉的时候，这个View会跟着滑动直到折叠。</li>
-</ul>
-<h4 id="CollapsingToolbarLayout标签使用layout-collapseMode"><a href="#CollapsingToolbarLayout标签使用layout-collapseMode" class="headerlink" title="CollapsingToolbarLayout标签使用layout_collapseMode"></a>CollapsingToolbarLayout标签使用layout_collapseMode</h4><ul>
-<li>是一种专门针对ToolBar设计的布局</li>
-<li>一般使用时结合AppBarLayout–当然AppBarLayout外部肯定是CoordinateLayout</li>
-<li>CollapsingToolbarLayout在设置AppBarLayout的标签exitUntilCollapsed后，在上拉时会随着滚动直到折叠-而折叠的高度就是CollapsingToolbarLayout内部设置ToolBar的高度，内部设置的其余View是不会有折叠效果的，故一般内部就是配合ToolBar的使用</li>
-<li>layout_collapseMode-pin 在滑动的时候该View会悬停在原地-直到CollapsingToolbarLayout的低部碰到该View的底部才会跟着一块滑</li>
-<li>layout_collapseMode-parallax 在滑动的过程中该View会是渐变效果-视觉特差效果</li>
-</ul>
-<h4 id="NestedScrollView与RecyclerView嵌套滑动"><a href="#NestedScrollView与RecyclerView嵌套滑动" class="headerlink" title="NestedScrollView与RecyclerView嵌套滑动"></a>NestedScrollView与RecyclerView嵌套滑动</h4><ul>
-<li>简单的拦截就是setNestedScrollingable(false);</li>
-<li>这时刚开始滑动的是父布局控件NestedScrollView,RecyclerView并没有获取事件、或者说不消费事件(recyclerView.setNestedScrollingable(false)),但这时如果需要根据NestedScrollView的滑动距离来判断什么时候把事件交给RecyclerView，也就是RecyclerView开始消费事件(setNestedScrollingable(true));</li>
-<li>如果需要刚开始滑动NestedScrollVIew-根据ScrollView的了解需要布局操出屏幕。跟RecyclerView和ListView是不同的，故底部RecyclerView控件需要设置其高度屏幕高度-需要滑动到要给RecyclerView手势时的距离高度、也就是悬停后的高度</li>
-<li><p>一开始渲染View就需要设置其高度，但是通过getHeight在刚渲染的时候拿不到，但有一个方法可以获取高度</p>
-<pre><code>linearLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-    //内部可以获取到该父布局和布局树-其内部子View的高度
-    }）；
-</code></pre></li>
-<li><p>判断手势超过临界值是向上滑动还是向下滑动–一般都是通过临界点的滑动值–例如滑到300就把手势交给子View，这时把ViewGroup的高度设置305这样当滑到301的时候判断滑动距离大于300就知道是向上滑动的</p>
-</li>
-</ul>
-<h3 id="OnTouchEvent"><a href="#OnTouchEvent" class="headerlink" title="OnTouchEvent()"></a>OnTouchEvent()</h3><ul>
-<li><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fpyhzbinlij20oa0gotbb.jpg" alt=""></li>
-<li><p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fpyi01rzxaj20ht0fndi1.jpg" alt=""></p>
-</li>
-<li><p>我们在ViewGroup 2 的onTouchEvent 返回true消费这次事件<br>红色的箭头代表ACTION_DOWN 事件的流向<br>蓝色的箭头代表ACTION_MOVE 和 ACTION_UP 事件的流向</p>
-</li>
-<li><p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fpyi0fyg00j20me0cvdhr.jpg" alt=""></p>
-</li>
-<li><p>我们在View 的onTouchEvent 返回true消费这次事件<br>红色的箭头代表ACTION_DOWN 事件的流向<br>蓝色的箭头代表ACTION_MOVE 和 ACTION_UP 事件的流向</p>
-</li>
-<li><p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fpyi0nhou1j20md0ctq4w.jpg" alt=""></p>
-</li>
-<li><p>首先看下ViewGroup 的dispatchTouchEvent，之前说的return true是终结传递。return false 是回溯到父View的onTouchEvent，然后ViewGroup怎样通过dispatchTouchEvent方法能把事件分发到自己的onTouchEvent处理呢，return true和false 都不行，那么只能通过Interceptor把事件拦截下来给自己的onTouchEvent，所以ViewGroup dispatchTouchEvent方法的super默认实现就是去调用onInterceptTouchEvent，记住这一点。<br>那么对于View的dispatchTouchEvent return super.dispatchTouchEvent()的时候呢事件会传到哪里呢，很遗憾View没有拦截器。但是同样的道理return true是终结。return false 是回溯会父类的onTouchEvent，怎样把事件分发给自己的onTouchEvent 处理呢，那只能return super.dispatchTouchEvent,View类的dispatchTouchEvent（）方法默认实现就是能帮你调用View自己的onTouchEvent方法的。</p>
-</li>
-<li><p>说了这么多，不知道有说清楚没有，我这边最后总结一下：</p>
-<ul>
-<li>对于 dispatchTouchEvent，onTouchEvent，return true是终结事件传递。return false 是回溯到父View的onTouchEvent方法。</li>
-<li>ViewGroup 想把自己分发给自己的onTouchEvent，需要拦截器onInterceptTouchEvent方法return true 把事件拦截下来。</li>
-<li>ViewGroup 的拦截器onInterceptTouchEvent 默认是不拦截的，所以return super.onInterceptTouchEvent()=return false；</li>
-<li>View 没有拦截器，为了让View可以把事件分发给自己的onTouchEvent，View的dispatchTouchEvent默认实现（super）就是把事件分发给自己的onTouchEvent。</li>
-</ul>
-</li>
-<li><p>自己消费，终结传递。——-&gt;return true ；</p>
-</li>
-<li>给自己的onTouchEvent处理——-&gt; 调用super.dispatchTouchEvent()系统默认会去调用 onInterceptTouchEvent，在onInterceptTouchEvent return true就会去把事件分给自己的onTouchEvent处理。</li>
-<li>传给子View——&gt;调用super.dispatchTouchEvent()默认实现会去调用 onInterceptTouchEvent 在onInterceptTouchEvent return false，就会把事件传给子类。</li>
-<li><p>不传给子View，事件终止往下传递，事件开始回溯，从父View的onTouchEvent开始事件从下到上回归执行每个控件的onTouchEvent——-&gt;return false；<br>注： 由于View没有子View所以不需要onInterceptTouchEvent 来控件是否把事件传递给子View还是拦截，所以View的事件分发调用super.dispatchTouchEvent()的时候默认把事件传给自己的onTouchEvent处理（相当于拦截），对比ViewGroup的dispatchTouchEvent 事件分发，View的事件分发没有上面提到的4个目标的第3点。</p>
-</li>
-<li><p>总结(从事件的方法函数调用顺序开始)：</p>
-<ul>
-<li>dispatchTouchEvent是事件分发：return true/false-表示都是直接消费，不往下分发，但是会直接传递给父级的onTouchEvent（）方法，return super.dispatchTouchEvent()-是向下调用：activity的会调用ViewGroup的dispatchTouchEvent，如果viewgroup的也是返回super,那么ViewGroup的super其实是调用自己的onInterceptTouchEvent（）方法-的返回值，如果onInterceptTouchEvent返回true表示给自己的View消费-会调用ViewGroup的onTouchEvent方法，如果onInterceptTouchEvent（）-return false/super，那么是调用的是View的dispatchTouchEvent()，如果view的该方法返回true、false直接消费不会传给自己的onTouchEvent()，如果返回super，那么其实调用的是自己的onTouchEvnet方法，</li>
-<li>onTouchEvent 方法 return true 表示消费事件，其down move up会传递到该View并停止，，如果返回false,,那么down会传递过来，以后的move up 事件就不会再传递给他，，view的onTouchEvent返回false  那么会向父ViewGroup的onTOuchEvent传递</li>
-</ul>
-</li>
-</ul>
-<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p><a href="https://www.jianshu.com/p/e99b5e8bd67b" target="_blank" rel="noopener">事件分发经典参考</a><br><a href="http://blog.csdn.net/a_running_wolf/article/details/50477965" target="_blank" rel="noopener">Android完美获取状态栏高度、标题栏高度、编辑区域高度的获取</a><br><a href="https://www.jianshu.com/p/f09723b7e887" target="_blank" rel="noopener">使用CoordinatorLayout打造各种炫酷的效果</a>   </p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -2179,7 +2127,7 @@ int screenHeight=displayMetrics.heightPixels;
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
