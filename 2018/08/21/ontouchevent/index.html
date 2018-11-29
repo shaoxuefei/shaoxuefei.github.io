@@ -86,10 +86,12 @@
 <meta property="og:site_name" content="Sxf-Blog">
 <meta property="og:description" content="事件传递的过程分析 事件传递 从最外层父View将事件 传递到 内部View  首先传递前 判断自己的dispatchTouchEvent 方法是否支持分发，支持分发的话，会传递自己View的onInterceptTouchEvent 方法，看自己是否进行拦截处理，若拦截则会传递到自己的onTouchEvent,若不拦截会传递到子View的dispatchTouchEvent 方法进行处理，内部处">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-24T03:35:49.074Z">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fxp372f46rj217r0ngadh.jpg">
+<meta property="og:updated_time" content="2018-11-29T10:01:24.823Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="事件分发">
 <meta name="twitter:description" content="事件传递的过程分析 事件传递 从最外层父View将事件 传递到 内部View  首先传递前 判断自己的dispatchTouchEvent 方法是否支持分发，支持分发的话，会传递自己View的onInterceptTouchEvent 方法，看自己是否进行拦截处理，若拦截则会传递到自己的onTouchEvent,若不拦截会传递到子View的dispatchTouchEvent 方法进行处理，内部处">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fxp372f46rj217r0ngadh.jpg">
 
 
 
@@ -321,8 +323,9 @@
 <li><p>super.onTouchEvnet(): 等同于false 传递到上一层父View的 onTouchEvent进行处理</p>
 <pre><code>event.getPointerCount()//判断手指
 MotionEvent.ACTION_XXX
-ACTION_POINTER_UP
-ACTION_POINTER_DOWN
+MotionEvent.ACTION_UP//需要全部手指全部离开屏幕才会调用
+MotionEvent.ACTION_POINTER_UP//当存在多个手指触碰时，抬起一指就会执行该方法
+MotionEvent.ACTION_POINTER_DOWN
 </code></pre></li>
 </ul>
 <h3 id="GestureDetector-手势管理之OnGestureListener"><a href="#GestureDetector-手势管理之OnGestureListener" class="headerlink" title="GestureDetector 手势管理之OnGestureListener"></a>GestureDetector 手势管理之OnGestureListener</h3><ul>
@@ -338,6 +341,20 @@ ACTION_POINTER_DOWN
 <h3 id="接收方式"><a href="#接收方式" class="headerlink" title="接收方式"></a>接收方式</h3><ul>
 <li>onTouchEvent 内部调用—mGestureDetector.onTouchEvent(event);</li>
 </ul>
+<h3 id="子View控制父View拦截"><a href="#子View控制父View拦截" class="headerlink" title="子View控制父View拦截"></a>子View控制父View拦截</h3><p><code>getParent().requestDisallowInterceptTouchEvent(true);</code></p>
+<ul>
+<li><p>true：表示父View对事件进行拦截无效例如：onInterceptTouchEvent内部对事件down、move返回true，也是不起作用的</p>
+</li>
+<li><p>false：表示父View对内部子View的拦截是有效的</p>
+</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li><p>所有的事件都是先往最底层传递的、最底层没有消费时才会一层一层的往外层传到各自的onTouchEvent()方法中，但是事件首先都是会执行DispatchTouchEvent方法进行分发传递到下一层的，其中会走每一层的：DispatchTouchEvent和onInterceptTouchEvent方法判断是不是需要拦截，不拦截就继续往下一层走，所以onInterceptTouchEvent的Down事件是都会走的，：包括MOVE事件、UP事件，当最外层的事件把Down拦截了，下边的就不会走了，当没有拦截，会一层一层走，，当最底层有方法表示</p>
+<pre><code>`getParent().requestDisallowInterceptTouchEvent(true);`  
+</code></pre><p>谁都不能拦截我的事件，那么事件就不会往上在传递到外层的move、up等事件了就会到该处消费结束！！！也就是说这个时候onInterceptTouchEvent的MOVE事件和UP事件都不会走了（对应的方法都不走了），其他情况还是每一层新的事件都会进行传递所以会出现那种：不拦截Down事件拦截Move事件的情况，，所以如果底部有拦截但是外层也想获取点击的坐标位置：就可以在onInterceptTouchEvent方法的down事件中进行获取点击的坐标位置、</p>
+</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fxp372f46rj217r0ngadh.jpg" alt="picture"></p>
 
       
     </div>
@@ -492,7 +509,7 @@ ACTION_POINTER_DOWN
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#事件传递的过程分析"><span class="nav-number">1.</span> <span class="nav-text">事件传递的过程分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DispatchTouchEvent之return"><span class="nav-number">2.</span> <span class="nav-text">DispatchTouchEvent之return</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#onInterceptTouchEvent之return"><span class="nav-number">3.</span> <span class="nav-text">onInterceptTouchEvent之return</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#onTouchEvent-之return"><span class="nav-number">4.</span> <span class="nav-text">onTouchEvent()之return</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GestureDetector-手势管理之OnGestureListener"><span class="nav-number">5.</span> <span class="nav-text">GestureDetector 手势管理之OnGestureListener</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接收方式"><span class="nav-number">6.</span> <span class="nav-text">接收方式</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#事件传递的过程分析"><span class="nav-number">1.</span> <span class="nav-text">事件传递的过程分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DispatchTouchEvent之return"><span class="nav-number">2.</span> <span class="nav-text">DispatchTouchEvent之return</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#onInterceptTouchEvent之return"><span class="nav-number">3.</span> <span class="nav-text">onInterceptTouchEvent之return</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#onTouchEvent-之return"><span class="nav-number">4.</span> <span class="nav-text">onTouchEvent()之return</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GestureDetector-手势管理之OnGestureListener"><span class="nav-number">5.</span> <span class="nav-text">GestureDetector 手势管理之OnGestureListener</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接收方式"><span class="nav-number">6.</span> <span class="nav-text">接收方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子View控制父View拦截"><span class="nav-number">7.</span> <span class="nav-text">子View控制父View拦截</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
