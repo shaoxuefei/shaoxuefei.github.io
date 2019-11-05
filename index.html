@@ -232,6 +232,252 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/11/04/stringbuffer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sxf">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/user_icon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sxf-Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/11/04/stringbuffer/" itemprop="url">StringBuffer & StringBuilde</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-04T15:59:23+08:00">
+                2019-11-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://blog.csdn.net/weixin_41101173/article/details/79677982" target="_blank" rel="noopener">图析:String,StringBuffer与StringBuilder的区别</a></p>
+<h1 id="String"><a href="#String" class="headerlink" title="String"></a>String</h1><ul>
+<li><p>字符串广泛应用 在Java 编程中，在 Java 中<code>字符串属于对象</code>，Java 提供了 String 类来创建和操作字符串。</p>
+</li>
+<li><p>需要注意的是，String的值是不可变的，这就导致每次对String的操作都会生成新的String对象,下方图解</p>
+</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1g8m2kq9se5j20k306fjth.jpg" alt="pic"></p>
+<p>当每次修改String的值时，堆内存会重新指向一个新的地址对象。这里有以下关系</p>
+<p><code>String a=&quot;world&quot;;&lt;----&gt;String a=new String(&quot;world&quot;);</code><br><code>对a进行修改后其实是</code><br><code>a=&quot;hello world&quot;;&lt;----&gt;a=new String(&quot;hello world&quot;);</code></p>
+<ul>
+<li>还有需要注意的</li>
+</ul>
+<p><code>String a=&quot;hello&quot;</code>—在堆中创建了一个String对象</p>
+<p><code>a+&quot;world&quot;</code>—-在堆中创建了一个World的对象（new String(“world”)）</p>
+<p><code>a=&quot;hello world&quot;</code>—在堆中创建了最终的生成对象(new String(“hello world”))</p>
+<h1 id="StringBuilder-amp-StringBuffer"><a href="#StringBuilder-amp-StringBuffer" class="headerlink" title="StringBuilder &amp; StringBuffer"></a>StringBuilder &amp; StringBuffer</h1><ul>
+<li><p>和 String 类不同的是，StringBuffer 和 StringBuilder 类的对象能够被多次的修改，并且不产生新的未使用对象。</p>
+</li>
+<li><p>StringBuilder 线程不安全的，也就是不可以多个线程同时操作，除非加同步锁，单个线程推荐使用，速度比StringBuffer快。(不能同步访问)</p>
+</li>
+<li><p>StrinfBuffer 线程安全的，也就是可以多个线程同时使用，因为是内部有同步锁，所以运行速度没有StringBuffer快</p>
+</li>
+</ul>
+<h1 id="线程安全和线程不安全"><a href="#线程安全和线程不安全" class="headerlink" title="线程安全和线程不安全"></a>线程安全和线程不安全</h1><ul>
+<li>牵涉对象调用有</li>
+</ul>
+<p><code>前者线程不安全      后者线程安全</code></p>
+<p><code>StringBuilder StringBuffer</code></p>
+<p><code>ArrayList     Vector</code></p>
+<p><code>HashMap        HashTable</code></p>
+<ul>
+<li>线程不安全意思是多线程操作可能会出现问题，当A线程和B线程同时访问并修改该对象时，会产生对应问题。比如：</li>
+</ul>
+<p><code>假设A和B同时去不同ATM上取同一张卡的1000块钱，如果是线程不安全，那么A和B可以同时取到1000块钱（两人赚大发啦），而如果线程安全呢，就只有一个人能取出来1000块钱。</code></p>
+<ul>
+<li><p>非线程安全!=不安全</p>
+</li>
+<li><p>使用场景：若每个线程中对全局变量、静态变量只有读操作，而无写操作，一般来说，这个全局变量是线程安全的；若有多个线程同时执行写操作，一般都需要考虑线程同步，否则的话就可能影响线程安全。</p>
+</li>
+<li><p>有人在使用过程中有一个不正确的观点：我的程序是多线程的，不能使用ArrayList要使用Vector，这样才安全。</p>
+</li>
+</ul>
+<p>非线程安全并不是多线程环境下就不能使用。注意我上面有说到：多线程操作同一个对象。注意是同一个对象。</p>
+<ul>
+<li><p>同步锁synchronized</p>
+</li>
+<li><p>同步是一种高开销的操作，因此应该尽量减少同步的内容。 通常没有必要同步整个方法，使用synchronized代码块同步关键代码即可。 </p>
+<ul>
+<li><p>同步代码块</p>
+<pre><code>public void test() {
+    同步代码块：
+    synchronized(同步锁)
+    {
+         //方法体内容
+    }
+    }
+</code></pre></li>
+<li><p>同步方法</p>
+<pre><code>`public synchronized  void test(){
+
+     //方法体
+
+    }`
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>静态代码块&amp;代码块(非静态代码块)–Java::main()函数使用</p>
+<pre><code>static{
+    //初始化 static 的变量或者...
+}
+
+{
+    //代码块
+}
+</code></pre></li>
+<li><p>执行顺序：父类静态代码块&gt;子类静态代码块&gt;父类代码块&gt;子类代码块&gt;自身构造方法</p>
+<p>  静态代码块是在构造方法前执行，不需要该类创建对象，，代码块需要创建实例对象后才会首先执行</p>
+</li>
+</ul>
+<h1 id="onSavedInstanceState-amp-amp-onRestoreInstanceState"><a href="#onSavedInstanceState-amp-amp-onRestoreInstanceState" class="headerlink" title="onSavedInstanceState()&amp;&amp; onRestoreInstanceState()"></a>onSavedInstanceState()&amp;&amp; onRestoreInstanceState()</h1><ul>
+<li>参考 <a href="https://blog.csdn.net/shouniezhe/article/details/47705001" target="_blank" rel="noopener">onSavedInstanceState()和onRestoreInstanceState()理解</a></li>
+</ul>
+<ul>
+<li><p>执行时间：</p>
+<pre><code>onSaveInstanceState()会在onPause()或onStop()之前执行
+
+onRestoreInstanceState()会在onStart()和onResume()之间执行。
+</code></pre></li>
+</ul>
+<ul>
+<li>当应用遇到意外情况（内存不足，用户直接按home键）由系统直接销毁一个Activity时，onSaveInstanceState()就会调用，但是当用户主动销毁activity，如按back键，或直接执行finish(),这种情况下onSaveInstanceState()就不会执行，因为这种情况下，用户的行为决定了不需要保存Activity的状态。</li>
+</ul>
+<ul>
+<li>那么onRestoreInstanceState()会跟onSaveInstanceState()成对出现吗？  答案是不会成对出现，onSaveInstanceState()需要调用的时，activity可能销毁（可能在栈底，无感知创建销毁），也可能没有销毁，只有在activity销毁重建的时候onRestoreInstanceState()才会调用。</li>
+</ul>
+<p>在onSaveInstanceState()中默认情况下具体干些什么？</p>
+<p>默认情况下默认会自动保存Activity中的某些状态，比如activity中各种UI的状态，因此在activity被“系统”销毁和重建的时候，这些Ui的状态会默认保存，<code>但是前提条件是Ui控件必须制定id,如果没有指定id的话，UI的状态是无法保存的(比如：EditText)</code>。</p>
+<p><code>所以有时候为了某种场合记录数据，可以手动调用onSaveInstanceState()方法</code></p>
+<ul>
+<li>一般横竖屏切换时Activity的生命周期会重新走，也就是Activity会重新创建，无感知创建，一般会在清单文件加上configChanges属性，来使横竖屏切换时Activity的生命周期不会重新走</li>
+</ul>
+<h1 id="configChanges-解析"><a href="#configChanges-解析" class="headerlink" title="configChanges 解析"></a>configChanges 解析</h1><ul>
+<li>参考</li>
+</ul>
+<p><a href="https://blog.csdn.net/m0_37814654/article/details/77162366" target="_blank" rel="noopener">关于Android Activity的configChanges属性的用法，设置屏幕旋转时activity不重新创建</a><br><a href="https://www.jianshu.com/p/a35245f939c8" target="_blank" rel="noopener">android:configChanges 横竖屏切换的生命周期</a></p>
+<ul>
+<li><p>android中的组件Activity在manifest.xml文件中可以指定参数android：ConfigChanges，用于捕获手机状态的改变。在Activity中添加了android:configChanges属性，在当所指定属性(Configuration Changes)发生改变时，通知程序调用onConfigurationChanged()函数。</p>
+</li>
+<li><p>在清单文件Activity节点下可以添加android:configChanges属性，指定属性发生改变时，调用Activity 的onConfigurationChanged()方法,不会创建新的Activity<br>设置方法：将下列字段用“|”符号分隔开，例如：”keyboardHidden|orientation|screenSize”</p>
+</li>
+</ul>
+<pre><code>“mcc“ 移动国家号码，由三位数字组成，每个国家都有自己独立的MCC，可以识别手机用户所属国家。
+“mnc“ 移动网号，在一个国家或者地区中，用于区分手机用户的服务商。
+“locale“ 所在地区发生变化。
+“touchscreen“ 触摸屏已经改变。（这不应该常发生。）
+“keyboard“ 键盘模式发生变化，例如：用户接入外部键盘输入。
+“keyboardHidden“ 用户打开手机硬件键盘
+“navigation“ 导航型发生了变化。（这不应该常发生。）
+“orientation“ 设备旋转，横向显示和竖向显示模式切换。
+“fontScale“ 全局字体大小缩放发生改变
+screenSize：设备的屏幕的尺寸信息发生了改变，旋转屏幕时也会触发这个，但是这个值是API13之后才有的，因此13之前的设备没有这个。
+</code></pre><ul>
+<li>不设置config属性时，当页面状态改变时，会重新创建Activity，会重新走Activity的生命周期</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/01/17/adnroid_proxy/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1829,171 +2075,6 @@ MotionEvent.ACTION_POINTER_DOWN
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2018/06/05/nexus/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sxf">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/user_icon.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sxf-Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/05/nexus/" itemprop="url">Nexus 用户权限管理</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-05T10:43:58+08:00">
-                2018-06-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Nexus-默认创建的用户"><a href="#Nexus-默认创建的用户" class="headerlink" title="Nexus 默认创建的用户"></a>Nexus 默认创建的用户</h1><ul>
-<li><strong>admin用户</strong>： 拥有对Nexus服务完全控制、默认密码admin123 ,包括对仓库的配置，创建，删除，更新，用户的账号权限登录管理等。</li>
-<li><strong>deployment用户</strong>：能访问nexus的主页，包含登录，浏览仓库，搜索，上传、更新，但是其不能更改Nexus和已有仓库的配置，不能创建和删除仓库,默认密码：deployment123。</li>
-</ul>
-<h1 id="Nexus-基本权限"><a href="#Nexus-基本权限" class="headerlink" title="Nexus 基本权限"></a>Nexus 基本权限</h1><ul>
-<li><strong>UI:Basic UI Privileges</strong>：访问Nexus的页面必须的最基本的权限(登录Nexus的权限)。</li>
-<li><strong>UI:RepositoryBrowser</strong>:浏览仓库页面的权限(登录后浏览网页上仓库的权限)。</li>
-<li><strong>UI:Search</strong>:访问快速搜索栏以及搜索界面所需要的权限<br><code>以上仅仅是可以登录Nexus的主页以及进入到内部仓库页面的基本权限，能不能查看仓库需要下边的权限</code>  </li>
-<li><strong>Repo:AllRepositories (Read)</strong>:给予用户读取所有仓库内容的权限，不给予该权限，用户在登录Nexus的主页后看不到对应的仓库信息。</li>
-<li><strong>Repo:AllRepositories (Full Control)</strong>: 给予用户可以控制仓库的所有权限，浏览，可以删除仓库的内容，更新仓库的内容，上传部署构建。  </li>
-</ul>
-<h1 id="Nexus-创建特殊权限用户"><a href="#Nexus-创建特殊权限用户" class="headerlink" title="Nexus 创建特殊权限用户"></a>Nexus 创建特殊权限用户</h1><ul>
-<li>在Nexus的首页-Security-Users：可以创建新用户和查看已有的用户信息，点击没个用户可以在：Config中查看用户拥有的权限组、在Role Tree中查看对应的权限组的内部权限详情，可以在Config中对用户权限进行添加或者修改移除，此处添加用户权限只会让你在已有的权限组列表选择，如果当前已有的不符合你的需求，可以自己创建权限组，将自己单独需要的权限进行权限组的添加，这些只有admin才可以操作(拥有权限比较多)。</li>
-</ul>
-<h1 id="Nexus-自定义权限组"><a href="#Nexus-自定义权限组" class="headerlink" title="Nexus 自定义权限组"></a>Nexus 自定义权限组</h1><ul>
-<li>以上的基本权限都是权限组：即都是由几个权限组成成一个，例如：AllRepositories (Full Control) 内部就包含：All Respositories(create)、All Respositories(delete)、All Respositories(read)、All Respositories(update)、All Respositories(view)，对仓库内容的增删改查。</li>
-<li>创建自定义权限组：Nexus的首页-Security-Roles:添加Nexus Role 进行权限添加，此处添加的列表不仅有权限组列表还有单独的权限列表，创建完成后即可在上边提到的用户权限修改处进行自定义权限组的添加。</li>
-</ul>
-<h1 id="Nexus-已有的权限组"><a href="#Nexus-已有的权限组" class="headerlink" title="Nexus 已有的权限组"></a>Nexus 已有的权限组</h1><ul>
-<li><strong>Nexus Anoymous Role</strong>：包含：UI_RepositoryBrowser、UI:Search 、基本的Nexus的浏览、用户密码修改，仓库类型、状态、快速搜索(没有登录权限)，所以一般需要再添加UI:Basic UI Privileges,组合成新的权限组。</li>
-<li><strong>Nexus Deployment Role</strong>: 包含：Nexus Anoymous Role 和 UI:Basic UI Privileges,所以如果给予用户查看Nexus的权限一般会用这个。</li>
-<li>上边两个权限只是可以进到Nexus的页面进行查看，但是要想看到仓库内容还需要添加以下权限</li>
-<li><strong>All Repositories (Full Control)</strong>: 上边已经介绍过了，增删改查仓库的内容(包含：All Respositories(read)和All Respositories(view)可以查看仓库的内容)。</li>
-<li><strong>All Respositories(read)</strong>：只能查看仓库(包含read和view两个子权限)</li>
-</ul>
-<h1 id="Nexus-场景需求"><a href="#Nexus-场景需求" class="headerlink" title="Nexus 场景需求"></a>Nexus 场景需求</h1><ul>
-<li>如果需要用户更新并且可以查看仓库内容，可以对内容进行修改删除(也就是已经存在的deployment用户)：Nexus Deployment Role 和 All Repositories (Full Control)</li>
-<li>如果需要用户更新，并不需要查看可以添加：All Repositories (Full Control)</li>
-<li>如果需要用户更新，查看仓库，但是并不需要删除仓库内容:自定义权限组：不添加All Respositories(delete)子权限即可</li>
-<li>如果需要用户只能查看仓库，不能对仓库进行任何修改：Nexus Deployment Role 和 All Respositories(read)<h1 id="Picture"><a href="#Picture" class="headerlink" title="Picture"></a>Picture</h1></li>
-<li><strong>用户列表和权限</strong>  </li>
-</ul>
-<p><img src="https://thumbnail0.baidupcs.com/thumbnail/8cdd510e8213f7d885bacdcfeab2f733?fid=3896323671-250528-851267196431875&amp;time=1510200000&amp;rt=sh&amp;sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-Z6a3mqWAkLey5lsXfxSUO2YJVY4%3D&amp;expires=8h&amp;chkv=0&amp;chkbd=0&amp;chkpc=&amp;dp-logid=7248078301491372869&amp;dp-callid=0&amp;size=c710_u400&amp;quality=100&amp;vuk=-&amp;ft=video" alt="picture"></p>
-<ul>
-<li><strong>用户权限树</strong>  </li>
-</ul>
-<p><img src="https://thumbnail0.baidupcs.com/thumbnail/c2bec33d239e5b00f1087e666c9d91a7?fid=3896323671-250528-82546551609461&amp;time=1510200000&amp;rt=sh&amp;sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-%2FprqGWvr%2FIHvBQZyZ3Fy9HJbH8k%3D&amp;expires=8h&amp;chkv=0&amp;chkbd=0&amp;chkpc=&amp;dp-logid=7248116945847834538&amp;dp-callid=0&amp;size=c710_u400&amp;quality=100&amp;vuk=-&amp;ft=video" alt="picture">  </p>
-<ul>
-<li><strong>添加用户权限</strong>  </li>
-</ul>
-<p><img src="https://thumbnail0.baidupcs.com/thumbnail/6ac7970a407f2dd1415f6ea73be945ec?fid=3896323671-250528-198637595825107&amp;time=1510200000&amp;rt=sh&amp;sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-HjqdkMDIzMbcADsaJAbjnuXhYEg%3D&amp;expires=8h&amp;chkv=0&amp;chkbd=0&amp;chkpc=&amp;dp-logid=7248144595439921749&amp;dp-callid=0&amp;size=c710_u400&amp;quality=100&amp;vuk=-&amp;ft=video" alt="picture"></p>
-<ul>
-<li><strong>创建自定义权限组</strong>  </li>
-</ul>
-<p><img src="https://thumbnail0.baidupcs.com/thumbnail/9daed7c4c3c4fb0a141fcbe3bfed5e79?fid=3896323671-250528-568038031038468&amp;time=1510200000&amp;rt=sh&amp;sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-TofcDUeiwsSdAPrtMbYJJZ0xIjY%3D&amp;expires=8h&amp;chkv=0&amp;chkbd=0&amp;chkpc=&amp;dp-logid=7248130129196185689&amp;dp-callid=0&amp;size=c710_u400&amp;quality=100&amp;vuk=-&amp;ft=video" alt="picture"></p>
-<p><img src="https://thumbnail0.baidupcs.com/thumbnail/8faf1f06aa2998935602abc4130f16f4?fid=3896323671-250528-384719206046152&amp;time=1510200000&amp;rt=sh&amp;sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-02HSGdp49DnO5bDjSoYkIyzGb2s%3D&amp;expires=8h&amp;chkv=0&amp;chkbd=0&amp;chkpc=&amp;dp-logid=7248154652143227979&amp;dp-callid=0&amp;size=c710_u400&amp;quality=100&amp;vuk=-&amp;ft=video" alt="picture"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2048,7 +2129,7 @@ MotionEvent.ACTION_POINTER_DOWN
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

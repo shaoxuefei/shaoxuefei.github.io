@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="Handler理解 Handler一般用于进行线程间通讯，一般是子线程向主线程发送数据变动，更新UI操作。 Handler的消息回调接收是是跟你创建Handler的线程绑定的，即你在那个线程创建的Handler，其不管在那个线程发送消息，最后回调的方法实现都是在你创建Handler的线程里完成。 Handler跟Thread没有关系，其内部不能做耗时操作，但是可以发送延迟消息… …Handler机">
+<meta name="description" content="参考 为什么要用HandlerThread,怎么用  Handler理解 Handler一般用于进行线程间通讯，一般是子线程向主线程发送数据变动，更新UI操作。 Handler的消息回调接收是是跟你创建Handler的线程绑定的，即你在那个线程创建的Handler，其不管在那个线程发送消息，最后回调的方法实现都是在你创建Handler的线程里完成。 Handler跟Thread没有关系，其内部不能">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Handler&amp;HandlerThread">
 <meta property="og:url" content="https://shaoxuefei.github.io/2018/06/05/handler_handlerthread/index.html">
 <meta property="og:site_name" content="Sxf-Blog">
-<meta property="og:description" content="Handler理解 Handler一般用于进行线程间通讯，一般是子线程向主线程发送数据变动，更新UI操作。 Handler的消息回调接收是是跟你创建Handler的线程绑定的，即你在那个线程创建的Handler，其不管在那个线程发送消息，最后回调的方法实现都是在你创建Handler的线程里完成。 Handler跟Thread没有关系，其内部不能做耗时操作，但是可以发送延迟消息… …Handler机">
+<meta property="og:description" content="参考 为什么要用HandlerThread,怎么用  Handler理解 Handler一般用于进行线程间通讯，一般是子线程向主线程发送数据变动，更新UI操作。 Handler的消息回调接收是是跟你创建Handler的线程绑定的，即你在那个线程创建的Handler，其不管在那个线程发送消息，最后回调的方法实现都是在你创建Handler的线程里完成。 Handler跟Thread没有关系，其内部不能">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-05T03:05:10.365Z">
+<meta property="og:updated_time" content="2019-11-04T07:34:00.528Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Handler&amp;HandlerThread">
-<meta name="twitter:description" content="Handler理解 Handler一般用于进行线程间通讯，一般是子线程向主线程发送数据变动，更新UI操作。 Handler的消息回调接收是是跟你创建Handler的线程绑定的，即你在那个线程创建的Handler，其不管在那个线程发送消息，最后回调的方法实现都是在你创建Handler的线程里完成。 Handler跟Thread没有关系，其内部不能做耗时操作，但是可以发送延迟消息… …Handler机">
+<meta name="twitter:description" content="参考 为什么要用HandlerThread,怎么用  Handler理解 Handler一般用于进行线程间通讯，一般是子线程向主线程发送数据变动，更新UI操作。 Handler的消息回调接收是是跟你创建Handler的线程绑定的，即你在那个线程创建的Handler，其不管在那个线程发送消息，最后回调的方法实现都是在你创建Handler的线程里完成。 Handler跟Thread没有关系，其内部不能">
 
 
 
@@ -299,7 +299,10 @@
       
 
       
-        <h1 id="Handler理解"><a href="#Handler理解" class="headerlink" title="Handler理解"></a>Handler理解</h1><ol>
+        <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a href="jianshu.com/p/f0cdea1c232a">为什么要用HandlerThread,怎么用</a></li>
+</ul>
+<h1 id="Handler理解"><a href="#Handler理解" class="headerlink" title="Handler理解"></a>Handler理解</h1><ol>
 <li>Handler一般用于进行线程间通讯，一般是子线程向主线程发送数据变动，更新UI操作。</li>
 <li>Handler的消息回调接收是是跟你创建Handler的线程绑定的，即你在那个线程创建的Handler，其不管在那个线程发送消息，最后回调的方法实现都是在你创建Handler的线程里完成。</li>
 <li>Handler跟Thread没有关系，其内部不能做耗时操作，但是可以发送延迟消息… …<h1 id="Handler机制"><a href="#Handler机制" class="headerlink" title="Handler机制"></a>Handler机制</h1></li>
@@ -318,7 +321,7 @@
 </ol>
 <ul>
 <li>sendMessage()：一般用于线程间消息传递  </li>
-<li>post(new Runnable)：其并不是开启一个Thread，只是单纯的发送一个Null的消息，回调会在Runnable的实现run()方法只执行，一般会结合HandlerThread来使用。<h1 id="子线程创建Handler对象"><a href="#子线程创建Handler对象" class="headerlink" title="子线程创建Handler对象"></a>子线程创建Handler对象</h1></li>
+<li>post(new Runnable)：其并不是开启一个Thread，只是单纯的发送一个Null的消息，回调会在Runnable的实现run()方法只执行，一般会结合HandlerThread来使用。<h1 id="子线程创建Handler对象（子线程需要借助Looper处理）"><a href="#子线程创建Handler对象（子线程需要借助Looper处理）" class="headerlink" title="子线程创建Handler对象（子线程需要借助Looper处理）"></a>子线程创建Handler对象（子线程需要借助Looper处理）</h1></li>
 <li>方式一： </li>
 </ul>
 <pre><code>public class MyHandlerThread extends Thread {
@@ -343,7 +346,7 @@ public void run() {
 }
 }
 </code></pre><ul>
-<li><p>方式二：</p>
+<li><p>方式二(HandlerThread:为创建子线程Looper做了安全封装)：</p>
 <pre><code>//在MainThread中创建，HandlerThread其实就是在创建个带有Looper对象的子线程  
 HandlerThread handlerThr=new HandlerThread(&quot;HandlerThread&quot;);
       handlerThr.start();//开启线程
@@ -492,7 +495,7 @@ HandlerThread handlerThr=new HandlerThread(&quot;HandlerThread&quot;);
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -529,7 +532,7 @@ HandlerThread handlerThr=new HandlerThread(&quot;HandlerThread&quot;);
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Handler理解"><span class="nav-number">1.</span> <span class="nav-text">Handler理解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Handler机制"><span class="nav-number">2.</span> <span class="nav-text">Handler机制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Looper"><span class="nav-number">3.</span> <span class="nav-text">Looper</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Handler-Message-amp-Runable"><span class="nav-number">4.</span> <span class="nav-text">Handler-Message&amp;Runable</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#子线程创建Handler对象"><span class="nav-number">5.</span> <span class="nav-text">子线程创建Handler对象</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Destory取消队列循环"><span class="nav-number">6.</span> <span class="nav-text">Destory取消队列循环</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Handler理解"><span class="nav-number"></span> <span class="nav-text">Handler理解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Handler机制"><span class="nav-number"></span> <span class="nav-text">Handler机制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Looper"><span class="nav-number"></span> <span class="nav-text">Looper</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Handler-Message-amp-Runable"><span class="nav-number"></span> <span class="nav-text">Handler-Message&amp;Runable</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#子线程创建Handler对象（子线程需要借助Looper处理）"><span class="nav-number"></span> <span class="nav-text">子线程创建Handler对象（子线程需要借助Looper处理）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Destory取消队列循环"><span class="nav-number"></span> <span class="nav-text">Destory取消队列循环</span></a></div>
             
 
           </div>
