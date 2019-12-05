@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Sxf-Blog">
 <meta property="og:description" content="新建本地仓库 在当前目录新建一个Git代码本地仓库    git init  添加指定文件到暂存区 git add [file] [file] ....    提交文件到本地   git commit [file] [file] ... -m[message] git commit -m[message]  提交到远端  git push  删除工作区文件 git rm [file] [file]">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-05T03:09:09.579Z">
+<meta property="og:updated_time" content="2019-12-05T07:37:47.212Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Git语法">
 <meta name="twitter:description" content="新建本地仓库 在当前目录新建一个Git代码本地仓库    git init  添加指定文件到暂存区 git add [file] [file] ....    提交文件到本地   git commit [file] [file] ... -m[message] git commit -m[message]  提交到远端  git push  删除工作区文件 git rm [file] [file]">
@@ -362,7 +362,49 @@ git status
 <li>操作tag：git tag …</li>
 <li>操作远程提交tag/branch：git push origin 2.0—-//或者git push –tags(省略origin远程 )</li>
 <li>操作远程删除tag/branch:git push origin -d 2.0</li>
-<li>远程代码提交：git push 就可以了<h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1></li>
+<li>远程代码提交：git push 就可以了</li>
+</ul>
+<h1 id="多分支并行开发（都是以develop为基准分支）"><a href="#多分支并行开发（都是以develop为基准分支）" class="headerlink" title="多分支并行开发（都是以develop为基准分支）"></a>多分支并行开发（都是以develop为基准分支）</h1><p># </p>
+<ul>
+<li><p>正常逻辑</p>
+<pre><code>git branch native;//创建本地分支
+git checkout native;//切换到native分支,前提是需要将develop的代码进行提交后再切换
+... ... native分支一顿修改
+此时如果 git checkout develop
+develop上会有native分支上边的修改
+但是其实修改还是算native分支上边的修改，并不是develop分支上的
+</code></pre></li>
+<li><p>方案一：将native分支推送到远端origin</p>
+<pre><code>git push origin native
+//切换分支前将native内容提交到远端然后再切换
+git commit -xxx
+git push
+git checkout develop
+</code></pre></li>
+<li><p>方案二：只是小功能点不需要提交到远端</p>
+<pre><code>native分支修改后进行commit，然后再切换
+git commit -xxx
+git checkout develop//这时develop上就不会有native分支新增内容，跟方案一是一样的
+</code></pre></li>
+<li><p>方案三：可以不commit的话可以用stash</p>
+<pre><code>切换到native分支后一顿修改，然后可以
+git stash//将修改的内容暂时先存储在git的栈中
+//等你下次切回来后
+git stash pop //会提取出你之前存储的最新一次的记录
+</code></pre></li>
+<li><p>值得注意的是：</p>
+<ul>
+<li>不过这种一般会用在develop修改，然后还没改好，需要切换到native分支上，这时会用到，因为不提交的话是切换不到native分支的，，子分支可以不提交直接切父分支，父分支不可以不提交直接切子分支，，正常子分支是建立在父分支的基租上创建的，所以正常是子分支代码量是大于父分支的</li>
+</ul>
+</li>
+<li><p>des</p>
+<ul>
+<li>native修改后忘记commit，然后遗忘，在master上继续修改，切换到native上commit后，在切换develop，develop上就没有对应的修改了</li>
+<li>大概意思就是不管你在哪个分支修改，最终commit的分支为最终分支的提交，之前其他分支修改没有提交的都会还原到上一次提交的最新状态</li>
+</ul>
+</li>
+</ul>
+<h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><ul>
 <li><a href="http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html</a></li>
 <li><a href="https://blog.zengrong.net/post/1746.html" target="_blank" rel="noopener">https://blog.zengrong.net/post/1746.html</a></li>
 </ul>
@@ -520,7 +562,7 @@ git status
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#新建本地仓库"><span class="nav-number">1.</span> <span class="nav-text">新建本地仓库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分支"><span class="nav-number">2.</span> <span class="nav-text">分支</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建Tag"><span class="nav-number">3.</span> <span class="nav-text">创建Tag</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#删除远程分支和Tag"><span class="nav-number">4.</span> <span class="nav-text">删除远程分支和Tag</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#删除本地分支和tag"><span class="nav-number">5.</span> <span class="nav-text">删除本地分支和tag</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#删除掉不存在远程分支的本地分支"><span class="nav-number">6.</span> <span class="nav-text">删除掉不存在远程分支的本地分支</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#重命名远程分支"><span class="nav-number">7.</span> <span class="nav-text">重命名远程分支</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#待续"><span class="nav-number">8.</span> <span class="nav-text">待续</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文章"><span class="nav-number">9.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#新建本地仓库"><span class="nav-number">1.</span> <span class="nav-text">新建本地仓库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分支"><span class="nav-number">2.</span> <span class="nav-text">分支</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建Tag"><span class="nav-number">3.</span> <span class="nav-text">创建Tag</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#删除远程分支和Tag"><span class="nav-number">4.</span> <span class="nav-text">删除远程分支和Tag</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#删除本地分支和tag"><span class="nav-number">5.</span> <span class="nav-text">删除本地分支和tag</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#删除掉不存在远程分支的本地分支"><span class="nav-number">6.</span> <span class="nav-text">删除掉不存在远程分支的本地分支</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#重命名远程分支"><span class="nav-number">7.</span> <span class="nav-text">重命名远程分支</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#待续"><span class="nav-number">8.</span> <span class="nav-text">待续</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多分支并行开发（都是以develop为基准分支）"><span class="nav-number">9.</span> <span class="nav-text">多分支并行开发（都是以develop为基准分支）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文章"><span class="nav-number">10.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
             
 
           </div>
