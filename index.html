@@ -232,7 +232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/11/04/stringbuffer/">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/stringbuffer/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sxf">
@@ -251,7 +251,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/11/04/stringbuffer/" itemprop="url">StringBuffer & StringBuilde</a></h1>
+                <a class="post-title-link" href="/2019/12/20/stringbuffer/" itemprop="url">StringBuffer & StringBuilde</a></h1>
         
 
         <div class="post-meta">
@@ -263,8 +263,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-04T15:59:23+08:00">
-                2019-11-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
+                2019-12-20
               </time>
             
 
@@ -478,7 +478,7 @@ screenSize：设备的屏幕的尺寸信息发生了改变，旋转屏幕时也�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/01/17/adnroid_proxy/">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/viewflipper_pager_fragment/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sxf">
@@ -497,7 +497,7 @@ screenSize：设备的屏幕的尺寸信息发生了改变，旋转屏幕时也�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/01/17/adnroid_proxy/" itemprop="url">Android抓包调试</a></h1>
+                <a class="post-title-link" href="/2019/12/20/viewflipper_pager_fragment/" itemprop="url">Fragment生命周期之ViewPager懒加载</a></h1>
         
 
         <div class="post-meta">
@@ -509,8 +509,8 @@ screenSize：设备的屏幕的尺寸信息发生了改变，旋转屏幕时也�
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-17T16:18:05+08:00">
-                2019-01-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
+                2019-12-20
               </time>
             
 
@@ -549,59 +549,81 @@ screenSize：设备的屏幕的尺寸信息发生了改变，旋转屏幕时也�
       
         
           
-            <h4 id="Stetho"><a href="#Stetho" class="headerlink" title="Stetho"></a>Stetho</h4><p>参考： github 地址：<code>https://github.com/facebook/stetho</code> </p>
-<ul>
-<li>app_gradle 添加依赖</li>
+            <h3 id="Fragment生命周期"><a href="#Fragment生命周期" class="headerlink" title="Fragment生命周期"></a>Fragment生命周期</h3><ul>
+<li><p>onCreateView() :每次加载Fragment的时候会执行该方法、配对的生命周期是： onDestroyView()</p>
+</li>
+<li><p>onCreateView() :onCreateView()方法执行完后进行执行，代表View绘制完成</p>
+</li>
+<li><p>onResume() :该Fragment被执行了show操作、或者是<strong>该页面从后台显示到前台</strong>，或者是其依赖的Activity的生命周期的改变;那种ViewPager+Fragment的那种，ViewPager切换的时候，其Fragment是不执行onResume和onPause的，因为其Activity的声明周期没有改变，而且也没有执行hide和show操作,其移动就是将该Fragment进行了移动，并没有移出到后台?所以没有执行Fragment的生命周期、、、、、其实Fragment的生命周期都是根据Activity来的，除了自己的创建、尤其是onResume和onPause都是根据Activity的声明周期的onResume和onPause、、、、真正的判断实现的方法有两个:setUserVisibleHint（）和onHiddenChanged()—针对show\hide的Fragment</p>
+</li>
 </ul>
-<pre><code>api &apos;com.facebook.stetho:stetho:1.5.0&apos;
-api &apos;com.facebook.stetho:stetho-okhttp3:1.5.0&apos;
-</code></pre><ul>
-<li><p>Application 初始化</p>
-<pre><code>if(BuildConfig.DEBUG){
-    Stetho.initializeWithDefaults(this);
+<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fupinhsfx5j20f40o70vn.jpg" alt="picture"></p>
+<h3 id="ViewPager-Fragment-“预”加载方式解析"><a href="#ViewPager-Fragment-“预”加载方式解析" class="headerlink" title="ViewPager+Fragment “预”加载方式解析"></a>ViewPager+Fragment “预”加载方式解析</h3><ul>
+<li><p>viewPager.setOffscreenPageLimit(x): 不设置默认ViewPager会预加载相邻的1个Fragment，当切换Fragment时之前相邻的Fragment会执行onDestroyView()将Fragment销毁，当再次切换到该Fragment时其会重新生成该Fragment，也就是重新调用onCreateView()方法,<strong>也就是每次点击非相邻的Tab会重新加载渲染一次Fragment</strong></p>
+</li>
+<li><p>viewPager.setOffscreenPageLimit(n)：设置值后，一般设置fragmentList-1，这样其切换Fragment的时候所有的Fragment不会重走生命周期，也就是不会走onDestroyView()和onCreateView()进行Fragment的重复创建，这种的话刚启动加载第一个Fragment的时候，其余的都会执行onCreateView()、、onCreateView()方法进行预加载，当然这种当Activity执行生命周期onPause时，所有的都会执行onPause</p>
+</li>
+<li><p>其实ViewPager就是ViewGroup就是一个View的容器，类似于容器也就是说不管内部有多少View其都会“一次全部”加载到容器内，也就是不管现在在屏幕中的还是没有在屏幕中显示的View，其已经全部加载到该容器中了，不会因为你不在该屏幕上显示就说你没有加载到ViewGroup中，排除外来因素(手动进行ViewGroup的移出添加、或者是手动调用内部View的相关方法)，勉强解释为什么setOffscreenPageLimit（n），切换Fragment的时候，不走Fragment的声明周期</p>
+</li>
+</ul>
+<h3 id="ViewPager-Fragment-“懒”加载方式解析"><a href="#ViewPager-Fragment-“懒”加载方式解析" class="headerlink" title="ViewPager+Fragment “懒”加载方式解析"></a>ViewPager+Fragment “懒”加载方式解析</h3><h4 id="Fragment的是否显示在前台方法-onResume-onPause在上边的那种情况代表不了"><a href="#Fragment的是否显示在前台方法-onResume-onPause在上边的那种情况代表不了" class="headerlink" title="Fragment的是否显示在前台方法(onResume\onPause在上边的那种情况代表不了)"></a>Fragment的是否显示在前台方法(onResume\onPause在上边的那种情况代表不了)</h4><ul>
+<li><p>setUserVisibleHint(boolean isVisibleToUser): isVisibleToUser为ture表示该Fragment在前台展示，isVisibleToUser为false表示该Frament没有在前台展示(并不代表其跑到了后台，如果都是这样那么Fragment的onResume和onPause就可以判断了)，在ViewPager+Fragment模式下设置了setOffscreenPageLimit(n)并且切换Tab的时候一样会改变该值</p>
+</li>
+<li><p>setUserVisibleHint: 该方法有可能会被多次回调，也就是说在判断是否显示在前台前，最好还是判断一下该View是否加载完成，然后在决定是否进行网络请求；当然为了防止每次点击都加载数据，还可以添加个别的变量isFirst来判断是否是第一次加载</p>
+</li>
+<li><p>这种一般设置在BaseFragment中，向外部抛出abstract方法</p>
+<p>  <code>public abstract void fragmentIsVisible(boolean isVisibleToUser);</code></p>
+</li>
+</ul>
+<pre><code>  @Override
+public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+super.onViewCreated(view, savedInstanceState);
+isViewCreated = true;
+isFirstCreate = true;
+doLazyLoad();
 }
-</code></pre></li>
-<li><p>OkHttp添加网络拦截器</p>
-<pre><code>OkHttpClient.Builder builder = new OkHttpClient.Builder()
-.addNetworkInterceptor(new StethoInterceptor()
-</code></pre><ul>
-<li><p>顺便提一下OkHttp添加请求Head头</p>
-<pre><code>public class OkHttpRequestHeadIntercepter implements Interceptor {
+
+..............................
+    /**
+ * 返回True  表示当前View是否加载到窗口、就是是否是当前窗口展示
+ *
+ * @param isVisibleToUser
+ */
     @Override
-public Response intercept(Chain chain) throws IOException {
-Request.Builder builder = chain.request().newBuilder()
-    .addHeader(&quot;gg-version&quot;, BuildConfig.VERSION_NAME);
-if (UserUtils.isLogin()) {
-    builder.addHeader(&quot;gg-token&quot;, UserUtils.getToken());
-}
-    Request request = builder.build();
-    return chain.proceed(request);
+public void setUserVisibleHint(boolean isVisibleToUser) {
+super.setUserVisibleHint(isVisibleToUser);
+if (isVisibleToUser) {
+    //该方法有可能会调用多次、包括有可能View还没创建就进行调用、、、防止重复加载、防止View还没创建就进行View的调用操作
+    isViewVisible = true;
+    doLazyLoad();
+    } else {
+    isViewVisible = false;
         }
+     }
+
+......................................
+
+   //需要区分是否是第一次加载、防止每次切换都进行数据的调用  更新
+private void doLazyLoad() {
+    if (isViewCreated &amp;&amp; isViewVisible) {
+        if (isFirstCreate) {
+        fragmentIsVisible(true);
+        isFirstCreate = false;
+        }
+    } else {
+        fragmentIsVisible(false);
+    }
 }
-</code></pre><p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fz9o632d70j20t50h0gmq.jpg" alt="picture"></p>
+</code></pre><h3 id="ViewPager-的进制左右滑动"><a href="#ViewPager-的进制左右滑动" class="headerlink" title="ViewPager 的进制左右滑动"></a>ViewPager 的进制左右滑动</h3><ul>
+<li><p>dispatchTouchEvent(MotionEvent ev):不变还是之前的 return super.dispatchTouchEvent(ev)-支持向下分发</p>
+</li>
+<li><p>onInterceptTouchEvent（MotionEvent ev）：改变return false；不进行事件拦截，进行向底部View传递</p>
+</li>
+<li><p>onTouchEvent(MotionEvent ev) ：改变 return false:底部View没有响应消费的话，事件回传过来自己也不进行消费，再往外传，不进行滑动响应</p>
 </li>
 </ul>
-</li>
-</ul>
-<h3 id="Fidder抓包来了"><a href="#Fidder抓包来了" class="headerlink" title="Fidder抓包来了"></a>Fidder抓包来了</h3><ul>
-<li><p>下载地址：</p>
-<pre><code>https://www.telerik.com/download/fiddler
-</code></pre></li>
-<li><p>配置步骤参考</p>
-<pre><code>https://blog.csdn.net/shimengran107/article/details/78644862
-</code></pre></li>
-<li><p>Fidder 过滤条件参考</p>
-<pre><code>https://www.cnblogs.com/sjl179947253/p/7627250.html
-</code></pre></li>
-<li><p>抓包工具有很多，但原理大体就是根据wifi代理进行url截取处理，Wind启动Fiddler后，其内部就相当于一个虚拟的跟你电脑IP一样的代理服务区，这是你会发现Chrome网页打不开，不安全，是因为证书问题，需要把Fiddler的安全证书加到Chrome证书列表里！！！手机WiFi连接代理后，其浏览器打不开网页，输入：ip:post端口 下载证书安装！！！（所谓的代理，也就类似于访问的是你设置代理的服务器，，相当于Shadowsock代理服务器翻墙一样）</p>
-</li>
-<li><p>Fiddler 抓包好像只能抓Debug的包，Release(签名)的Url数据抓不到,包括从应用市场下载的Apk</p>
-</li>
-</ul>
-<ul>
-<li>又用到了之前的Chrome的SwitchyOmega插件—为了是防止代理翻墙网络有限，有些不用翻墙的用外网浪费，这个是自动内外网切换!!!</li>
-</ul>
-<h4 id="未完待续…反编译"><a href="#未完待续…反编译" class="headerlink" title="未完待续…反编译"></a>未完待续…反编译</h4>
+<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fupjsp44faj21570jegnc.jpg" alt="picture"></p>
+
           
         
       
@@ -649,7 +671,7 @@ if (UserUtils.isLogin()) {
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2018/12/26/audio_float_notification/">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/ontouchevent/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sxf">
@@ -668,7 +690,7 @@ if (UserUtils.isLogin()) {
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/12/26/audio_float_notification/" itemprop="url">Android应用浮窗按钮&自定义音频通知栏</a></h1>
+                <a class="post-title-link" href="/2019/12/20/ontouchevent/" itemprop="url">事件分发</a></h1>
         
 
         <div class="post-meta">
@@ -680,8 +702,8 @@ if (UserUtils.isLogin()) {
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-26T14:49:57+08:00">
-                2018-12-26
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
+                2019-12-20
               </time>
             
 
@@ -720,7 +742,60 @@ if (UserUtils.isLogin()) {
       
         
           
-            <h3 id="Android-应用悬浮按钮"><a href="#Android-应用悬浮按钮" class="headerlink" title="Android 应用悬浮按钮"></a>Android 应用悬浮按钮</h3><p>* </p>
+            <h3 id="事件传递的过程分析"><a href="#事件传递的过程分析" class="headerlink" title="事件传递的过程分析"></a>事件传递的过程分析</h3><ul>
+<li>事件传递 从最外层父View将事件 传递到 内部View  首先传递前 判断自己的<em>dispatchTouchEvent</em> 方法是否支持分发，支持分发的话，会传递自己View的<em>onInterceptTouchEvent</em> 方法，看自己是否进行拦截处理，若拦截则会传递到自己的<em>onTouchEvent</em>,若不拦截会传递到子View的<em>dispatchTouchEvent</em> 方法进行处理，内部处理流程和上一层View的处理流程一样：  dispatchTouchEvent–&gt;onInterceptTouchEvent–&gt;onTouchEvent</li>
+</ul>
+<h3 id="DispatchTouchEvent之return"><a href="#DispatchTouchEvent之return" class="headerlink" title="DispatchTouchEvent之return"></a>DispatchTouchEvent之return</h3><ul>
+<li><p>false: 返回给父View的OnTouchEvent事件</p>
+</li>
+<li><p>true ：停止传递分发、事件不传递、<em>也就是不会有onTouchEvnet事件之说，因为onTouchEvent事件，执行的时候是事件全部传到最底部View后才会执行，最底部的onTouchEvent不消费的话，才会向上一级的父View的onTouchEvent传递(也就是才会执行到父View的该方法、、当然除非是中间拦截了，才会不向下传递、直接执行自己的OnTouchEvent方法)</em></p>
+</li>
+<li><p>super.DispatchTouchEvent之return：支持分发(也就是该事件已经产生、会进行处理、直到有人将其消费、如果返回上边的，该事件就相当于没有产生，直接返给窗体View、直接被扼杀在摇篮里)、会传递到该View的onInterceptTouchEvent方法，由该方法来处理看是否继续向下传递；</p>
+</li>
+</ul>
+<h3 id="onInterceptTouchEvent之return"><a href="#onInterceptTouchEvent之return" class="headerlink" title="onInterceptTouchEvent之return"></a>onInterceptTouchEvent之return</h3><ul>
+<li>false: 不拦截传递给下一层子View进行事件分发方法：dispatchTouchEvent() 流程相同继续走。</li>
+<li>true： 拦截事件，不向下传递事件，会传递给自己的onTouchEvent()事件处理响应。</li>
+<li>super.onInterceptTouchEvent(): 等同于true，即进行拦截，交由自己的onTouchEvnent进行处理</li>
+</ul>
+<h3 id="onTouchEvent-之return"><a href="#onTouchEvent-之return" class="headerlink" title="onTouchEvent()之return"></a>onTouchEvent()之return</h3><ul>
+<li>false： 不消费、传递到上一层的View的onTouchEvnet?</li>
+<li>true : 消费，自己执行onTouchEvnet方法</li>
+<li><p>super.onTouchEvnet(): 等同于false 传递到上一层父View的 onTouchEvent进行处理</p>
+<pre><code>event.getPointerCount()//判断手指
+MotionEvent.ACTION_XXX
+MotionEvent.ACTION_UP//需要全部手指全部离开屏幕才会调用
+MotionEvent.ACTION_POINTER_UP//当存在多个手指触碰时，抬起一指就会执行该方法
+MotionEvent.ACTION_POINTER_DOWN
+</code></pre></li>
+</ul>
+<h3 id="GestureDetector-手势管理之OnGestureListener"><a href="#GestureDetector-手势管理之OnGestureListener" class="headerlink" title="GestureDetector 手势管理之OnGestureListener"></a>GestureDetector 手势管理之OnGestureListener</h3><ul>
+<li><p>void onShowPress(MotionEvent e);</p>
+</li>
+<li><p>boolean onSingleTapUp(MotionEvent e);</p>
+</li>
+<li><p>void onLongPress(MotionEvent e);</p>
+</li>
+<li><p>boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY);</p>
+</li>
+</ul>
+<h3 id="接收方式"><a href="#接收方式" class="headerlink" title="接收方式"></a>接收方式</h3><ul>
+<li>onTouchEvent 内部调用—mGestureDetector.onTouchEvent(event);</li>
+</ul>
+<h3 id="子View控制父View拦截"><a href="#子View控制父View拦截" class="headerlink" title="子View控制父View拦截"></a>子View控制父View拦截</h3><p><code>getParent().requestDisallowInterceptTouchEvent(true);</code></p>
+<ul>
+<li><p>true：表示父View对事件进行拦截无效例如：onInterceptTouchEvent内部对事件down、move返回true，也是不起作用的</p>
+</li>
+<li><p>false：表示父View对内部子View的拦截是有效的</p>
+</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li><p>所有的事件都是先往最底层传递的、最底层没有消费时才会一层一层的往外层传到各自的onTouchEvent()方法中，但是事件首先都是会执行DispatchTouchEvent方法进行分发传递到下一层的，其中会走每一层的：DispatchTouchEvent和onInterceptTouchEvent方法判断是不是需要拦截，不拦截就继续往下一层走，所以onInterceptTouchEvent的Down事件是都会走的，：包括MOVE事件、UP事件，当最外层的事件把Down拦截了，下边的就不会走了，当没有拦截，会一层一层走，，当最底层有方法表示</p>
+<pre><code>`getParent().requestDisallowInterceptTouchEvent(true);`  
+</code></pre><p>谁都不能拦截我的事件，那么事件就不会往上在传递到外层的move、up等事件了就会到该处消费结束！！！也就是说这个时候onInterceptTouchEvent的MOVE事件和UP事件都不会走了（对应的方法都不走了），其他情况还是每一层新的事件都会进行传递所以会出现那种：不拦截Down事件拦截Move事件的情况，，所以如果底部有拦截但是外层也想获取点击的坐标位置：就可以在onInterceptTouchEvent方法的down事件中进行获取点击的坐标位置、</p>
+</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fxp372f46rj217r0ngadh.jpg" alt="picture"></p>
 
           
         
@@ -769,7 +844,7 @@ if (UserUtils.isLogin()) {
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2018/11/15/leak_cancary/">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/question/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sxf">
@@ -788,7 +863,7 @@ if (UserUtils.isLogin()) {
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/11/15/leak_cancary/" itemprop="url">内存泄漏案例以及优化</a></h1>
+                <a class="post-title-link" href="/2019/12/20/question/" itemprop="url">事件分发传递</a></h1>
         
 
         <div class="post-meta">
@@ -800,8 +875,223 @@ if (UserUtils.isLogin()) {
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-15T15:42:13+08:00">
-                2018-11-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
+                2019-12-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Android-获取屏幕高度注意事项"><a href="#Android-获取屏幕高度注意事项" class="headerlink" title="Android 获取屏幕高度注意事项"></a>Android 获取屏幕高度注意事项</h3><ul>
+<li><p>在Activity里获取WindowManager  </p>
+<pre><code>WindowManager windowManager = getWindowManager();
+DisplayMetrics displayMetrics = new DisplayMetric();
+Display defaultDisplay = windowManager.getDefaultDisplay();
+defaultDisplay.getMetrics(displayMetrics);
+int screenHeight=displayMetrics.heightPixels;
+</code></pre></li>
+<li><p>在非Activity对象实例中获取WindowManager-通过getSystenService(Context.WINDOW_SERVICE) </p>
+<pre><code>WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+</code></pre></li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fpkk2t3fxbj20ar0iiq3w.jpg" alt="高度区域分布图"></p>
+<ul>
+<li>通过DisplayMetrics获取的屏幕高度是屏幕全部界面的高度，但是除了有虚拟键盘的手机(例如：华为)<ul>
+<li><strong>displayMetrics.heightPixels=View绘制区+系统标题栏高度+状态栏高度</strong></li>
+<li><strong>华为手机displayMetrics.heightPixels=全部界面高度-底部虚拟键盘高度，通过displayMetrics.heightPixels获取的屏幕高度 其已经是减去软键盘的高度了</strong>（例如：一个带有虚拟键盘的华为手机分辨率为720*1280–那么其displayMetrics.heightPixels获取的值1208，通过计算其虚拟键盘的高度正好是72）</li>
+</ul>
+</li>
+</ul>
+<h3 id="NestedScroll嵌套滑动"><a href="#NestedScroll嵌套滑动" class="headerlink" title="NestedScroll嵌套滑动"></a>NestedScroll嵌套滑动</h3><ul>
+<li>主接口：NestedScrollingParent、NestedScrollingChild</li>
+<li>处理工具类：NestedScrollingParentHelper、NestedScrollingChildHelper</li>
+<li>原生实现的Parent <ul>
+<li>CoordinatorLayout</li>
+<li>NestedScrollView</li>
+</ul>
+</li>
+<li>原生实现的Child<ul>
+<li>RecyclerView</li>
+</ul>
+</li>
+</ul>
+<h4 id="CoordinatorLayout的基本使用–layout-behavior"><a href="#CoordinatorLayout的基本使用–layout-behavior" class="headerlink" title="CoordinatorLayout的基本使用–layout_behavior"></a>CoordinatorLayout的基本使用–layout_behavior</h4><ul>
+<li>使用需要和AppBarLayout(继承LinearLayout、@CoordinatorLayout.DefaultBehavior(AppBarLayout.Behavior.class))</li>
+<li>layout_behavior：也就是可以将控件大小绘制出超出屏幕的部分，超出的大小是基于设置的layout_behavior决定的；故也就是使用的默认的Behavior–AppBarLayout,而且CoordinateLayout是继承ViewGroup内部没有设置所谓的below、等所以用AppBarLayout（因为其是继承LinearLayout的）</li>
+</ul>
+<h4 id="AppBarLayout标签的使用layout-scrollFlags"><a href="#AppBarLayout标签的使用layout-scrollFlags" class="headerlink" title="AppBarLayout标签的使用layout_scrollFlags"></a>AppBarLayout标签的使用layout_scrollFlags</h4><ul>
+<li>scroll 该View会响应Scroll事件</li>
+<li>exitUntilCollapsed 该View上拉的时候，这个View会跟着滑动直到折叠。</li>
+</ul>
+<h4 id="CollapsingToolbarLayout标签使用layout-collapseMode"><a href="#CollapsingToolbarLayout标签使用layout-collapseMode" class="headerlink" title="CollapsingToolbarLayout标签使用layout_collapseMode"></a>CollapsingToolbarLayout标签使用layout_collapseMode</h4><ul>
+<li>是一种专门针对ToolBar设计的布局</li>
+<li>一般使用时结合AppBarLayout–当然AppBarLayout外部肯定是CoordinateLayout</li>
+<li>CollapsingToolbarLayout在设置AppBarLayout的标签exitUntilCollapsed后，在上拉时会随着滚动直到折叠-而折叠的高度就是CollapsingToolbarLayout内部设置ToolBar的高度，内部设置的其余View是不会有折叠效果的，故一般内部就是配合ToolBar的使用</li>
+<li>layout_collapseMode-pin 在滑动的时候该View会悬停在原地-直到CollapsingToolbarLayout的低部碰到该View的底部才会跟着一块滑</li>
+<li>layout_collapseMode-parallax 在滑动的过程中该View会是渐变效果-视觉特差效果</li>
+</ul>
+<h4 id="NestedScrollView与RecyclerView嵌套滑动"><a href="#NestedScrollView与RecyclerView嵌套滑动" class="headerlink" title="NestedScrollView与RecyclerView嵌套滑动"></a>NestedScrollView与RecyclerView嵌套滑动</h4><ul>
+<li>简单的拦截就是setNestedScrollingable(false);</li>
+<li>这时刚开始滑动的是父布局控件NestedScrollView,RecyclerView并没有获取事件、或者说不消费事件(recyclerView.setNestedScrollingable(false)),但这时如果需要根据NestedScrollView的滑动距离来判断什么时候把事件交给RecyclerView，也就是RecyclerView开始消费事件(setNestedScrollingable(true));</li>
+<li>如果需要刚开始滑动NestedScrollVIew-根据ScrollView的了解需要布局操出屏幕。跟RecyclerView和ListView是不同的，故底部RecyclerView控件需要设置其高度屏幕高度-需要滑动到要给RecyclerView手势时的距离高度、也就是悬停后的高度</li>
+<li><p>一开始渲染View就需要设置其高度，但是通过getHeight在刚渲染的时候拿不到，但有一个方法可以获取高度</p>
+<pre><code>linearLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+    //内部可以获取到该父布局和布局树-其内部子View的高度
+    }）；
+</code></pre></li>
+<li><p>判断手势超过临界值是向上滑动还是向下滑动–一般都是通过临界点的滑动值–例如滑到300就把手势交给子View，这时把ViewGroup的高度设置305这样当滑到301的时候判断滑动距离大于300就知道是向上滑动的</p>
+</li>
+</ul>
+<h3 id="OnTouchEvent"><a href="#OnTouchEvent" class="headerlink" title="OnTouchEvent()"></a>OnTouchEvent()</h3><ul>
+<li><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fpyhzbinlij20oa0gotbb.jpg" alt=""></li>
+<li><p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fpyi01rzxaj20ht0fndi1.jpg" alt=""></p>
+</li>
+<li><p>我们在ViewGroup 2 的onTouchEvent 返回true消费这次事件<br>红色的箭头代表ACTION_DOWN 事件的流向<br>蓝色的箭头代表ACTION_MOVE 和 ACTION_UP 事件的流向</p>
+</li>
+<li><p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fpyi0fyg00j20me0cvdhr.jpg" alt=""></p>
+</li>
+<li><p>我们在View 的onTouchEvent 返回true消费这次事件<br>红色的箭头代表ACTION_DOWN 事件的流向<br>蓝色的箭头代表ACTION_MOVE 和 ACTION_UP 事件的流向</p>
+</li>
+<li><p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fpyi0nhou1j20md0ctq4w.jpg" alt=""></p>
+</li>
+<li><p>首先看下ViewGroup 的dispatchTouchEvent，之前说的return true是终结传递。return false 是回溯到父View的onTouchEvent，然后ViewGroup怎样通过dispatchTouchEvent方法能把事件分发到自己的onTouchEvent处理呢，return true和false 都不行，那么只能通过Interceptor把事件拦截下来给自己的onTouchEvent，所以ViewGroup dispatchTouchEvent方法的super默认实现就是去调用onInterceptTouchEvent，记住这一点。<br>那么对于View的dispatchTouchEvent return super.dispatchTouchEvent()的时候呢事件会传到哪里呢，很遗憾View没有拦截器。但是同样的道理return true是终结。return false 是回溯会父类的onTouchEvent，怎样把事件分发给自己的onTouchEvent 处理呢，那只能return super.dispatchTouchEvent,View类的dispatchTouchEvent（）方法默认实现就是能帮你调用View自己的onTouchEvent方法的。</p>
+</li>
+<li><p>说了这么多，不知道有说清楚没有，我这边最后总结一下：</p>
+<ul>
+<li>对于 dispatchTouchEvent，onTouchEvent，return true是终结事件传递。return false 是回溯到父View的onTouchEvent方法。</li>
+<li>ViewGroup 想把自己分发给自己的onTouchEvent，需要拦截器onInterceptTouchEvent方法return true 把事件拦截下来。</li>
+<li>ViewGroup 的拦截器onInterceptTouchEvent 默认是不拦截的，所以return super.onInterceptTouchEvent()=return false；</li>
+<li>View 没有拦截器，为了让View可以把事件分发给自己的onTouchEvent，View的dispatchTouchEvent默认实现（super）就是把事件分发给自己的onTouchEvent。</li>
+</ul>
+</li>
+<li><p>自己消费，终结传递。——-&gt;return true ；</p>
+</li>
+<li>给自己的onTouchEvent处理——-&gt; 调用super.dispatchTouchEvent()系统默认会去调用 onInterceptTouchEvent，在onInterceptTouchEvent return true就会去把事件分给自己的onTouchEvent处理。</li>
+<li>传给子View——&gt;调用super.dispatchTouchEvent()默认实现会去调用 onInterceptTouchEvent 在onInterceptTouchEvent return false，就会把事件传给子类。</li>
+<li><p>不传给子View，事件终止往下传递，事件开始回溯，从父View的onTouchEvent开始事件从下到上回归执行每个控件的onTouchEvent——-&gt;return false；<br>注： 由于View没有子View所以不需要onInterceptTouchEvent 来控件是否把事件传递给子View还是拦截，所以View的事件分发调用super.dispatchTouchEvent()的时候默认把事件传给自己的onTouchEvent处理（相当于拦截），对比ViewGroup的dispatchTouchEvent 事件分发，View的事件分发没有上面提到的4个目标的第3点。</p>
+</li>
+<li><p>总结(从事件的方法函数调用顺序开始)：</p>
+<ul>
+<li>dispatchTouchEvent是事件分发：return true/false-表示都是直接消费，不往下分发，但是会直接传递给父级的onTouchEvent（）方法，return super.dispatchTouchEvent()-是向下调用：activity的会调用ViewGroup的dispatchTouchEvent，如果viewgroup的也是返回super,那么ViewGroup的super其实是调用自己的onInterceptTouchEvent（）方法-的返回值，如果onInterceptTouchEvent返回true表示给自己的View消费-会调用ViewGroup的onTouchEvent方法，如果onInterceptTouchEvent（）-return false/super，那么是调用的是View的dispatchTouchEvent()，如果view的该方法返回true、false直接消费不会传给自己的onTouchEvent()，如果返回super，那么其实调用的是自己的onTouchEvnet方法，</li>
+<li>onTouchEvent 方法 return true 表示消费事件，其down move up会传递到该View并停止，，如果返回false,,那么down会传递过来，以后的move up 事件就不会再传递给他，，view的onTouchEvent返回false  那么会向父ViewGroup的onTOuchEvent传递</li>
+</ul>
+</li>
+</ul>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p><a href="https://www.jianshu.com/p/e99b5e8bd67b" target="_blank" rel="noopener">事件分发经典参考</a><br><a href="http://blog.csdn.net/a_running_wolf/article/details/50477965" target="_blank" rel="noopener">Android完美获取状态栏高度、标题栏高度、编辑区域高度的获取</a><br><a href="https://www.jianshu.com/p/f09723b7e887" target="_blank" rel="noopener">使用CoordinatorLayout打造各种炫酷的效果</a>   </p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/leak_cancary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sxf">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/user_icon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sxf-Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/20/leak_cancary/" itemprop="url">内存泄漏案例以及优化</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
+                2019-12-20
               </time>
             
 
@@ -924,7 +1214,7 @@ if (UserUtils.isLogin()) {
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2018/11/06/go_back/">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/nexus/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sxf">
@@ -943,7 +1233,7 @@ if (UserUtils.isLogin()) {
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/11/06/go_back/" itemprop="url">GO-BACK</a></h1>
+                <a class="post-title-link" href="/2019/12/20/nexus/" itemprop="url">Nexus 用户权限管理</a></h1>
         
 
         <div class="post-meta">
@@ -955,8 +1245,598 @@ if (UserUtils.isLogin()) {
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-06T13:40:08+08:00">
-                2018-11-06
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
+                2019-12-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Nexus-默认创建的用户"><a href="#Nexus-默认创建的用户" class="headerlink" title="Nexus 默认创建的用户"></a>Nexus 默认创建的用户</h1><ul>
+<li><strong>admin用户</strong>： 拥有对Nexus服务完全控制、默认密码admin123 ,包括对仓库的配置，创建，删除，更新，用户的账号权限登录管理等。</li>
+<li><strong>deployment用户</strong>：能访问nexus的主页，包含登录，浏览仓库，搜索，上传、更新，但是其不能更改Nexus和已有仓库的配置，不能创建和删除仓库,默认密码：deployment123。</li>
+</ul>
+<h1 id="Nexus-基本权限"><a href="#Nexus-基本权限" class="headerlink" title="Nexus 基本权限"></a>Nexus 基本权限</h1><ul>
+<li><strong>UI:Basic UI Privileges</strong>：访问Nexus的页面必须的最基本的权限(登录Nexus的权限)。</li>
+<li><strong>UI:RepositoryBrowser</strong>:浏览仓库页面的权限(登录后浏览网页上仓库的权限)。</li>
+<li><strong>UI:Search</strong>:访问快速搜索栏以及搜索界面所需要的权限<br><code>以上仅仅是可以登录Nexus的主页以及进入到内部仓库页面的基本权限，能不能查看仓库需要下边的权限</code>  </li>
+<li><strong>Repo:AllRepositories (Read)</strong>:给予用户读取所有仓库内容的权限，不给予该权限，用户在登录Nexus的主页后看不到对应的仓库信息。</li>
+<li><strong>Repo:AllRepositories (Full Control)</strong>: 给予用户可以控制仓库的所有权限，浏览，可以删除仓库的内容，更新仓库的内容，上传部署构建。  </li>
+</ul>
+<h1 id="Nexus-创建特殊权限用户"><a href="#Nexus-创建特殊权限用户" class="headerlink" title="Nexus 创建特殊权限用户"></a>Nexus 创建特殊权限用户</h1><ul>
+<li>在Nexus的首页-Security-Users：可以创建新用户和查看已有的用户信息，点击没个用户可以在：Config中查看用户拥有的权限组、在Role Tree中查看对应的权限组的内部权限详情，可以在Config中对用户权限进行添加或者修改移除，此处添加用户权限只会让你在已有的权限组列表选择，如果当前已有的不符合你的需求，可以自己创建权限组，将自己单独需要的权限进行权限组的添加，这些只有admin才可以操作(拥有权限比较多)。</li>
+</ul>
+<h1 id="Nexus-自定义权限组"><a href="#Nexus-自定义权限组" class="headerlink" title="Nexus 自定义权限组"></a>Nexus 自定义权限组</h1><ul>
+<li>以上的基本权限都是权限组：即都是由几个权限组成成一个，例如：AllRepositories (Full Control) 内部就包含：All Respositories(create)、All Respositories(delete)、All Respositories(read)、All Respositories(update)、All Respositories(view)，对仓库内容的增删改查。</li>
+<li>创建自定义权限组：Nexus的首页-Security-Roles:添加Nexus Role 进行权限添加，此处添加的列表不仅有权限组列表还有单独的权限列表，创建完成后即可在上边提到的用户权限修改处进行自定义权限组的添加。</li>
+</ul>
+<h1 id="Nexus-已有的权限组"><a href="#Nexus-已有的权限组" class="headerlink" title="Nexus 已有的权限组"></a>Nexus 已有的权限组</h1><ul>
+<li><strong>Nexus Anoymous Role</strong>：包含：UI_RepositoryBrowser、UI:Search 、基本的Nexus的浏览、用户密码修改，仓库类型、状态、快速搜索(没有登录权限)，所以一般需要再添加UI:Basic UI Privileges,组合成新的权限组。</li>
+<li><strong>Nexus Deployment Role</strong>: 包含：Nexus Anoymous Role 和 UI:Basic UI Privileges,所以如果给予用户查看Nexus的权限一般会用这个。</li>
+<li>上边两个权限只是可以进到Nexus的页面进行查看，但是要想看到仓库内容还需要添加以下权限</li>
+<li><strong>All Repositories (Full Control)</strong>: 上边已经介绍过了，增删改查仓库的内容(包含：All Respositories(read)和All Respositories(view)可以查看仓库的内容)。</li>
+<li><strong>All Respositories(read)</strong>：只能查看仓库(包含read和view两个子权限)</li>
+</ul>
+<h1 id="Nexus-场景需求"><a href="#Nexus-场景需求" class="headerlink" title="Nexus 场景需求"></a>Nexus 场景需求</h1><ul>
+<li>如果需要用户更新并且可以查看仓库内容，可以对内容进行修改删除(也就是已经存在的deployment用户)：Nexus Deployment Role 和 All Repositories (Full Control)</li>
+<li>如果需要用户更新，并不需要查看可以添加：All Repositories (Full Control)</li>
+<li>如果需要用户更新，查看仓库，但是并不需要删除仓库内容:自定义权限组：不添加All Respositories(delete)子权限即可</li>
+<li>如果需要用户只能查看仓库，不能对仓库进行任何修改：Nexus Deployment Role 和 All Respositories(read)<h1 id="Picture"><a href="#Picture" class="headerlink" title="Picture"></a>Picture</h1></li>
+<li><strong>用户列表和权限</strong>  </li>
+</ul>
+<p><img src="https://thumbnail0.baidupcs.com/thumbnail/8cdd510e8213f7d885bacdcfeab2f733?fid=3896323671-250528-851267196431875&amp;time=1510200000&amp;rt=sh&amp;sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-Z6a3mqWAkLey5lsXfxSUO2YJVY4%3D&amp;expires=8h&amp;chkv=0&amp;chkbd=0&amp;chkpc=&amp;dp-logid=7248078301491372869&amp;dp-callid=0&amp;size=c710_u400&amp;quality=100&amp;vuk=-&amp;ft=video" alt="picture"></p>
+<ul>
+<li><strong>用户权限树</strong>  </li>
+</ul>
+<p><img src="https://thumbnail0.baidupcs.com/thumbnail/c2bec33d239e5b00f1087e666c9d91a7?fid=3896323671-250528-82546551609461&amp;time=1510200000&amp;rt=sh&amp;sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-%2FprqGWvr%2FIHvBQZyZ3Fy9HJbH8k%3D&amp;expires=8h&amp;chkv=0&amp;chkbd=0&amp;chkpc=&amp;dp-logid=7248116945847834538&amp;dp-callid=0&amp;size=c710_u400&amp;quality=100&amp;vuk=-&amp;ft=video" alt="picture">  </p>
+<ul>
+<li><strong>添加用户权限</strong>  </li>
+</ul>
+<p><img src="https://thumbnail0.baidupcs.com/thumbnail/6ac7970a407f2dd1415f6ea73be945ec?fid=3896323671-250528-198637595825107&amp;time=1510200000&amp;rt=sh&amp;sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-HjqdkMDIzMbcADsaJAbjnuXhYEg%3D&amp;expires=8h&amp;chkv=0&amp;chkbd=0&amp;chkpc=&amp;dp-logid=7248144595439921749&amp;dp-callid=0&amp;size=c710_u400&amp;quality=100&amp;vuk=-&amp;ft=video" alt="picture"></p>
+<ul>
+<li><strong>创建自定义权限组</strong>  </li>
+</ul>
+<p><img src="https://thumbnail0.baidupcs.com/thumbnail/9daed7c4c3c4fb0a141fcbe3bfed5e79?fid=3896323671-250528-568038031038468&amp;time=1510200000&amp;rt=sh&amp;sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-TofcDUeiwsSdAPrtMbYJJZ0xIjY%3D&amp;expires=8h&amp;chkv=0&amp;chkbd=0&amp;chkpc=&amp;dp-logid=7248130129196185689&amp;dp-callid=0&amp;size=c710_u400&amp;quality=100&amp;vuk=-&amp;ft=video" alt="picture"></p>
+<p><img src="https://thumbnail0.baidupcs.com/thumbnail/8faf1f06aa2998935602abc4130f16f4?fid=3896323671-250528-384719206046152&amp;time=1510200000&amp;rt=sh&amp;sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-02HSGdp49DnO5bDjSoYkIyzGb2s%3D&amp;expires=8h&amp;chkv=0&amp;chkbd=0&amp;chkpc=&amp;dp-logid=7248154652143227979&amp;dp-callid=0&amp;size=c710_u400&amp;quality=100&amp;vuk=-&amp;ft=video" alt="picture"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/handler_handlerthread/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sxf">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/user_icon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sxf-Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/20/handler_handlerthread/" itemprop="url">Handler&HandlerThread</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
+                2019-12-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a href="jianshu.com/p/f0cdea1c232a">为什么要用HandlerThread,怎么用</a></li>
+</ul>
+<h1 id="Handler理解"><a href="#Handler理解" class="headerlink" title="Handler理解"></a>Handler理解</h1><ol>
+<li>Handler一般用于进行线程间通讯，一般是子线程向主线程发送数据变动，更新UI操作。</li>
+<li>Handler的消息回调接收是是跟你创建Handler的线程绑定的，即你在那个线程创建的Handler，其不管在那个线程发送消息，最后回调的方法实现都是在你创建Handler的线程里完成。</li>
+<li>Handler跟Thread没有关系，其内部不能做耗时操作，但是可以发送延迟消息… …<h1 id="Handler机制"><a href="#Handler机制" class="headerlink" title="Handler机制"></a>Handler机制</h1></li>
+</ol>
+<ul>
+<li>Message:消息，由MessageQueue统一队列,交给Handler处理。  </li>
+<li>MessageQueue:消息队列，用来存放Handler发送过来的Message，并且按照先入先出的规则执行。</li>
+<li>Handler：处理者，负责发送和处理Message.</li>
+<li>Looper:死循环，不断从MessageQueue中获取Message并执行。  <h1 id="Looper"><a href="#Looper" class="headerlink" title="Looper"></a>Looper</h1></li>
+</ul>
+<ol>
+<li>Handler的创建时该线程中必须含有Looper对象。  </li>
+<li>在程序启动时，系统会先加载ActivityThread这个类，该类在main方法中会生成Looper对象：<code>Looper.prepareMainLooper()</code>，并随之创建消息队列，然后会调用<code>Looper.loop()</code>进行队列中的消息循环，故MainThread中可以直接创建Handler对象，发送消息。</li>
+<li>非主线程是不自带Looper的，如果在子线程中进行Handler的创建需要自己调用<code>Looper.prepare()</code>创建Looper对象，不然会报<code>java.lang.RuntimeException: Can&#39;t create handler inside thread that has not called Looper.prepare()</code>异常。注意：调用之前需要判断该线程是否有Looper对象，通过： <code>Loopper.myLooper()</code>来判断，不然会报<code>java.lang.RuntimeException: Only one Looper may be created per thread</code>异常。</li>
+<li>获取主线程的Looper对象：<code>Looper.getMainLooper()</code>。<h1 id="Handler-Message-amp-Runable"><a href="#Handler-Message-amp-Runable" class="headerlink" title="Handler-Message&amp;Runable"></a>Handler-Message&amp;Runable</h1></li>
+</ol>
+<ul>
+<li>sendMessage()：一般用于线程间消息传递  </li>
+<li>post(new Runnable)：其并不是开启一个Thread，只是单纯的发送一个Null的消息，回调会在Runnable的实现run()方法只执行，一般会结合HandlerThread来使用。<h1 id="子线程创建Handler对象（子线程需要借助Looper处理）"><a href="#子线程创建Handler对象（子线程需要借助Looper处理）" class="headerlink" title="子线程创建Handler对象（子线程需要借助Looper处理）"></a>子线程创建Handler对象（子线程需要借助Looper处理）</h1></li>
+<li>方式一： </li>
+</ul>
+<pre><code>public class MyHandlerThread extends Thread {
+public static final String TAG = &quot;MyHT&quot;;
+
+public Handler mHandler = null;
+
+@Override
+public void run() {
+    Log.d(TAG, &quot;进入Thread的run&quot;);
+    Looper.prepare();//looper创建
+    mHandler = new Handler(Looper.myLooper()){
+        @Override
+        public void handleMessage(Message msg){
+            Log.d(TAG, &quot;获得了message&quot;);
+            super.handleMessage(msg);
+        }
+    };
+    Looper.loop();//因开始无限while(true)死循环，下边的代码不会再执行,mHandler.getLooper().quit(),可以结束Looper.loop循环
+    ... ...
+    //主线程的所有操作都在Looper循环体内部执行，故不会出现这种情况
+}
+}
+</code></pre><ul>
+<li><p>方式二(HandlerThread:为创建子线程Looper做了安全封装)：</p>
+<pre><code>//在MainThread中创建，HandlerThread其实就是在创建个带有Looper对象的子线程  
+HandlerThread handlerThr=new HandlerThread(&quot;HandlerThread&quot;);
+      handlerThr.start();//开启线程
+      Looper looper = handlerThr.getLooper();
+      Handler handler=new Handler(looper, new Handler.Callback() {
+          @Override
+          public boolean handleMessage(Message msg) {
+              //该Handler是在子线程中创建的--所以其handlerMessage()回调仍然在子线程中--回调线程是个创建Handler的线程在一起
+              //故这个回调里也不能更新UI
+              //需要handler.sendMessage();才能走改回调
+              return false;
+          }
+      });//该Handler就是在子线程中生命的Handler---并且 你不需要Looper.prepare();Looper.loop(),HandlerThread内部已经创建了Looper对象;
+      .........  // UI操作
+      .........
+      .........
+      if(handler!=null) {
+          handler.post(new Runnable() {
+              @Override
+              public void run() {
+                  //仍是子Thread-不能更新UI
+                 //异步请求：子线程中弹Toast:toast的创建需要Looper对象，所以在子线程中showToast的话也需要创建Looper
+                 //handler.post()直接走改run方法(handler.postDelayed(runnable,1000),延迟发送
+                Toast.makeText(Main2Activity.this,&quot;异步请求&quot;,Toast.LENGTH_SHORT).show();
+              }
+          });
+      }
+</code></pre><h1 id="Destory取消队列循环"><a href="#Destory取消队列循环" class="headerlink" title="Destory取消队列循环"></a>Destory取消队列循环</h1></li>
+<li>sendMessage()方式进行消息传递：handler.removeCallBacksAndMessages(null)  </li>
+<li>post(runnable)方式：handler.removeCallBacks(runnable);</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/git/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sxf">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/user_icon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sxf-Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/20/git/" itemprop="url">Git语法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
+                2019-12-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="新建本地仓库"><a href="#新建本地仓库" class="headerlink" title="新建本地仓库"></a>新建本地仓库</h1><ul>
+<li><p>在当前目录新建一个Git代码本地仓库</p>
+<p>   git init</p>
+</li>
+<li><p>添加指定文件到暂存区</p>
+<pre><code>git add [file] [file] ....  
+</code></pre></li>
+<li><p>提交文件到本地  </p>
+<pre><code>git commit [file] [file] ... -m[message]
+git commit -m[message]
+</code></pre></li>
+<li><p>提交到远端 </p>
+<pre><code>git push
+</code></pre></li>
+<li><p>删除工作区文件</p>
+<pre><code>git rm [file] [file] ....
+</code></pre></li>
+<li><p>提交显示时所有的diff信息</p>
+<pre><code>git commit -v
+git status
+</code></pre><h1 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h1></li>
+<li><code>git branch</code>//查看本地分支</li>
+<li><code>git branch -r</code>//查看远程分支</li>
+<li><code>git branch -a</code>//查看本地和远程分支</li>
+<li><code>git branch [branch-name]</code>//创建新分支，但是仍然停留在改分支</li>
+<li><code>git checkout [branch-name]</code>//切换到当前分支—<code>git checkout -b [branch-name]</code>//也同样可以实现</li>
+<li><code>git merge [branch]</code>//合并指定分支(branch)到<em>当前分支</em></li>
+<li><code>git branch -d [branch-name]</code>//删除本地分支</li>
+<li><code>git branch -d origin [branch-name]</code>//删除远程分支</li>
+</ul>
+<h1 id="创建Tag"><a href="#创建Tag" class="headerlink" title="创建Tag"></a>创建Tag</h1><ul>
+<li><code>git tag</code>//列出所有tag</li>
+<li><code>git tag [tag]</code>//创建一个tag在本地</li>
+<li><code>git push [remote] [tag]</code>//提交tag到指定远端</li>
+<li><code>git push [remote] --tags</code>//提交所有tag到远端分支[origin]</li>
+</ul>
+<h1 id="删除远程分支和Tag"><a href="#删除远程分支和Tag" class="headerlink" title="删除远程分支和Tag"></a>删除远程分支和Tag</h1><ul>
+<li><code>git push origin --delete &lt;brancnName&gt;</code></li>
+<li><code>git push origin --delete tag &lt;tagName&gt;</code><h1 id="删除本地分支和tag"><a href="#删除本地分支和tag" class="headerlink" title="删除本地分支和tag"></a>删除本地分支和tag</h1></li>
+<li><code>git tag -d [tag]</code></li>
+<li><code>git branch -d [branch]</code><h1 id="删除掉不存在远程分支的本地分支"><a href="#删除掉不存在远程分支的本地分支" class="headerlink" title="删除掉不存在远程分支的本地分支"></a>删除掉不存在远程分支的本地分支</h1></li>
+<li><code>git fetch -p</code> //会删除所有的没有跟远程分支对应上的本地分子  </li>
+<li>git checkout branchX //切换到不复合的本地分支  然后使用<br><code>git remote prune origin</code>可以清除对应的分支  <h1 id="重命名远程分支"><a href="#重命名远程分支" class="headerlink" title="重命名远程分支"></a>重命名远程分支</h1></li>
+<li>在git中重命名远程分支，其实就是先删除远程分支，然后重命名本地分支，再重新提交一个远程分支</li>
+<li><p>先查看远程的分支  </p>
+<pre><code>git branch -a  
+</code></pre></li>
+<li><p>删除远端分支  </p>
+<pre><code>git push --delete origin develop
+</code></pre></li>
+<li><p>重命名本地分支(develop–&gt;devel)</p>
+<pre><code>git branch -m develop devel
+</code></pre></li>
+<li><p>推送本地分支  </p>
+<pre><code>git push origin devel
+</code></pre></li>
+</ul>
+<hr>
+<h1 id="待续"><a href="#待续" class="headerlink" title="待续"></a>待续</h1><ul>
+<li>总归一句话：操作分支：git branch ..</li>
+<li>操作tag：git tag …</li>
+<li>操作远程提交tag/branch：git push origin 2.0—-//或者git push –tags(省略origin远程 )</li>
+<li>操作远程删除tag/branch:git push origin -d 2.0</li>
+<li>远程代码提交：git push 就可以了</li>
+</ul>
+<h1 id="多分支并行开发（都是以develop为基准分支）"><a href="#多分支并行开发（都是以develop为基准分支）" class="headerlink" title="多分支并行开发（都是以develop为基准分支）"></a>多分支并行开发（都是以develop为基准分支）</h1><ul>
+<li><p>正常逻辑</p>
+<pre><code>git branch native;//创建本地分支
+git checkout native;//切换到native分支,前提是需要将develop的代码进行提交后再切换
+... ... native分支一顿修改
+此时如果 git checkout develop
+develop上会有native分支上边的修改
+但是其实修改还是算native分支上边的修改，并不是develop分支上的
+</code></pre></li>
+<li><p>方案一：将native分支推送到远端origin</p>
+<pre><code>git push origin native
+//切换分支前将native内容提交到远端然后再切换
+git commit -xxx
+git push
+git checkout develop
+</code></pre></li>
+<li><p>方案二：只是小功能点不需要提交到远端</p>
+<pre><code>native分支修改后进行commit，然后再切换
+git commit -xxx
+git checkout develop//这时develop上就不会有native分支新增内容，跟方案一是一样的
+</code></pre></li>
+<li><p>方案三：可以不commit的话可以用stash</p>
+<pre><code>切换到native分支后一顿修改，然后可以
+git stash//将修改的内容暂时先存储在git的栈中
+//等你下次切回来后
+git stash pop //会提取出你之前存储的最新一次的记录
+</code></pre></li>
+<li><p>值得注意的是：</p>
+<ul>
+<li>不过这种一般会用在develop修改，然后还没改好，需要切换到native分支上，这时会用到，因为不提交的话是切换不到native分支的，，子分支可以不提交直接切父分支，父分支不可以不提交直接切子分支，，正常子分支是建立在父分支的基租上创建的，所以正常是子分支代码量是大于父分支的</li>
+</ul>
+</li>
+<li><p>des</p>
+<ul>
+<li>native修改后忘记commit，然后遗忘，在master上继续修改，切换到native上commit后，在切换develop，develop上就没有对应的修改了</li>
+<li>大概意思就是不管你在哪个分支修改，最终commit的分支为最终分支的提交，之前其他分支修改没有提交的都会还原到上一次提交的最新状态</li>
+</ul>
+</li>
+</ul>
+<h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><ul>
+<li><a href="http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html</a></li>
+<li><a href="https://blog.zengrong.net/post/1746.html" target="_blank" rel="noopener">https://blog.zengrong.net/post/1746.html</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/go_back/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sxf">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/user_icon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sxf-Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/20/go_back/" itemprop="url">GO-BACK</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
+                2019-12-20
               </time>
             
 
@@ -1141,7 +2021,7 @@ public boolean equals(Object anObject) {
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2018/10/26/enum_rgb/">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/enum_rgb/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sxf">
@@ -1160,7 +2040,7 @@ public boolean equals(Object anObject) {
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/10/26/enum_rgb/" itemprop="url">Enum&RGB</a></h1>
+                <a class="post-title-link" href="/2019/12/20/enum_rgb/" itemprop="url">Enum&RGB</a></h1>
         
 
         <div class="post-meta">
@@ -1172,8 +2052,8 @@ public boolean equals(Object anObject) {
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-26T16:04:53+08:00">
-                2018-10-26
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
+                2019-12-20
               </time>
             
 
@@ -1347,699 +2227,6 @@ RGB_565 代表16位RGB位图
 </ul>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://blog.csdn.net/gao_chun/article/details/42642965" target="_blank" rel="noopener">图片压缩质量参数Bitmap.Config RGB_565</a></p>
 <p><a href="https://blog.csdn.net/qq_27093465/article/details/52180865" target="_blank" rel="noopener">Java枚举7种用法</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2018/09/05/data_structure/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sxf">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/user_icon.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sxf-Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/05/data_structure/" itemprop="url">数据结构(表)和算法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-05T14:56:46+08:00">
-                2018-09-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><ul>
-<li>就是以某种形式将数据存储在一起的集合，它不仅存储数据，而且还支持查找访问，删除，添加，数据处理等操作。</li>
-</ul>
-<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><ul>
-<li>是为了求解一个问题需要循环的，被清楚指定的简单的指令集合，也就是代码算法规则，为了更简洁方便的解决复杂的循环查找遍历等问题</li>
-</ul>
-<h2 id="数据表之数据结构体现方式"><a href="#数据表之数据结构体现方式" class="headerlink" title="数据表之数据结构体现方式"></a>数据表之数据结构体现方式</h2><h3 id="线性表-线性存储结构"><a href="#线性表-线性存储结构" class="headerlink" title="线性表-线性存储结构"></a>线性表-线性存储结构</h3><ul>
-<li><p>是最常用最简单的一种数据结构，它是n个数据元素的<strong>有限序列</strong>,这种是针对正常的线性表结构如：数组；其在创建的时候就需要指定该数组的长度;</p>
-</li>
-<li><p>代码中使用的体现方式</p>
-<ul>
-<li>数组 :最常见和最基本的线性结构存储方式</li>
-<li>ArrayList: 也就是可增加的<strong>动态数组</strong> </li>
-</ul>
-</li>
-<li><p>优势：可以通过下标进行数据的查找，访问和修改该对象元素，比较搞笑</p>
-</li>
-<li><p>缺点：插入删除花费开销大，比如，当在第一个位置插入数据的时候，首先需要把所有的数据往后移动一个位置，然后在进行插入处理，比较耗时，为了提高插入删除处理的效率可以用链式结构来实现线性表</p>
-</li>
-</ul>
-<h3 id="链表-链式存储结构"><a href="#链表-链式存储结构" class="headerlink" title="链表-链式存储结构"></a>链表-链式存储结构</h3><ul>
-<li><p>链表是物理存储单元上非连续、非顺序的存储结构，是由一系列“节点”组成，这些节点不必在内存中相连，其逻辑顺序是根据链表中的指针链接顺序来决定的，也就是根据指针来寻找自己指向的下一个节点</p>
-</li>
-<li><p>节点：是由数据部分:Data和链接部分指针Next组成，Next指向下一个节点，这样在添加删除数据时只需要改变指定的数据的Next的指向就可以了。</p>
-</li>
-<li><p>LinkedList: 双向链表结构，也就数有两个指针，一个指向上一个节点，一个指向下一个节点</p>
-</li>
-<li><p>其是数据单元在内存中存储的方式是没必要相连有序的存储类似于线性存储那样，并不是针对ArrayList使用时打印出来的就是有序的，LinkedList就是无需的，其只是内存中的存储，真正使用的时候，其遍历取值的时候也是经过转换有序的输出的，可能LinkedList查找更慢一点添加更快一点，ArrayList查找更快一点，添加更慢一点；</p>
-</li>
-<li><p>针对链式结构存储，所有的查找都是通过指针的，找到对应的指针，其实对应的指针就是下一个对象的索引对象(指向地址)</p>
-</li>
-</ul>
-<h3 id="特殊线性表-栈和队列存储结构"><a href="#特殊线性表-栈和队列存储结构" class="headerlink" title="特殊线性表-栈和队列存储结构"></a>特殊线性表-栈和队列存储结构</h3><ul>
-<li><p>栈 ：是限制插入和删除只能在一个位置上进行的表，该位置就是表的末端，就是栈顶；保持先进后出的数据存储方式，LIFO:last in first out，常见的运用存储是Activity的存储</p>
-</li>
-<li><p>队列：只能在表头进行数据的删除，在表尾部进行数据的添加；常见的运用是Handler的Message队列MessageQueen</p>
-</li>
-</ul>
-<h3 id="树与二叉树存储结构"><a href="#树与二叉树存储结构" class="headerlink" title="树与二叉树存储结构"></a>树与二叉树存储结构</h3><ul>
-<li>树： 是由n（n&gt;=1）个有限节点组成一个具有层次关系的集合。它具有以下特点：每个节点有零个或多个子节点；没有父节点的节点称为 根 节点；每一个非根节点有且只有一个 父节点 ；除了根节点外，每个子节点可以分为多个不相交的子树。：也就是每个节点可以有多个分支树</li>
-</ul>
-<ul>
-<li>二叉树：是每个节点最多有两棵子树的树结构。通常子树被称作“左子树”和“右子树”。二叉树常被用于实现二叉查找树和二叉堆。：也就是每个节点只有最多有两个分支树</li>
-</ul>
-<ul>
-<li><p>二叉树遍历</p>
-<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fuzrim5fa1j20mj0bp75e.jpg" alt="picture"></p>
-</li>
-</ul>
-<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p><a href="https://www.cnblogs.com/wanghuaijun/p/7302303.html" target="_blank" rel="noopener">常见的数据结构和算法整理</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2018/09/04/bitmap_compress/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sxf">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/user_icon.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sxf-Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/04/bitmap_compress/" itemprop="url">图片质量、尺寸压缩</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-04T15:44:41+08:00">
-                2018-09-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="图片尺寸压缩处理"><a href="#图片尺寸压缩处理" class="headerlink" title="图片尺寸压缩处理"></a>图片尺寸压缩处理</h3><ul>
-<li><p>所有的操作都是通过流完成的、转换成流后进行处理压缩、然后在吧处理好的流转换成Bitmap</p>
-</li>
-<li><p>尺寸压缩修改，只是修改该图片的宽高。并不是对该图片进行裁剪 </p>
-</li>
-<li><p>file文件获取图片资源</p>
-<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fuxk498kdcj212e0ndwhd.jpg" alt="picture"></p>
-</li>
-</ul>
-<ul>
-<li><p>Bitmap直接压缩处理</p>
-<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fuxkbcb686j21ch0kajud.jpg" alt="picture"></p>
-</li>
-</ul>
-<h3 id="图片质量压缩处理"><a href="#图片质量压缩处理" class="headerlink" title="图片质量压缩处理"></a>图片质量压缩处理</h3><ul>
-<li><p>所有的操作都是通过流完成的、转换成流后进行处理压缩、然后在吧处理好的流转换成Bitmap</p>
-<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fuxl283i2tj21530dsgn5.jpg" alt="picture"></p>
-</li>
-</ul>
-<h3 id="对图片进行裁剪"><a href="#对图片进行裁剪" class="headerlink" title="对图片进行裁剪"></a>对图片进行裁剪</h3><p> <img src="http://ww1.sinaimg.cn/large/c82e4122gy1fuxmq42t1zj216h0bldh5.jpg" alt="picture"></p>
-<ul>
-<li>这种需要图片自动延伸扩展的一般用 scaleType来实现<ul>
-<li>centerCrop 会随着ImageView的宽高，自动进行图片的等比缩放，然后展示，当缩放后图片大于ImageView的话会进行自动裁剪显示图片中间区域</li>
-<li>fitXY 充满ImageView的大小，不会考虑图片本身的宽高比例</li>
-<li>其他的自行百度 </li>
-</ul>
-</li>
-</ul>
-<h3 id="Bitmap的常见方法介绍"><a href="#Bitmap的常见方法介绍" class="headerlink" title="Bitmap的常见方法介绍"></a>Bitmap的常见方法介绍</h3><ul>
-<li><p>解析流</p>
-<pre><code>Bitmap bitmap=BitmapFactory.decodeStream（InputStream is, Rect outPadding, Options opts）
-</code></pre></li>
-<li><p>压缩Bitmap转换成输出流</p>
-<pre><code>bitmap.compress(CompressFormat format, int quality, OutputStream stream);//100表示不压缩,质量最好
-</code></pre></li>
-<li><p>裁剪Bitmap</p>
-<pre><code>Bitmap.createBitmap(@NonNull Bitmap source, int x, int y, int width, int height,@Nullable Matrix m, boolean filter)
-</code></pre></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2018/08/28/viewflipper_pager_fragment/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sxf">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/user_icon.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sxf-Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/28/viewflipper_pager_fragment/" itemprop="url">Fragment生命周期之ViewPager懒加载</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-28T16:34:51+08:00">
-                2018-08-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Fragment生命周期"><a href="#Fragment生命周期" class="headerlink" title="Fragment生命周期"></a>Fragment生命周期</h3><ul>
-<li><p>onCreateView() :每次加载Fragment的时候会执行该方法、配对的生命周期是： onDestroyView()</p>
-</li>
-<li><p>onCreateView() :onCreateView()方法执行完后进行执行，代表View绘制完成</p>
-</li>
-<li><p>onResume() :该Fragment被执行了show操作、或者是<strong>该页面从后台显示到前台</strong>，或者是其依赖的Activity的生命周期的改变;那种ViewPager+Fragment的那种，ViewPager切换的时候，其Fragment是不执行onResume和onPause的，因为其Activity的声明周期没有改变，而且也没有执行hide和show操作,其移动就是将该Fragment进行了移动，并没有移出到后台?所以没有执行Fragment的生命周期、、、、、其实Fragment的生命周期都是根据Activity来的，除了自己的创建、尤其是onResume和onPause都是根据Activity的声明周期的onResume和onPause、、、、真正的判断实现的方法有两个:setUserVisibleHint（）和onHiddenChanged()—针对show\hide的Fragment</p>
-</li>
-</ul>
-<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fupinhsfx5j20f40o70vn.jpg" alt="picture"></p>
-<h3 id="ViewPager-Fragment-“预”加载方式解析"><a href="#ViewPager-Fragment-“预”加载方式解析" class="headerlink" title="ViewPager+Fragment “预”加载方式解析"></a>ViewPager+Fragment “预”加载方式解析</h3><ul>
-<li><p>viewPager.setOffscreenPageLimit(x): 不设置默认ViewPager会预加载相邻的1个Fragment，当切换Fragment时之前相邻的Fragment会执行onDestroyView()将Fragment销毁，当再次切换到该Fragment时其会重新生成该Fragment，也就是重新调用onCreateView()方法,<strong>也就是每次点击非相邻的Tab会重新加载渲染一次Fragment</strong></p>
-</li>
-<li><p>viewPager.setOffscreenPageLimit(n)：设置值后，一般设置fragmentList-1，这样其切换Fragment的时候所有的Fragment不会重走生命周期，也就是不会走onDestroyView()和onCreateView()进行Fragment的重复创建，这种的话刚启动加载第一个Fragment的时候，其余的都会执行onCreateView()、、onCreateView()方法进行预加载，当然这种当Activity执行生命周期onPause时，所有的都会执行onPause</p>
-</li>
-<li><p>其实ViewPager就是ViewGroup就是一个View的容器，类似于容器也就是说不管内部有多少View其都会“一次全部”加载到容器内，也就是不管现在在屏幕中的还是没有在屏幕中显示的View，其已经全部加载到该容器中了，不会因为你不在该屏幕上显示就说你没有加载到ViewGroup中，排除外来因素(手动进行ViewGroup的移出添加、或者是手动调用内部View的相关方法)，勉强解释为什么setOffscreenPageLimit（n），切换Fragment的时候，不走Fragment的声明周期</p>
-</li>
-</ul>
-<h3 id="ViewPager-Fragment-“懒”加载方式解析"><a href="#ViewPager-Fragment-“懒”加载方式解析" class="headerlink" title="ViewPager+Fragment “懒”加载方式解析"></a>ViewPager+Fragment “懒”加载方式解析</h3><h4 id="Fragment的是否显示在前台方法-onResume-onPause在上边的那种情况代表不了"><a href="#Fragment的是否显示在前台方法-onResume-onPause在上边的那种情况代表不了" class="headerlink" title="Fragment的是否显示在前台方法(onResume\onPause在上边的那种情况代表不了)"></a>Fragment的是否显示在前台方法(onResume\onPause在上边的那种情况代表不了)</h4><ul>
-<li><p>setUserVisibleHint(boolean isVisibleToUser): isVisibleToUser为ture表示该Fragment在前台展示，isVisibleToUser为false表示该Frament没有在前台展示(并不代表其跑到了后台，如果都是这样那么Fragment的onResume和onPause就可以判断了)，在ViewPager+Fragment模式下设置了setOffscreenPageLimit(n)并且切换Tab的时候一样会改变该值</p>
-</li>
-<li><p>setUserVisibleHint: 该方法有可能会被多次回调，也就是说在判断是否显示在前台前，最好还是判断一下该View是否加载完成，然后在决定是否进行网络请求；当然为了防止每次点击都加载数据，还可以添加个别的变量isFirst来判断是否是第一次加载</p>
-</li>
-<li><p>这种一般设置在BaseFragment中，向外部抛出abstract方法</p>
-<p>  <code>public abstract void fragmentIsVisible(boolean isVisibleToUser);</code></p>
-</li>
-</ul>
-<pre><code>  @Override
-public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-super.onViewCreated(view, savedInstanceState);
-isViewCreated = true;
-isFirstCreate = true;
-doLazyLoad();
-}
-
-..............................
-    /**
- * 返回True  表示当前View是否加载到窗口、就是是否是当前窗口展示
- *
- * @param isVisibleToUser
- */
-    @Override
-public void setUserVisibleHint(boolean isVisibleToUser) {
-super.setUserVisibleHint(isVisibleToUser);
-if (isVisibleToUser) {
-    //该方法有可能会调用多次、包括有可能View还没创建就进行调用、、、防止重复加载、防止View还没创建就进行View的调用操作
-    isViewVisible = true;
-    doLazyLoad();
-    } else {
-    isViewVisible = false;
-        }
-     }
-
-......................................
-
-   //需要区分是否是第一次加载、防止每次切换都进行数据的调用  更新
-private void doLazyLoad() {
-    if (isViewCreated &amp;&amp; isViewVisible) {
-        if (isFirstCreate) {
-        fragmentIsVisible(true);
-        isFirstCreate = false;
-        }
-    } else {
-        fragmentIsVisible(false);
-    }
-}
-</code></pre><h3 id="ViewPager-的进制左右滑动"><a href="#ViewPager-的进制左右滑动" class="headerlink" title="ViewPager 的进制左右滑动"></a>ViewPager 的进制左右滑动</h3><ul>
-<li><p>dispatchTouchEvent(MotionEvent ev):不变还是之前的 return super.dispatchTouchEvent(ev)-支持向下分发</p>
-</li>
-<li><p>onInterceptTouchEvent（MotionEvent ev）：改变return false；不进行事件拦截，进行向底部View传递</p>
-</li>
-<li><p>onTouchEvent(MotionEvent ev) ：改变 return false:底部View没有响应消费的话，事件回传过来自己也不进行消费，再往外传，不进行滑动响应</p>
-</li>
-</ul>
-<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fupjsp44faj21570jegnc.jpg" alt="picture"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2018/08/21/ontouchevent/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sxf">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/user_icon.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sxf-Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/21/ontouchevent/" itemprop="url">事件分发</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-21T11:35:31+08:00">
-                2018-08-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="事件传递的过程分析"><a href="#事件传递的过程分析" class="headerlink" title="事件传递的过程分析"></a>事件传递的过程分析</h3><ul>
-<li>事件传递 从最外层父View将事件 传递到 内部View  首先传递前 判断自己的<em>dispatchTouchEvent</em> 方法是否支持分发，支持分发的话，会传递自己View的<em>onInterceptTouchEvent</em> 方法，看自己是否进行拦截处理，若拦截则会传递到自己的<em>onTouchEvent</em>,若不拦截会传递到子View的<em>dispatchTouchEvent</em> 方法进行处理，内部处理流程和上一层View的处理流程一样：  dispatchTouchEvent–&gt;onInterceptTouchEvent–&gt;onTouchEvent</li>
-</ul>
-<h3 id="DispatchTouchEvent之return"><a href="#DispatchTouchEvent之return" class="headerlink" title="DispatchTouchEvent之return"></a>DispatchTouchEvent之return</h3><ul>
-<li><p>false: 返回给父View的OnTouchEvent事件</p>
-</li>
-<li><p>true ：停止传递分发、事件不传递、<em>也就是不会有onTouchEvnet事件之说，因为onTouchEvent事件，执行的时候是事件全部传到最底部View后才会执行，最底部的onTouchEvent不消费的话，才会向上一级的父View的onTouchEvent传递(也就是才会执行到父View的该方法、、当然除非是中间拦截了，才会不向下传递、直接执行自己的OnTouchEvent方法)</em></p>
-</li>
-<li><p>super.DispatchTouchEvent之return：支持分发(也就是该事件已经产生、会进行处理、直到有人将其消费、如果返回上边的，该事件就相当于没有产生，直接返给窗体View、直接被扼杀在摇篮里)、会传递到该View的onInterceptTouchEvent方法，由该方法来处理看是否继续向下传递；</p>
-</li>
-</ul>
-<h3 id="onInterceptTouchEvent之return"><a href="#onInterceptTouchEvent之return" class="headerlink" title="onInterceptTouchEvent之return"></a>onInterceptTouchEvent之return</h3><ul>
-<li>false: 不拦截传递给下一层子View进行事件分发方法：dispatchTouchEvent() 流程相同继续走。</li>
-<li>true： 拦截事件，不向下传递事件，会传递给自己的onTouchEvent()事件处理响应。</li>
-<li>super.onInterceptTouchEvent(): 等同于true，即进行拦截，交由自己的onTouchEvnent进行处理</li>
-</ul>
-<h3 id="onTouchEvent-之return"><a href="#onTouchEvent-之return" class="headerlink" title="onTouchEvent()之return"></a>onTouchEvent()之return</h3><ul>
-<li>false： 不消费、传递到上一层的View的onTouchEvnet?</li>
-<li>true : 消费，自己执行onTouchEvnet方法</li>
-<li><p>super.onTouchEvnet(): 等同于false 传递到上一层父View的 onTouchEvent进行处理</p>
-<pre><code>event.getPointerCount()//判断手指
-MotionEvent.ACTION_XXX
-MotionEvent.ACTION_UP//需要全部手指全部离开屏幕才会调用
-MotionEvent.ACTION_POINTER_UP//当存在多个手指触碰时，抬起一指就会执行该方法
-MotionEvent.ACTION_POINTER_DOWN
-</code></pre></li>
-</ul>
-<h3 id="GestureDetector-手势管理之OnGestureListener"><a href="#GestureDetector-手势管理之OnGestureListener" class="headerlink" title="GestureDetector 手势管理之OnGestureListener"></a>GestureDetector 手势管理之OnGestureListener</h3><ul>
-<li><p>void onShowPress(MotionEvent e);</p>
-</li>
-<li><p>boolean onSingleTapUp(MotionEvent e);</p>
-</li>
-<li><p>void onLongPress(MotionEvent e);</p>
-</li>
-<li><p>boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY);</p>
-</li>
-</ul>
-<h3 id="接收方式"><a href="#接收方式" class="headerlink" title="接收方式"></a>接收方式</h3><ul>
-<li>onTouchEvent 内部调用—mGestureDetector.onTouchEvent(event);</li>
-</ul>
-<h3 id="子View控制父View拦截"><a href="#子View控制父View拦截" class="headerlink" title="子View控制父View拦截"></a>子View控制父View拦截</h3><p><code>getParent().requestDisallowInterceptTouchEvent(true);</code></p>
-<ul>
-<li><p>true：表示父View对事件进行拦截无效例如：onInterceptTouchEvent内部对事件down、move返回true，也是不起作用的</p>
-</li>
-<li><p>false：表示父View对内部子View的拦截是有效的</p>
-</li>
-</ul>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
-<li><p>所有的事件都是先往最底层传递的、最底层没有消费时才会一层一层的往外层传到各自的onTouchEvent()方法中，但是事件首先都是会执行DispatchTouchEvent方法进行分发传递到下一层的，其中会走每一层的：DispatchTouchEvent和onInterceptTouchEvent方法判断是不是需要拦截，不拦截就继续往下一层走，所以onInterceptTouchEvent的Down事件是都会走的，：包括MOVE事件、UP事件，当最外层的事件把Down拦截了，下边的就不会走了，当没有拦截，会一层一层走，，当最底层有方法表示</p>
-<pre><code>`getParent().requestDisallowInterceptTouchEvent(true);`  
-</code></pre><p>谁都不能拦截我的事件，那么事件就不会往上在传递到外层的move、up等事件了就会到该处消费结束！！！也就是说这个时候onInterceptTouchEvent的MOVE事件和UP事件都不会走了（对应的方法都不走了），其他情况还是每一层新的事件都会进行传递所以会出现那种：不拦截Down事件拦截Move事件的情况，，所以如果底部有拦截但是外层也想获取点击的坐标位置：就可以在onInterceptTouchEvent方法的down事件中进行获取点击的坐标位置、</p>
-</li>
-</ul>
-<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fxp372f46rj217r0ngadh.jpg" alt="picture"></p>
 
           
         
