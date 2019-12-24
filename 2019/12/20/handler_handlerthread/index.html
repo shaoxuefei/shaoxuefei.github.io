@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Sxf-Blog">
 <meta property="og:description" content="参考 为什么要用HandlerThread,怎么用  Handler理解 Handler一般用于进行线程间通讯，一般是子线程向主线程发送数据变动，更新UI操作。 Handler的消息回调接收是是跟你创建Handler的线程绑定的，即你在那个线程创建的Handler，其不管在那个线程发送消息，最后回调的方法实现都是在你创建Handler的线程里完成。 Handler跟Thread没有关系，其内部不能">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-11-04T07:34:00.528Z">
+<meta property="og:updated_time" content="2019-12-24T11:58:16.938Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Handler&amp;HandlerThread">
 <meta name="twitter:description" content="参考 为什么要用HandlerThread,怎么用  Handler理解 Handler一般用于进行线程间通讯，一般是子线程向主线程发送数据变动，更新UI操作。 Handler的消息回调接收是是跟你创建Handler的线程绑定的，即你在那个线程创建的Handler，其不管在那个线程发送消息，最后回调的方法实现都是在你创建Handler的线程里完成。 Handler跟Thread没有关系，其内部不能">
@@ -348,7 +348,11 @@ public void run() {
 </code></pre><ul>
 <li><p>方式二(HandlerThread:为创建子线程Looper做了安全封装)：</p>
 <pre><code>//在MainThread中创建，HandlerThread其实就是在创建个带有Looper对象的子线程  
-HandlerThread handlerThr=new HandlerThread(&quot;HandlerThread&quot;);
+//也不能这样说：其实就是创建了个Looper对象，只是在子线程中创建的Looper对象、、、之所以创建还不是因为Handler需要在子线程中使用
+//Handler handler =new Handler();//其实内部参数是需要传入一个Looper对象的
+</code></pre></li>
+</ul>
+<pre><code>HandlerThread handlerThr=new HandlerThread(&quot;HandlerThread&quot;);
       handlerThr.start();//开启线程
       Looper looper = handlerThr.getLooper();
       Handler handler=new Handler(looper, new Handler.Callback() {
@@ -374,7 +378,7 @@ HandlerThread handlerThr=new HandlerThread(&quot;HandlerThread&quot;);
               }
           });
       }
-</code></pre><h1 id="Destory取消队列循环"><a href="#Destory取消队列循环" class="headerlink" title="Destory取消队列循环"></a>Destory取消队列循环</h1></li>
+</code></pre><h1 id="Destory取消队列循环"><a href="#Destory取消队列循环" class="headerlink" title="Destory取消队列循环"></a>Destory取消队列循环</h1><ul>
 <li>sendMessage()方式进行消息传递：handler.removeCallBacksAndMessages(null)  </li>
 <li>post(runnable)方式：handler.removeCallBacks(runnable);</li>
 </ul>

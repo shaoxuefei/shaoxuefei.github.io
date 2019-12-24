@@ -232,6 +232,199 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/viewflipper_pager_fragment/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sxf">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/user_icon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sxf-Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/20/viewflipper_pager_fragment/" itemprop="url">Fragment生命周期之ViewPager懒加载</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
+                2019-12-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Fragment生命周期"><a href="#Fragment生命周期" class="headerlink" title="Fragment生命周期"></a>Fragment生命周期</h3><ul>
+<li><p>onCreateView() :每次加载Fragment的时候会执行该方法、配对的生命周期是： onDestroyView()</p>
+</li>
+<li><p>onCreateView() :onCreateView()方法执行完后进行执行，代表View绘制完成</p>
+</li>
+<li><p>onResume() :该Fragment被执行了show操作、或者是<strong>该页面从后台显示到前台</strong>，或者是其依赖的Activity的生命周期的改变;那种ViewPager+Fragment的那种，ViewPager切换的时候，其Fragment是不执行onResume和onPause的，因为其Activity的声明周期没有改变，而且也没有执行hide和show操作,其移动就是将该Fragment进行了移动，并没有移出到后台?所以没有执行Fragment的生命周期、、、、、其实Fragment的生命周期都是根据Activity来的，除了自己的创建、尤其是onResume和onPause都是根据Activity的声明周期的onResume和onPause、、、、真正的判断实现的方法有两个:setUserVisibleHint（）和onHiddenChanged()—针对show\hide的Fragment</p>
+</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fupinhsfx5j20f40o70vn.jpg" alt="picture"></p>
+<h3 id="ViewPager-Fragment-“预”加载方式解析"><a href="#ViewPager-Fragment-“预”加载方式解析" class="headerlink" title="ViewPager+Fragment “预”加载方式解析"></a>ViewPager+Fragment “预”加载方式解析</h3><ul>
+<li><p>viewPager.setOffscreenPageLimit(x): 不设置默认ViewPager会预加载相邻的1个Fragment，当切换Fragment时之前相邻的Fragment会执行onDestroyView()将Fragment销毁，当再次切换到该Fragment时其会重新生成该Fragment，也就是重新调用onCreateView()方法,<strong>也就是每次点击非相邻的Tab会重新加载渲染一次Fragment</strong></p>
+</li>
+<li><p>viewPager.setOffscreenPageLimit(n)：设置值后，一般设置fragmentList-1，这样其切换Fragment的时候所有的Fragment不会重走生命周期，也就是不会走onDestroyView()和onCreateView()进行Fragment的重复创建，这种的话刚启动加载第一个Fragment的时候，其余的都会执行onCreateView()、、onCreateView()方法进行预加载，当然这种当Activity执行生命周期onPause时，所有的都会执行onPause</p>
+</li>
+<li><p>其实ViewPager就是ViewGroup就是一个View的容器，类似于容器也就是说不管内部有多少View其都会“一次全部”加载到容器内，也就是不管现在在屏幕中的还是没有在屏幕中显示的View，其已经全部加载到该容器中了，不会因为你不在该屏幕上显示就说你没有加载到ViewGroup中，排除外来因素(手动进行ViewGroup的移出添加、或者是手动调用内部View的相关方法)，勉强解释为什么setOffscreenPageLimit（n），切换Fragment的时候，不走Fragment的声明周期</p>
+</li>
+</ul>
+<h3 id="ViewPager-Fragment-“懒”加载方式解析"><a href="#ViewPager-Fragment-“懒”加载方式解析" class="headerlink" title="ViewPager+Fragment “懒”加载方式解析"></a>ViewPager+Fragment “懒”加载方式解析</h3><h4 id="Fragment的是否显示在前台方法-onResume-onPause在上边的那种情况代表不了"><a href="#Fragment的是否显示在前台方法-onResume-onPause在上边的那种情况代表不了" class="headerlink" title="Fragment的是否显示在前台方法(onResume\onPause在上边的那种情况代表不了)"></a>Fragment的是否显示在前台方法(onResume\onPause在上边的那种情况代表不了)</h4><ul>
+<li><p>setUserVisibleHint(boolean isVisibleToUser): isVisibleToUser为ture表示该Fragment在前台展示，isVisibleToUser为false表示该Frament没有在前台展示(并不代表其跑到了后台，如果都是这样那么Fragment的onResume和onPause就可以判断了)，在ViewPager+Fragment模式下设置了setOffscreenPageLimit(n)并且切换Tab的时候一样会改变该值</p>
+</li>
+<li><p>setUserVisibleHint: 该方法有可能会被多次回调，也就是说在判断是否显示在前台前，最好还是判断一下该View是否加载完成，然后在决定是否进行网络请求；当然为了防止每次点击都加载数据，还可以添加个别的变量isFirst来判断是否是第一次加载</p>
+</li>
+<li><p>这种一般设置在BaseFragment中，向外部抛出abstract方法</p>
+<p>  <code>public abstract void fragmentIsVisible(boolean isVisibleToUser);</code></p>
+</li>
+</ul>
+<pre><code>  @Override
+public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+super.onViewCreated(view, savedInstanceState);
+isViewCreated = true;
+isFirstCreate = true;
+doLazyLoad();
+}
+
+..............................
+    /**
+ * 返回True  表示当前View是否加载到窗口、就是是否是当前窗口展示
+ *
+ * @param isVisibleToUser
+ */
+    @Override
+public void setUserVisibleHint(boolean isVisibleToUser) {
+super.setUserVisibleHint(isVisibleToUser);
+if (isVisibleToUser) {
+    //该方法有可能会调用多次、包括有可能View还没创建就进行调用、、、防止重复加载、防止View还没创建就进行View的调用操作
+    isViewVisible = true;
+    doLazyLoad();
+    } else {
+    isViewVisible = false;
+        }
+     }
+
+......................................
+
+   //需要区分是否是第一次加载、防止每次切换都进行数据的调用  更新
+private void doLazyLoad() {
+    if (isViewCreated &amp;&amp; isViewVisible) {
+        if (isFirstCreate) {
+        fragmentIsVisible(true);
+        isFirstCreate = false;
+        }
+    } else {
+        fragmentIsVisible(false);
+    }
+}
+</code></pre><h3 id="ViewPager-的进制左右滑动"><a href="#ViewPager-的进制左右滑动" class="headerlink" title="ViewPager 的进制左右滑动"></a>ViewPager 的进制左右滑动</h3><ul>
+<li><p>dispatchTouchEvent(MotionEvent ev):不变还是之前的 return super.dispatchTouchEvent(ev)-支持向下分发</p>
+</li>
+<li><p>onInterceptTouchEvent（MotionEvent ev）：改变return false；不进行事件拦截，进行向底部View传递</p>
+</li>
+<li><p>onTouchEvent(MotionEvent ev) ：改变 return false:底部View没有响应消费的话，事件回传过来自己也不进行消费，再往外传，不进行滑动响应</p>
+</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fupjsp44faj21570jegnc.jpg" alt="picture"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/stringbuffer/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -430,199 +623,6 @@ screenSize：设备的屏幕的尺寸信息发生了改变，旋转屏幕时也�
 </code></pre><ul>
 <li>不设置config属性时，当页面状态改变时，会重新创建Activity，会重新走Activity的生命周期</li>
 </ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/viewflipper_pager_fragment/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sxf">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/user_icon.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sxf-Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/20/viewflipper_pager_fragment/" itemprop="url">Fragment生命周期之ViewPager懒加载</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
-                2019-12-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Fragment生命周期"><a href="#Fragment生命周期" class="headerlink" title="Fragment生命周期"></a>Fragment生命周期</h3><ul>
-<li><p>onCreateView() :每次加载Fragment的时候会执行该方法、配对的生命周期是： onDestroyView()</p>
-</li>
-<li><p>onCreateView() :onCreateView()方法执行完后进行执行，代表View绘制完成</p>
-</li>
-<li><p>onResume() :该Fragment被执行了show操作、或者是<strong>该页面从后台显示到前台</strong>，或者是其依赖的Activity的生命周期的改变;那种ViewPager+Fragment的那种，ViewPager切换的时候，其Fragment是不执行onResume和onPause的，因为其Activity的声明周期没有改变，而且也没有执行hide和show操作,其移动就是将该Fragment进行了移动，并没有移出到后台?所以没有执行Fragment的生命周期、、、、、其实Fragment的生命周期都是根据Activity来的，除了自己的创建、尤其是onResume和onPause都是根据Activity的声明周期的onResume和onPause、、、、真正的判断实现的方法有两个:setUserVisibleHint（）和onHiddenChanged()—针对show\hide的Fragment</p>
-</li>
-</ul>
-<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fupinhsfx5j20f40o70vn.jpg" alt="picture"></p>
-<h3 id="ViewPager-Fragment-“预”加载方式解析"><a href="#ViewPager-Fragment-“预”加载方式解析" class="headerlink" title="ViewPager+Fragment “预”加载方式解析"></a>ViewPager+Fragment “预”加载方式解析</h3><ul>
-<li><p>viewPager.setOffscreenPageLimit(x): 不设置默认ViewPager会预加载相邻的1个Fragment，当切换Fragment时之前相邻的Fragment会执行onDestroyView()将Fragment销毁，当再次切换到该Fragment时其会重新生成该Fragment，也就是重新调用onCreateView()方法,<strong>也就是每次点击非相邻的Tab会重新加载渲染一次Fragment</strong></p>
-</li>
-<li><p>viewPager.setOffscreenPageLimit(n)：设置值后，一般设置fragmentList-1，这样其切换Fragment的时候所有的Fragment不会重走生命周期，也就是不会走onDestroyView()和onCreateView()进行Fragment的重复创建，这种的话刚启动加载第一个Fragment的时候，其余的都会执行onCreateView()、、onCreateView()方法进行预加载，当然这种当Activity执行生命周期onPause时，所有的都会执行onPause</p>
-</li>
-<li><p>其实ViewPager就是ViewGroup就是一个View的容器，类似于容器也就是说不管内部有多少View其都会“一次全部”加载到容器内，也就是不管现在在屏幕中的还是没有在屏幕中显示的View，其已经全部加载到该容器中了，不会因为你不在该屏幕上显示就说你没有加载到ViewGroup中，排除外来因素(手动进行ViewGroup的移出添加、或者是手动调用内部View的相关方法)，勉强解释为什么setOffscreenPageLimit（n），切换Fragment的时候，不走Fragment的声明周期</p>
-</li>
-</ul>
-<h3 id="ViewPager-Fragment-“懒”加载方式解析"><a href="#ViewPager-Fragment-“懒”加载方式解析" class="headerlink" title="ViewPager+Fragment “懒”加载方式解析"></a>ViewPager+Fragment “懒”加载方式解析</h3><h4 id="Fragment的是否显示在前台方法-onResume-onPause在上边的那种情况代表不了"><a href="#Fragment的是否显示在前台方法-onResume-onPause在上边的那种情况代表不了" class="headerlink" title="Fragment的是否显示在前台方法(onResume\onPause在上边的那种情况代表不了)"></a>Fragment的是否显示在前台方法(onResume\onPause在上边的那种情况代表不了)</h4><ul>
-<li><p>setUserVisibleHint(boolean isVisibleToUser): isVisibleToUser为ture表示该Fragment在前台展示，isVisibleToUser为false表示该Frament没有在前台展示(并不代表其跑到了后台，如果都是这样那么Fragment的onResume和onPause就可以判断了)，在ViewPager+Fragment模式下设置了setOffscreenPageLimit(n)并且切换Tab的时候一样会改变该值</p>
-</li>
-<li><p>setUserVisibleHint: 该方法有可能会被多次回调，也就是说在判断是否显示在前台前，最好还是判断一下该View是否加载完成，然后在决定是否进行网络请求；当然为了防止每次点击都加载数据，还可以添加个别的变量isFirst来判断是否是第一次加载</p>
-</li>
-<li><p>这种一般设置在BaseFragment中，向外部抛出abstract方法</p>
-<p>  <code>public abstract void fragmentIsVisible(boolean isVisibleToUser);</code></p>
-</li>
-</ul>
-<pre><code>  @Override
-public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-super.onViewCreated(view, savedInstanceState);
-isViewCreated = true;
-isFirstCreate = true;
-doLazyLoad();
-}
-
-..............................
-    /**
- * 返回True  表示当前View是否加载到窗口、就是是否是当前窗口展示
- *
- * @param isVisibleToUser
- */
-    @Override
-public void setUserVisibleHint(boolean isVisibleToUser) {
-super.setUserVisibleHint(isVisibleToUser);
-if (isVisibleToUser) {
-    //该方法有可能会调用多次、包括有可能View还没创建就进行调用、、、防止重复加载、防止View还没创建就进行View的调用操作
-    isViewVisible = true;
-    doLazyLoad();
-    } else {
-    isViewVisible = false;
-        }
-     }
-
-......................................
-
-   //需要区分是否是第一次加载、防止每次切换都进行数据的调用  更新
-private void doLazyLoad() {
-    if (isViewCreated &amp;&amp; isViewVisible) {
-        if (isFirstCreate) {
-        fragmentIsVisible(true);
-        isFirstCreate = false;
-        }
-    } else {
-        fragmentIsVisible(false);
-    }
-}
-</code></pre><h3 id="ViewPager-的进制左右滑动"><a href="#ViewPager-的进制左右滑动" class="headerlink" title="ViewPager 的进制左右滑动"></a>ViewPager 的进制左右滑动</h3><ul>
-<li><p>dispatchTouchEvent(MotionEvent ev):不变还是之前的 return super.dispatchTouchEvent(ev)-支持向下分发</p>
-</li>
-<li><p>onInterceptTouchEvent（MotionEvent ev）：改变return false；不进行事件拦截，进行向底部View传递</p>
-</li>
-<li><p>onTouchEvent(MotionEvent ev) ：改变 return false:底部View没有响应消费的话，事件回传过来自己也不进行消费，再往外传，不进行滑动响应</p>
-</li>
-</ul>
-<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fupjsp44faj21570jegnc.jpg" alt="picture"></p>
 
           
         
@@ -1499,7 +1499,11 @@ public void run() {
 </code></pre><ul>
 <li><p>方式二(HandlerThread:为创建子线程Looper做了安全封装)：</p>
 <pre><code>//在MainThread中创建，HandlerThread其实就是在创建个带有Looper对象的子线程  
-HandlerThread handlerThr=new HandlerThread(&quot;HandlerThread&quot;);
+//也不能这样说：其实就是创建了个Looper对象，只是在子线程中创建的Looper对象、、、之所以创建还不是因为Handler需要在子线程中使用
+//Handler handler =new Handler();//其实内部参数是需要传入一个Looper对象的
+</code></pre></li>
+</ul>
+<pre><code>HandlerThread handlerThr=new HandlerThread(&quot;HandlerThread&quot;);
       handlerThr.start();//开启线程
       Looper looper = handlerThr.getLooper();
       Handler handler=new Handler(looper, new Handler.Callback() {
@@ -1525,7 +1529,7 @@ HandlerThread handlerThr=new HandlerThread(&quot;HandlerThread&quot;);
               }
           });
       }
-</code></pre><h1 id="Destory取消队列循环"><a href="#Destory取消队列循环" class="headerlink" title="Destory取消队列循环"></a>Destory取消队列循环</h1></li>
+</code></pre><h1 id="Destory取消队列循环"><a href="#Destory取消队列循环" class="headerlink" title="Destory取消队列循环"></a>Destory取消队列循环</h1><ul>
 <li>sendMessage()方式进行消息传递：handler.removeCallBacksAndMessages(null)  </li>
 <li>post(runnable)方式：handler.removeCallBacks(runnable);</li>
 </ul>
@@ -2021,7 +2025,7 @@ public boolean equals(Object anObject) {
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/enum_rgb/">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/data_structure/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sxf">
@@ -2040,7 +2044,7 @@ public boolean equals(Object anObject) {
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/12/20/enum_rgb/" itemprop="url">Enum&RGB</a></h1>
+                <a class="post-title-link" href="/2019/12/20/data_structure/" itemprop="url">数据结构(表)和算法</a></h1>
         
 
         <div class="post-meta">
@@ -2092,141 +2096,56 @@ public boolean equals(Object anObject) {
       
         
           
-            <h2 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h2><pre><code>public enum EnumBean {
-//这些类别每个都是一个该EnumBean的类、也就是多个EnumBean的对象、只是这些枚举定义的方式有点不同、类似于EnumBean enumbean;只不过枚举调用是直接可以点出来的，也就是类似于static的
-    TAB01(0, &quot;随性一笔&quot;),
-    TAB02(1, &quot;SeekBar&quot;),
-    TAB03(2, &quot;PopWindow-List&quot;),
-    TAB04(3, &quot;gson/fastJson-特殊字符转译&quot;),
-    TAB05(4, &quot;Rxjava-请求示例&quot;),
-
-    TAB06(5, &quot;Pic选择&quot;),
-
-    TAB07(6, &quot;DialogFragment&quot;),
-
-    TAB08(7, &quot;跳转App&quot;),
-
-    TAB09(8, &quot;事件分析&quot;),
-
-    TAB10(9, &quot;重定项-URL2JS&quot;),
-
-    TAB11(10, &quot;方法作用域&quot;);
-
-        private String enumName;
-    private int enumPosition;
-
-    EnumBean(int position, String tab01) {
-    enumName = tab01;
-    enumPosition = position;
-    }
-
-    @Override
-    public String toString() {
-        EnumBean[] values = EnumBean.values();
-        for (EnumBean enumBean : values) {
-            if (enumBean.getEnumPosition() == 10) {
-                return enumBean.getEnumName();
-            }
-        }
-        return &quot;&quot;;
-    }
-
-
-    public String getEnumName() {
-        return enumName;
-    }
-
-    public void setEnumName(String enumName) {
-        this.enumName = enumName;
-    }
-
-    public int getEnumPosition() {
-        return enumPosition;
-    }
-
-    public void setEnumPosition(int enumPosition) {
-        this.enumPosition = enumPosition;
-    }
-
-}
-</code></pre><ul>
-<li><p>枚举唯一和对象不同的一点是存储的方式：其就类似于对象可以设置属性、但是其也可以拿来比较，例如switch比对</p>
+            <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><ul>
+<li>就是以某种形式将数据存储在一起的集合，它不仅存储数据，而且还支持查找访问，删除，添加，数据处理等操作。</li>
+</ul>
+<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><ul>
+<li>是为了求解一个问题需要循环的，被清楚指定的简单的指令集合，也就是代码算法规则，为了更简洁方便的解决复杂的循环查找遍历等问题</li>
+</ul>
+<h2 id="数据表之数据结构体现方式"><a href="#数据表之数据结构体现方式" class="headerlink" title="数据表之数据结构体现方式"></a>数据表之数据结构体现方式</h2><h3 id="线性表-线性存储结构"><a href="#线性表-线性存储结构" class="headerlink" title="线性表-线性存储结构"></a>线性表-线性存储结构</h3><ul>
+<li><p>是最常用最简单的一种数据结构，它是n个数据元素的<strong>有限序列</strong>,这种是针对正常的线性表结构如：数组；其在创建的时候就需要指定该数组的长度;</p>
 </li>
-<li><p>switch语句只支持int,char,enum类型–所以这点尤为重要</p>
-<pre><code>enum Signal {  
-    GREEN, YELLOW, RED  
-}  
-public class TrafficLight {  
-    Signal color = Signal.RED;  
-    public void change() {  
-        switch (color) {  
-        case RED:  
-            color = Signal.GREEN;  
-            break;  
-        case YELLOW:  
-            color = Signal.RED;  
-            break;  
-        case GREEN:  
-            color = Signal.YELLOW;  
-            break;  
-        }  
-    }  
-}  
-</code></pre></li>
+<li><p>代码中使用的体现方式</p>
+<ul>
+<li>数组 :最常见和最基本的线性结构存储方式</li>
+<li>ArrayList: 也就是可增加的<strong>动态数组</strong> </li>
+</ul>
+</li>
+<li><p>优势：可以通过下标进行数据的查找，访问和修改该对象元素，比较搞笑</p>
+</li>
+<li><p>缺点：插入删除花费开销大，比如，当在第一个位置插入数据的时候，首先需要把所有的数据往后移动一个位置，然后在进行插入处理，比较耗时，为了提高插入删除处理的效率可以用链式结构来实现线性表</p>
+</li>
+</ul>
+<h3 id="链表-链式存储结构"><a href="#链表-链式存储结构" class="headerlink" title="链表-链式存储结构"></a>链表-链式存储结构</h3><ul>
+<li><p>链表是物理存储单元上非连续、非顺序的存储结构，是由一系列“节点”组成，这些节点不必在内存中相连，其逻辑顺序是根据链表中的指针链接顺序来决定的，也就是根据指针来寻找自己指向的下一个节点</p>
+</li>
+<li><p>节点：是由数据部分:Data和链接部分指针Next组成，Next指向下一个节点，这样在添加删除数据时只需要改变指定的数据的Next的指向就可以了。</p>
+</li>
+<li><p>LinkedList: 双向链表结构，也就数有两个指针，一个指向上一个节点，一个指向下一个节点</p>
+</li>
+<li><p>其是数据单元在内存中存储的方式是没必要相连有序的存储类似于线性存储那样，并不是针对ArrayList使用时打印出来的就是有序的，LinkedList就是无需的，其只是内存中的存储，真正使用的时候，其遍历取值的时候也是经过转换有序的输出的，可能LinkedList查找更慢一点添加更快一点，ArrayList查找更快一点，添加更慢一点；</p>
+</li>
+<li><p>针对链式结构存储，所有的查找都是通过指针的，找到对应的指针，其实对应的指针就是下一个对象的索引对象(指向地址)</p>
+</li>
+</ul>
+<h3 id="特殊线性表-栈和队列存储结构"><a href="#特殊线性表-栈和队列存储结构" class="headerlink" title="特殊线性表-栈和队列存储结构"></a>特殊线性表-栈和队列存储结构</h3><ul>
+<li><p>栈 ：是限制插入和删除只能在一个位置上进行的表，该位置就是表的末端，就是栈顶；保持先进后出的数据存储方式，LIFO:last in first out，常见的运用存储是Activity的存储</p>
+</li>
+<li><p>队列：只能在表头进行数据的删除，在表尾部进行数据的添加；常见的运用是Handler的Message队列MessageQueen</p>
+</li>
+</ul>
+<h3 id="树与二叉树存储结构"><a href="#树与二叉树存储结构" class="headerlink" title="树与二叉树存储结构"></a>树与二叉树存储结构</h3><ul>
+<li>树： 是由n（n&gt;=1）个有限节点组成一个具有层次关系的集合。它具有以下特点：每个节点有零个或多个子节点；没有父节点的节点称为 根 节点；每一个非根节点有且只有一个 父节点 ；除了根节点外，每个子节点可以分为多个不相交的子树。：也就是每个节点可以有多个分支树</li>
 </ul>
 <ul>
-<li><p>直接获取对应的EnumBean的对象<br><code>EnumBean tab01 = EnumBean.TAB01;</code>  </p>
-</li>
-<li><p>通过对应的对象命名获取对应的EnumBean的对象<br><code>EnumBean enumBean = EnumBean.valueOf(&quot;TAB01&quot;);</code></p>
-</li>
-<li><p>获取EnumBean的对象集合<br><code>EnumBean[] values = EnumBean.values();</code></p>
-</li>
-</ul>
-<h2 id="RGB"><a href="#RGB" class="headerlink" title="RGB"></a>RGB</h2><pre><code>public static final Bitmap.Config ALPHA_8
-public static final Bitmap.Config ARGB_4444
-public static final Bitmap.Config ARGB_8888
-public static final Bitmap.Config RGB_565
-</code></pre><ul>
-<li>其实这都是色彩的存储方法：我们知道ARGB指的是一种色彩模式，里面A代表Alpha，R表示red，G表示green，B表示blue，其实所有的可见色都是右红绿蓝组成的，所以红绿蓝又称为三原色，每个原色都存储着所表示颜色的信息值</li>
+<li>二叉树：是每个节点最多有两棵子树的树结构。通常子树被称作“左子树”和“右子树”。二叉树常被用于实现二叉查找树和二叉堆。：也就是每个节点只有最多有两个分支树</li>
 </ul>
 <ul>
-<li><p>说白了其实就是：</p>
-<pre><code>ALPHA_8就是Alpha由8位组成
-
-ARGB_4444就是由4个4位组成即16位，
-
-ARGB_8888就是由4个8位组成即32位，
-
-RGB_565就是R为5位，G为6位，B为5位共16位        
-</code></pre></li>
-</ul>
-<ul>
-<li><p>由此可见：</p>
-<pre><code>ALPHA_8 代表8位Alpha位图
-
-ARGB_4444 代表16位ARGB位图
-
-ARGB_8888 代表24位ARGB位图
-
-RGB_565 代表16位RGB位图
-</code></pre></li>
-</ul>
-<p><code>位图位数越高代表其可以存储的颜色信息越多，当然图像也就越逼真。</code></p>
-<pre><code>ps: 这里像素点大小（每个像素点占用内存的大小）以 4B 来计算是因为，当没有特别指定时，系统默认为 ARGB_8888 作为像素点的数据格式，其他的格式如下：
-
-    ALPHA_8 -- (1B)
-    RGB_565 -- (2B)
-    ARGB_4444 -- (2B)
-    ARGB_8888 -- (4B)
-    RGBA_F16 -- (8B)
-</code></pre><ul>
-<li><p>正常的颜色FFEECC:其也是由 FF\EE\CC ：256、256、256 所以正常是4<em>4  4</em>4 4*4等24位二进制数值组成</p>
-</li>
-<li><p>一切都源于二进制最后都会归于二进制：Android 内部资源文件id也是内部对应R对象内部的二进制值转换成16进制存储,,内部规则也是根据二进制转换;</p>
+<li><p>二叉树遍历</p>
+<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fuzrim5fa1j20mj0bp75e.jpg" alt="picture"></p>
 </li>
 </ul>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://blog.csdn.net/gao_chun/article/details/42642965" target="_blank" rel="noopener">图片压缩质量参数Bitmap.Config RGB_565</a></p>
-<p><a href="https://blog.csdn.net/qq_27093465/article/details/52180865" target="_blank" rel="noopener">Java枚举7种用法</a></p>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p><a href="https://www.cnblogs.com/wanghuaijun/p/7302303.html" target="_blank" rel="noopener">常见的数据结构和算法整理</a></p>
 
           
         

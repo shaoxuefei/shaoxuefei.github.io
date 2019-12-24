@@ -232,7 +232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/data_structure/">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/enum_rgb/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sxf">
@@ -251,7 +251,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/12/20/data_structure/" itemprop="url">数据结构(表)和算法</a></h1>
+                <a class="post-title-link" href="/2019/12/20/enum_rgb/" itemprop="url">Enum&RGB</a></h1>
         
 
         <div class="post-meta">
@@ -303,56 +303,141 @@
       
         
           
-            <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><ul>
-<li>就是以某种形式将数据存储在一起的集合，它不仅存储数据，而且还支持查找访问，删除，添加，数据处理等操作。</li>
-</ul>
-<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><ul>
-<li>是为了求解一个问题需要循环的，被清楚指定的简单的指令集合，也就是代码算法规则，为了更简洁方便的解决复杂的循环查找遍历等问题</li>
-</ul>
-<h2 id="数据表之数据结构体现方式"><a href="#数据表之数据结构体现方式" class="headerlink" title="数据表之数据结构体现方式"></a>数据表之数据结构体现方式</h2><h3 id="线性表-线性存储结构"><a href="#线性表-线性存储结构" class="headerlink" title="线性表-线性存储结构"></a>线性表-线性存储结构</h3><ul>
-<li><p>是最常用最简单的一种数据结构，它是n个数据元素的<strong>有限序列</strong>,这种是针对正常的线性表结构如：数组；其在创建的时候就需要指定该数组的长度;</p>
+            <h2 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h2><pre><code>public enum EnumBean {
+//这些类别每个都是一个该EnumBean的类、也就是多个EnumBean的对象、只是这些枚举定义的方式有点不同、类似于EnumBean enumbean;只不过枚举调用是直接可以点出来的，也就是类似于static的
+    TAB01(0, &quot;随性一笔&quot;),
+    TAB02(1, &quot;SeekBar&quot;),
+    TAB03(2, &quot;PopWindow-List&quot;),
+    TAB04(3, &quot;gson/fastJson-特殊字符转译&quot;),
+    TAB05(4, &quot;Rxjava-请求示例&quot;),
+
+    TAB06(5, &quot;Pic选择&quot;),
+
+    TAB07(6, &quot;DialogFragment&quot;),
+
+    TAB08(7, &quot;跳转App&quot;),
+
+    TAB09(8, &quot;事件分析&quot;),
+
+    TAB10(9, &quot;重定项-URL2JS&quot;),
+
+    TAB11(10, &quot;方法作用域&quot;);
+
+        private String enumName;
+    private int enumPosition;
+
+    EnumBean(int position, String tab01) {
+    enumName = tab01;
+    enumPosition = position;
+    }
+
+    @Override
+    public String toString() {
+        EnumBean[] values = EnumBean.values();
+        for (EnumBean enumBean : values) {
+            if (enumBean.getEnumPosition() == 10) {
+                return enumBean.getEnumName();
+            }
+        }
+        return &quot;&quot;;
+    }
+
+
+    public String getEnumName() {
+        return enumName;
+    }
+
+    public void setEnumName(String enumName) {
+        this.enumName = enumName;
+    }
+
+    public int getEnumPosition() {
+        return enumPosition;
+    }
+
+    public void setEnumPosition(int enumPosition) {
+        this.enumPosition = enumPosition;
+    }
+
+}
+</code></pre><ul>
+<li><p>枚举唯一和对象不同的一点是存储的方式：其就类似于对象可以设置属性、但是其也可以拿来比较，例如switch比对</p>
 </li>
-<li><p>代码中使用的体现方式</p>
+<li><p>switch语句只支持int,char,enum类型–所以这点尤为重要</p>
+<pre><code>enum Signal {  
+    GREEN, YELLOW, RED  
+}  
+public class TrafficLight {  
+    Signal color = Signal.RED;  
+    public void change() {  
+        switch (color) {  
+        case RED:  
+            color = Signal.GREEN;  
+            break;  
+        case YELLOW:  
+            color = Signal.RED;  
+            break;  
+        case GREEN:  
+            color = Signal.YELLOW;  
+            break;  
+        }  
+    }  
+}  
+</code></pre></li>
+</ul>
 <ul>
-<li>数组 :最常见和最基本的线性结构存储方式</li>
-<li>ArrayList: 也就是可增加的<strong>动态数组</strong> </li>
-</ul>
+<li><p>直接获取对应的EnumBean的对象<br><code>EnumBean tab01 = EnumBean.TAB01;</code>  </p>
 </li>
-<li><p>优势：可以通过下标进行数据的查找，访问和修改该对象元素，比较搞笑</p>
+<li><p>通过对应的对象命名获取对应的EnumBean的对象<br><code>EnumBean enumBean = EnumBean.valueOf(&quot;TAB01&quot;);</code></p>
 </li>
-<li><p>缺点：插入删除花费开销大，比如，当在第一个位置插入数据的时候，首先需要把所有的数据往后移动一个位置，然后在进行插入处理，比较耗时，为了提高插入删除处理的效率可以用链式结构来实现线性表</p>
+<li><p>获取EnumBean的对象集合<br><code>EnumBean[] values = EnumBean.values();</code></p>
 </li>
 </ul>
-<h3 id="链表-链式存储结构"><a href="#链表-链式存储结构" class="headerlink" title="链表-链式存储结构"></a>链表-链式存储结构</h3><ul>
-<li><p>链表是物理存储单元上非连续、非顺序的存储结构，是由一系列“节点”组成，这些节点不必在内存中相连，其逻辑顺序是根据链表中的指针链接顺序来决定的，也就是根据指针来寻找自己指向的下一个节点</p>
-</li>
-<li><p>节点：是由数据部分:Data和链接部分指针Next组成，Next指向下一个节点，这样在添加删除数据时只需要改变指定的数据的Next的指向就可以了。</p>
-</li>
-<li><p>LinkedList: 双向链表结构，也就数有两个指针，一个指向上一个节点，一个指向下一个节点</p>
-</li>
-<li><p>其是数据单元在内存中存储的方式是没必要相连有序的存储类似于线性存储那样，并不是针对ArrayList使用时打印出来的就是有序的，LinkedList就是无需的，其只是内存中的存储，真正使用的时候，其遍历取值的时候也是经过转换有序的输出的，可能LinkedList查找更慢一点添加更快一点，ArrayList查找更快一点，添加更慢一点；</p>
-</li>
-<li><p>针对链式结构存储，所有的查找都是通过指针的，找到对应的指针，其实对应的指针就是下一个对象的索引对象(指向地址)</p>
-</li>
-</ul>
-<h3 id="特殊线性表-栈和队列存储结构"><a href="#特殊线性表-栈和队列存储结构" class="headerlink" title="特殊线性表-栈和队列存储结构"></a>特殊线性表-栈和队列存储结构</h3><ul>
-<li><p>栈 ：是限制插入和删除只能在一个位置上进行的表，该位置就是表的末端，就是栈顶；保持先进后出的数据存储方式，LIFO:last in first out，常见的运用存储是Activity的存储</p>
-</li>
-<li><p>队列：只能在表头进行数据的删除，在表尾部进行数据的添加；常见的运用是Handler的Message队列MessageQueen</p>
-</li>
-</ul>
-<h3 id="树与二叉树存储结构"><a href="#树与二叉树存储结构" class="headerlink" title="树与二叉树存储结构"></a>树与二叉树存储结构</h3><ul>
-<li>树： 是由n（n&gt;=1）个有限节点组成一个具有层次关系的集合。它具有以下特点：每个节点有零个或多个子节点；没有父节点的节点称为 根 节点；每一个非根节点有且只有一个 父节点 ；除了根节点外，每个子节点可以分为多个不相交的子树。：也就是每个节点可以有多个分支树</li>
+<h2 id="RGB"><a href="#RGB" class="headerlink" title="RGB"></a>RGB</h2><pre><code>public static final Bitmap.Config ALPHA_8
+public static final Bitmap.Config ARGB_4444
+public static final Bitmap.Config ARGB_8888
+public static final Bitmap.Config RGB_565
+</code></pre><ul>
+<li>其实这都是色彩的存储方法：我们知道ARGB指的是一种色彩模式，里面A代表Alpha，R表示red，G表示green，B表示blue，其实所有的可见色都是右红绿蓝组成的，所以红绿蓝又称为三原色，每个原色都存储着所表示颜色的信息值</li>
 </ul>
 <ul>
-<li>二叉树：是每个节点最多有两棵子树的树结构。通常子树被称作“左子树”和“右子树”。二叉树常被用于实现二叉查找树和二叉堆。：也就是每个节点只有最多有两个分支树</li>
+<li><p>说白了其实就是：</p>
+<pre><code>ALPHA_8就是Alpha由8位组成
+
+ARGB_4444就是由4个4位组成即16位，
+
+ARGB_8888就是由4个8位组成即32位，
+
+RGB_565就是R为5位，G为6位，B为5位共16位        
+</code></pre></li>
 </ul>
 <ul>
-<li><p>二叉树遍历</p>
-<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fuzrim5fa1j20mj0bp75e.jpg" alt="picture"></p>
+<li><p>由此可见：</p>
+<pre><code>ALPHA_8 代表8位Alpha位图
+
+ARGB_4444 代表16位ARGB位图
+
+ARGB_8888 代表24位ARGB位图
+
+RGB_565 代表16位RGB位图
+</code></pre></li>
+</ul>
+<p><code>位图位数越高代表其可以存储的颜色信息越多，当然图像也就越逼真。</code></p>
+<pre><code>ps: 这里像素点大小（每个像素点占用内存的大小）以 4B 来计算是因为，当没有特别指定时，系统默认为 ARGB_8888 作为像素点的数据格式，其他的格式如下：
+
+    ALPHA_8 -- (1B)
+    RGB_565 -- (2B)
+    ARGB_4444 -- (2B)
+    ARGB_8888 -- (4B)
+    RGBA_F16 -- (8B)
+</code></pre><ul>
+<li><p>正常的颜色FFEECC:其也是由 FF\EE\CC ：256、256、256 所以正常是4<em>4  4</em>4 4*4等24位二进制数值组成</p>
+</li>
+<li><p>一切都源于二进制最后都会归于二进制：Android 内部资源文件id也是内部对应R对象内部的二进制值转换成16进制存储,,内部规则也是根据二进制转换;</p>
 </li>
 </ul>
-<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p><a href="https://www.cnblogs.com/wanghuaijun/p/7302303.html" target="_blank" rel="noopener">常见的数据结构和算法整理</a></p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://blog.csdn.net/gao_chun/article/details/42642965" target="_blank" rel="noopener">图片压缩质量参数Bitmap.Config RGB_565</a></p>
+<p><a href="https://blog.csdn.net/qq_27093465/article/details/52180865" target="_blank" rel="noopener">Java枚举7种用法</a></p>
 
           
         
