@@ -79,22 +79,19 @@
 
 
 
-<meta name="description" content="图片尺寸压缩处理 所有的操作都是通过流完成的、转换成流后进行处理压缩、然后在吧处理好的流转换成Bitmap  尺寸压缩修改，只是修改该图片的宽高。并不是对该图片进行裁剪   file文件获取图片资源     Bitmap直接压缩处理    图片质量压缩处理 所有的操作都是通过流完成的、转换成流后进行处理压缩、然后在吧处理好的流转换成Bitmap    对图片进行裁剪   这种需要图片自动延伸扩展的">
+<meta name="description" content="Canvas api drawArc()绘制弧形以Rect 的中心为圆点，90度方向为0度开始绘制弧形    //center 绘制的弧形是否经过圆点 canvas.drawArc(@NonNull RectF oval,float startAngle, float sweepAngle, boolean useCenter,@NonNull Paint paint)  canvas.drawT">
 <meta property="og:type" content="article">
-<meta property="og:title" content="图片质量、尺寸压缩">
-<meta property="og:url" content="https://shaoxuefei.github.io/2019/12/20/bitmap_compress/index.html">
+<meta property="og:title" content="Path&amp;Canvas">
+<meta property="og:url" content="https://shaoxuefei.github.io/2020/01/07/path_canvas/index.html">
 <meta property="og:site_name" content="Sxf-Blog">
-<meta property="og:description" content="图片尺寸压缩处理 所有的操作都是通过流完成的、转换成流后进行处理压缩、然后在吧处理好的流转换成Bitmap  尺寸压缩修改，只是修改该图片的宽高。并不是对该图片进行裁剪   file文件获取图片资源     Bitmap直接压缩处理    图片质量压缩处理 所有的操作都是通过流完成的、转换成流后进行处理压缩、然后在吧处理好的流转换成Bitmap    对图片进行裁剪   这种需要图片自动延伸扩展的">
+<meta property="og:description" content="Canvas api drawArc()绘制弧形以Rect 的中心为圆点，90度方向为0度开始绘制弧形    //center 绘制的弧形是否经过圆点 canvas.drawArc(@NonNull RectF oval,float startAngle, float sweepAngle, boolean useCenter,@NonNull Paint paint)  canvas.drawT">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fuxk498kdcj212e0ndwhd.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fuxkbcb686j21ch0kajud.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fuxl283i2tj21530dsgn5.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fuxmq42t1zj216h0bldh5.jpg">
-<meta property="og:updated_time" content="2018-09-04T09:59:40.019Z">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1gan4b5g2mqj20kg0j275k.jpg">
+<meta property="og:updated_time" content="2020-01-07T02:52:30.788Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="图片质量、尺寸压缩">
-<meta name="twitter:description" content="图片尺寸压缩处理 所有的操作都是通过流完成的、转换成流后进行处理压缩、然后在吧处理好的流转换成Bitmap  尺寸压缩修改，只是修改该图片的宽高。并不是对该图片进行裁剪   file文件获取图片资源     Bitmap直接压缩处理    图片质量压缩处理 所有的操作都是通过流完成的、转换成流后进行处理压缩、然后在吧处理好的流转换成Bitmap    对图片进行裁剪   这种需要图片自动延伸扩展的">
-<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fuxk498kdcj212e0ndwhd.jpg">
+<meta name="twitter:title" content="Path&amp;Canvas">
+<meta name="twitter:description" content="Canvas api drawArc()绘制弧形以Rect 的中心为圆点，90度方向为0度开始绘制弧形    //center 绘制的弧形是否经过圆点 canvas.drawArc(@NonNull RectF oval,float startAngle, float sweepAngle, boolean useCenter,@NonNull Paint paint)  canvas.drawT">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1gan4b5g2mqj20kg0j275k.jpg">
 
 
 
@@ -124,13 +121,13 @@
 
 
 
-  <link rel="canonical" href="https://shaoxuefei.github.io/2019/12/20/bitmap_compress/"/>
+  <link rel="canonical" href="https://shaoxuefei.github.io/2020/01/07/path_canvas/"/>
 
 
 
 
 
-  <title>图片质量、尺寸压缩 | Sxf-Blog</title>
+  <title>Path&Canvas | Sxf-Blog</title>
   
 
 
@@ -237,7 +234,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/bitmap_compress/">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2020/01/07/path_canvas/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sxf">
@@ -254,7 +251,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">图片质量、尺寸压缩</h1>
+          <h1 class="post-title" itemprop="name headline">Path&Canvas</h1>
         
 
         <div class="post-meta">
@@ -266,8 +263,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
-                2019-12-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-07T10:45:03+08:00">
+                2020-01-07
               </time>
             
 
@@ -304,43 +301,85 @@
       
 
       
-        <h3 id="图片尺寸压缩处理"><a href="#图片尺寸压缩处理" class="headerlink" title="图片尺寸压缩处理"></a>图片尺寸压缩处理</h3><ul>
-<li><p>所有的操作都是通过流完成的、转换成流后进行处理压缩、然后在吧处理好的流转换成Bitmap</p>
+        <h3 id="Canvas-api"><a href="#Canvas-api" class="headerlink" title="Canvas api"></a>Canvas api</h3><ul>
+<li>drawArc()绘制弧形以Rect 的中心为圆点，90度方向为0度开始绘制弧形  </li>
+</ul>
+<pre><code>//center 绘制的弧形是否经过圆点
+canvas.drawArc(@NonNull RectF oval,float startAngle, float sweepAngle, boolean useCenter,@NonNull Paint paint)
+</code></pre><ul>
+<li>canvas.drawTextOnPath(String str,Path path,float startAngle,float sweepAngle,Paint paint)  </li>
+</ul>
+<pre><code>![picture](http://ww1.sinaimg.cn/large/c82e4122gy1gan43hetx9j20k80fxq48.jpg)    
+</code></pre><h3 id="Path-api"><a href="#Path-api" class="headerlink" title="Path api"></a>Path api</h3><ul>
+<li>参考文献</li>
+</ul>
+<p><a href="https://www.jianshu.com/p/db01b37b6231" target="_blank" rel="noopener">Path常用方法解析</a></p>
+<ul>
+<li>line to(x,y)</li>
+<li>move to(x,y)</li>
+<li><p>arcTo(Rect rect,float startAngle,float sweepAngle )//绘制弧形以Rect</p>
 </li>
-<li><p>尺寸压缩修改，只是修改该图片的宽高。并不是对该图片进行裁剪 </p>
+<li><p>close()//闭环，最后的path的终点会连接到其实点形成个闭环</p>
 </li>
-<li><p>file文件获取图片资源</p>
-<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fuxk498kdcj212e0ndwhd.jpg" alt="picture"></p>
+<li><p>arcTo(Rect rect,float startAngle,float sweepAngle,boolean forceMoveTo )//绘制弧形以Rect,forceMoveTo是否开始前画笔moveTo到Rect的起点位置</p>
+<pre><code>绘制圆弧，若forceMoveTo为false，则用法和arcTo(RectF oval, float startAngle, float sweepAngle)一样，
+绘制圆弧之前不会移动（moveTo）path画笔位置。若为true，先强制调用moveTo移动path画笔至圆弧起点，再绘制圆弧。
+ps：如果调用arcTo(RectF oval, float startAngle, float sweepAngle,boolean forceMoveTo)方法之前没有对path进行任何操作，
+则forceMoveTo设置true或false效果都和设置true一样
+
+//也就是传false后即使你调用前先执行了moveTo()某个位置，但是不生效，传true，其强制会在drawPath之前moveTo到Rect的起点，即使你在前moveTo()的xy轴不是Rect的起点，其还是会移动到起点的位置
+</code></pre></li>
+<li><p>quadTo(float x1,float y1,float x2,float y2)//绘制二阶贝塞尔曲线 控制点坐标（x1,y1）终点坐标(x2,y2)</p>
+<ul>
+<li><p>贝塞尔曲线：正规的正弦函数线，取三个点连接然后寻找三个等比的点开始绘制曲线    </p>
+</li>
+<li><p>贝塞尔曲线：需要有起始点，顾在path绘制之前需要调用move To（）方法来设置一个画笔的起点</p>
+<p> <a href="https://www.jianshu.com/p/0c9b4b681724" target="_blank" rel="noopener">必须要理解掌握的贝塞尔曲线（原创）</a>    </p>
+</li>
+</ul>
 </li>
 </ul>
 <ul>
-<li><p>Bitmap直接压缩处理</p>
-<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fuxkbcb686j21ch0kajud.jpg" alt="picture"></p>
-</li>
-</ul>
-<h3 id="图片质量压缩处理"><a href="#图片质量压缩处理" class="headerlink" title="图片质量压缩处理"></a>图片质量压缩处理</h3><ul>
-<li><p>所有的操作都是通过流完成的、转换成流后进行处理压缩、然后在吧处理好的流转换成Bitmap</p>
-<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fuxl283i2tj21530dsgn5.jpg" alt="picture"></p>
-</li>
-</ul>
-<h3 id="对图片进行裁剪"><a href="#对图片进行裁剪" class="headerlink" title="对图片进行裁剪"></a>对图片进行裁剪</h3><p> <img src="http://ww1.sinaimg.cn/large/c82e4122gy1fuxmq42t1zj216h0bldh5.jpg" alt="picture"></p>
+<li><p>cubicTo(float x1,float y1,float x2,float y2,float x3,float y3)//绘制三阶贝塞尔曲线 控制点坐标（x1，y1),(x2,y2),终点坐标（x3,y3）</p>
 <ul>
-<li>这种需要图片自动延伸扩展的一般用 scaleType来实现<ul>
-<li>centerCrop 会随着ImageView的宽高，自动进行图片的等比缩放，然后展示，当缩放后图片大于ImageView的话会进行自动裁剪显示图片中间区域</li>
-<li>fitXY 充满ImageView的大小，不会考虑图片本身的宽高比例</li>
-<li>其他的自行百度 </li>
+<li>同上也需要设置起始点坐标，其实起始点坐标就是贝塞尔起点的一个点</li>
 </ul>
 </li>
+<li><p>rXxxTo()//r是relative想对的意识，和上边直接moveTo(),quadTo(),lineTo(),cubicTo()，不一样的是，其绘制内部的参数坐标是相对于画笔起始点的坐标，并不是画布左上角0,0的坐标      </p>
+<pre><code>rMoveTo()
+rQuadTo()
+rLineTo()
+rCubicTo()
+</code></pre></li>
 </ul>
-<h3 id="Bitmap的常见方法介绍"><a href="#Bitmap的常见方法介绍" class="headerlink" title="Bitmap的常见方法介绍"></a>Bitmap的常见方法介绍</h3><ul>
-<li><p>解析流</p>
-<pre><code>Bitmap bitmap=BitmapFactory.decodeStream（InputStream is, Rect outPadding, Options opts）
-</code></pre></li>
-<li><p>压缩Bitmap转换成输出流</p>
-<pre><code>bitmap.compress(CompressFormat format, int quality, OutputStream stream);//100表示不压缩,质量最好
-</code></pre></li>
-<li><p>裁剪Bitmap</p>
-<pre><code>Bitmap.createBitmap(@NonNull Bitmap source, int x, int y, int width, int height,@Nullable Matrix m, boolean filter)
+<hr>
+<ul>
+<li><p>以上Path的单一调用 </p>
+<h3 id="Path的结合调用addXxx"><a href="#Path的结合调用addXxx" class="headerlink" title="Path的结合调用addXxx()"></a>Path的结合调用addXxx()</h3></li>
+<li><p>添加另一段path，addPath的时候，其是会先移动到该线的起点位置然后开始绘制该线，所以可以理解为是相互独立的几条path</p>
+</li>
+<li>addArc(RectF rect,float startAngle,float sweepAngle);</li>
+<li>addCircle(float x,float y,float radius,Direction dir)//dir是线的闭合方向，CW顺时针方向，CCW逆时针方向</li>
+<li>addOval(RectF rect,Direction dir)//在矩形RectF范围内绘制一个椭圆形状</li>
+<li>addRect(RectF rect,Direction dir)//绘制矩形–绘制起点为左上角</li>
+<li><p>addRoundRect(RectF rect,float rx,float ry,Direction dir)//绘制四个角圆角大小相同的矩形，CW顺时针方向,起点位置左下角，CCW逆时针方向，起始点左上角</p>
+<p>  <img src="http://ww1.sinaimg.cn/large/c82e4122gy1gan4b5g2mqj20kg0j275k.jpg" alt="picture"></p>
+</li>
+<li><p>addRoundRect(RectF rect,float[] radii,Direction dir)//radii 的长度必须是8，也就是4个角分别的横轴圆角半径x,纵轴圆角半径y,起点位置同上</p>
+</li>
+<li>addPath(Path path,float dx,float dy)//dx,X轴平移的距离，dy Y轴平移的距离</li>
+<li>addPath(Path path,Matrix matrix)//Matrix 3x3矩阵、xyz，可以设置旋转，偏移，翻转等</li>
+<li>close（);//封闭当前path，连接起点和终点</li>
+<li>reset();//清空path上直线、曲线、保留填充设置</li>
+<li>op(Path path,Op op)//当前path和这个path的进行布尔运算，交集，并集，异或，</li>
+<li><p>setLastPoint（float dx,float dy）//修改path的最末点的坐标<br>###PaintMeasure</p>
+</li>
+<li><p>测量path的长度，可以得到path的总长度和path上某一点的坐标//getPosTan（），getLength();</p>
+</li>
+<li>getSegment(float startId,float stopId,Path path,boolean startWithMoveTo)//裁剪对应得path，以传入的path绘制裁剪的部分</li>
+<li>getPosTan（float distance,float []pos,float []tans）//distance:该path上距起点的距离,pos,传入数组，接受path上该点的坐标,tans：返回该点的切线坐标</li>
+<li><p>getLength();//返回该Path的总长度</p>
+<pre><code>mPathMeasure.getPosTan(mPathMeasure.getLength() * percent, pos, null);
 </code></pre></li>
 </ul>
 
@@ -367,8 +406,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/12/20/adnroid_proxy/" rel="next" title="Android抓包调试">
-                <i class="fa fa-chevron-left"></i> Android抓包调试
+              <a href="/2019/12/20/stringbuffer/" rel="next" title="StringBuffer & StringBuilde">
+                <i class="fa fa-chevron-left"></i> StringBuffer & StringBuilde
               </a>
             
           </div>
@@ -376,10 +415,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/12/20/enum_rgb/" rel="prev" title="Enum&RGB">
-                Enum&RGB <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -497,7 +532,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#图片尺寸压缩处理"><span class="nav-number">1.</span> <span class="nav-text">图片尺寸压缩处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图片质量压缩处理"><span class="nav-number">2.</span> <span class="nav-text">图片质量压缩处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对图片进行裁剪"><span class="nav-number">3.</span> <span class="nav-text">对图片进行裁剪</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bitmap的常见方法介绍"><span class="nav-number">4.</span> <span class="nav-text">Bitmap的常见方法介绍</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Canvas-api"><span class="nav-number">1.</span> <span class="nav-text">Canvas api</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Path-api"><span class="nav-number">2.</span> <span class="nav-text">Path api</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Path的结合调用addXxx"><span class="nav-number">3.</span> <span class="nav-text">Path的结合调用addXxx()</span></a></li></ol></div>
             
 
           </div>

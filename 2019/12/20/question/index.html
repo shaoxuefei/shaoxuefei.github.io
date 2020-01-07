@@ -79,22 +79,22 @@
 
 
 
-<meta name="description" content="Android 获取屏幕高度注意事项 在Activity里获取WindowManager   WindowManager windowManager = getWindowManager(); DisplayMetrics displayMetrics = new DisplayMetric(); Display defaultDisplay = windowManager.getDefaultD">
+<meta name="description" content="Android 获取屏幕高度注意事项 在Activity里获取WindowManagerWindowManager windowManager = getWindowManager(); DisplayMetrics displayMetrics = new DisplayMetric(); Display defaultDisplay = windowManager.getDefaultDisp">
 <meta property="og:type" content="article">
 <meta property="og:title" content="事件分发传递">
 <meta property="og:url" content="https://shaoxuefei.github.io/2019/12/20/question/index.html">
 <meta property="og:site_name" content="Sxf-Blog">
-<meta property="og:description" content="Android 获取屏幕高度注意事项 在Activity里获取WindowManager   WindowManager windowManager = getWindowManager(); DisplayMetrics displayMetrics = new DisplayMetric(); Display defaultDisplay = windowManager.getDefaultD">
+<meta property="og:description" content="Android 获取屏幕高度注意事项 在Activity里获取WindowManagerWindowManager windowManager = getWindowManager(); DisplayMetrics displayMetrics = new DisplayMetric(); Display defaultDisplay = windowManager.getDefaultDisp">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fpkk2t3fxbj20ar0iiq3w.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fpyhzbinlij20oa0gotbb.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fpyi01rzxaj20ht0fndi1.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fpyi0fyg00j20me0cvdhr.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fpyi0nhou1j20md0ctq4w.jpg">
-<meta property="og:updated_time" content="2018-06-05T02:54:06.265Z">
+<meta property="og:updated_time" content="2020-01-07T02:47:35.398Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="事件分发传递">
-<meta name="twitter:description" content="Android 获取屏幕高度注意事项 在Activity里获取WindowManager   WindowManager windowManager = getWindowManager(); DisplayMetrics displayMetrics = new DisplayMetric(); Display defaultDisplay = windowManager.getDefaultD">
+<meta name="twitter:description" content="Android 获取屏幕高度注意事项 在Activity里获取WindowManagerWindowManager windowManager = getWindowManager(); DisplayMetrics displayMetrics = new DisplayMetric(); Display defaultDisplay = windowManager.getDefaultDisp">
 <meta name="twitter:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fpkk2t3fxbj20ar0iiq3w.jpg">
 
 
@@ -306,15 +306,13 @@
 
       
         <h3 id="Android-获取屏幕高度注意事项"><a href="#Android-获取屏幕高度注意事项" class="headerlink" title="Android 获取屏幕高度注意事项"></a>Android 获取屏幕高度注意事项</h3><ul>
-<li><p>在Activity里获取WindowManager  </p>
-<pre><code>WindowManager windowManager = getWindowManager();
+<li>在Activity里获取WindowManager<pre><code>WindowManager windowManager = getWindowManager();
 DisplayMetrics displayMetrics = new DisplayMetric();
 Display defaultDisplay = windowManager.getDefaultDisplay();
 defaultDisplay.getMetrics(displayMetrics);
 int screenHeight=displayMetrics.heightPixels;
 </code></pre></li>
-<li><p>在非Activity对象实例中获取WindowManager-通过getSystenService(Context.WINDOW_SERVICE) </p>
-<pre><code>WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+<li>在非Activity对象实例中获取WindowManager-通过getSystenService(Context.WINDOW_SERVICE)<pre><code>WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 </code></pre></li>
 </ul>
 <p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fpkk2t3fxbj20ar0iiq3w.jpg" alt="高度区域分布图"></p>
@@ -518,7 +516,7 @@ int screenHeight=displayMetrics.heightPixels;
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

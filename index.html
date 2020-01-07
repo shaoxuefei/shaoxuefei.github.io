@@ -232,6 +232,206 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2020/01/07/path_canvas/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sxf">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/user_icon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sxf-Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/01/07/path_canvas/" itemprop="url">Path&Canvas</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-07T10:45:03+08:00">
+                2020-01-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Canvas-api"><a href="#Canvas-api" class="headerlink" title="Canvas api"></a>Canvas api</h3><ul>
+<li>drawArc()绘制弧形以Rect 的中心为圆点，90度方向为0度开始绘制弧形  </li>
+</ul>
+<pre><code>//center 绘制的弧形是否经过圆点
+canvas.drawArc(@NonNull RectF oval,float startAngle, float sweepAngle, boolean useCenter,@NonNull Paint paint)
+</code></pre><ul>
+<li>canvas.drawTextOnPath(String str,Path path,float startAngle,float sweepAngle,Paint paint)  </li>
+</ul>
+<pre><code>![picture](http://ww1.sinaimg.cn/large/c82e4122gy1gan43hetx9j20k80fxq48.jpg)    
+</code></pre><h3 id="Path-api"><a href="#Path-api" class="headerlink" title="Path api"></a>Path api</h3><ul>
+<li>参考文献</li>
+</ul>
+<p><a href="https://www.jianshu.com/p/db01b37b6231" target="_blank" rel="noopener">Path常用方法解析</a></p>
+<ul>
+<li>line to(x,y)</li>
+<li>move to(x,y)</li>
+<li><p>arcTo(Rect rect,float startAngle,float sweepAngle )//绘制弧形以Rect</p>
+</li>
+<li><p>close()//闭环，最后的path的终点会连接到其实点形成个闭环</p>
+</li>
+<li><p>arcTo(Rect rect,float startAngle,float sweepAngle,boolean forceMoveTo )//绘制弧形以Rect,forceMoveTo是否开始前画笔moveTo到Rect的起点位置</p>
+<pre><code>绘制圆弧，若forceMoveTo为false，则用法和arcTo(RectF oval, float startAngle, float sweepAngle)一样，
+绘制圆弧之前不会移动（moveTo）path画笔位置。若为true，先强制调用moveTo移动path画笔至圆弧起点，再绘制圆弧。
+ps：如果调用arcTo(RectF oval, float startAngle, float sweepAngle,boolean forceMoveTo)方法之前没有对path进行任何操作，
+则forceMoveTo设置true或false效果都和设置true一样
+
+//也就是传false后即使你调用前先执行了moveTo()某个位置，但是不生效，传true，其强制会在drawPath之前moveTo到Rect的起点，即使你在前moveTo()的xy轴不是Rect的起点，其还是会移动到起点的位置
+</code></pre></li>
+<li><p>quadTo(float x1,float y1,float x2,float y2)//绘制二阶贝塞尔曲线 控制点坐标（x1,y1）终点坐标(x2,y2)</p>
+<ul>
+<li><p>贝塞尔曲线：正规的正弦函数线，取三个点连接然后寻找三个等比的点开始绘制曲线    </p>
+</li>
+<li><p>贝塞尔曲线：需要有起始点，顾在path绘制之前需要调用move To（）方法来设置一个画笔的起点</p>
+<p> <a href="https://www.jianshu.com/p/0c9b4b681724" target="_blank" rel="noopener">必须要理解掌握的贝塞尔曲线（原创）</a>    </p>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>cubicTo(float x1,float y1,float x2,float y2,float x3,float y3)//绘制三阶贝塞尔曲线 控制点坐标（x1，y1),(x2,y2),终点坐标（x3,y3）</p>
+<ul>
+<li>同上也需要设置起始点坐标，其实起始点坐标就是贝塞尔起点的一个点</li>
+</ul>
+</li>
+<li><p>rXxxTo()//r是relative想对的意识，和上边直接moveTo(),quadTo(),lineTo(),cubicTo()，不一样的是，其绘制内部的参数坐标是相对于画笔起始点的坐标，并不是画布左上角0,0的坐标      </p>
+<pre><code>rMoveTo()
+rQuadTo()
+rLineTo()
+rCubicTo()
+</code></pre></li>
+</ul>
+<hr>
+<ul>
+<li><p>以上Path的单一调用 </p>
+<h3 id="Path的结合调用addXxx"><a href="#Path的结合调用addXxx" class="headerlink" title="Path的结合调用addXxx()"></a>Path的结合调用addXxx()</h3></li>
+<li><p>添加另一段path，addPath的时候，其是会先移动到该线的起点位置然后开始绘制该线，所以可以理解为是相互独立的几条path</p>
+</li>
+<li>addArc(RectF rect,float startAngle,float sweepAngle);</li>
+<li>addCircle(float x,float y,float radius,Direction dir)//dir是线的闭合方向，CW顺时针方向，CCW逆时针方向</li>
+<li>addOval(RectF rect,Direction dir)//在矩形RectF范围内绘制一个椭圆形状</li>
+<li>addRect(RectF rect,Direction dir)//绘制矩形–绘制起点为左上角</li>
+<li><p>addRoundRect(RectF rect,float rx,float ry,Direction dir)//绘制四个角圆角大小相同的矩形，CW顺时针方向,起点位置左下角，CCW逆时针方向，起始点左上角</p>
+<p>  <img src="http://ww1.sinaimg.cn/large/c82e4122gy1gan4b5g2mqj20kg0j275k.jpg" alt="picture"></p>
+</li>
+<li><p>addRoundRect(RectF rect,float[] radii,Direction dir)//radii 的长度必须是8，也就是4个角分别的横轴圆角半径x,纵轴圆角半径y,起点位置同上</p>
+</li>
+<li>addPath(Path path,float dx,float dy)//dx,X轴平移的距离，dy Y轴平移的距离</li>
+<li>addPath(Path path,Matrix matrix)//Matrix 3x3矩阵、xyz，可以设置旋转，偏移，翻转等</li>
+<li>close（);//封闭当前path，连接起点和终点</li>
+<li>reset();//清空path上直线、曲线、保留填充设置</li>
+<li>op(Path path,Op op)//当前path和这个path的进行布尔运算，交集，并集，异或，</li>
+<li><p>setLastPoint（float dx,float dy）//修改path的最末点的坐标<br>###PaintMeasure</p>
+</li>
+<li><p>测量path的长度，可以得到path的总长度和path上某一点的坐标//getPosTan（），getLength();</p>
+</li>
+<li>getSegment(float startId,float stopId,Path path,boolean startWithMoveTo)//裁剪对应得path，以传入的path绘制裁剪的部分</li>
+<li>getPosTan（float distance,float []pos,float []tans）//distance:该path上距起点的距离,pos,传入数组，接受path上该点的坐标,tans：返回该点的切线坐标</li>
+<li><p>getLength();//返回该Path的总长度</p>
+<pre><code>mPathMeasure.getPosTan(mPathMeasure.getLength() * percent, pos, null);
+</code></pre></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/stringbuffer/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -916,15 +1116,13 @@ MotionEvent.ACTION_POINTER_DOWN
         
           
             <h3 id="Android-获取屏幕高度注意事项"><a href="#Android-获取屏幕高度注意事项" class="headerlink" title="Android 获取屏幕高度注意事项"></a>Android 获取屏幕高度注意事项</h3><ul>
-<li><p>在Activity里获取WindowManager  </p>
-<pre><code>WindowManager windowManager = getWindowManager();
+<li>在Activity里获取WindowManager<pre><code>WindowManager windowManager = getWindowManager();
 DisplayMetrics displayMetrics = new DisplayMetric();
 Display defaultDisplay = windowManager.getDefaultDisplay();
 defaultDisplay.getMetrics(displayMetrics);
 int screenHeight=displayMetrics.heightPixels;
 </code></pre></li>
-<li><p>在非Activity对象实例中获取WindowManager-通过getSystenService(Context.WINDOW_SERVICE) </p>
-<pre><code>WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+<li>在非Activity对象实例中获取WindowManager-通过getSystenService(Context.WINDOW_SERVICE)<pre><code>WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 </code></pre></li>
 </ul>
 <p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fpkk2t3fxbj20ar0iiq3w.jpg" alt="高度区域分布图"></p>
@@ -2012,175 +2210,6 @@ public boolean equals(Object anObject) {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/data_structure/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sxf">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/user_icon.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sxf-Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/20/data_structure/" itemprop="url">数据结构(表)和算法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
-                2019-12-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><ul>
-<li>就是以某种形式将数据存储在一起的集合，它不仅存储数据，而且还支持查找访问，删除，添加，数据处理等操作。</li>
-</ul>
-<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><ul>
-<li>是为了求解一个问题需要循环的，被清楚指定的简单的指令集合，也就是代码算法规则，为了更简洁方便的解决复杂的循环查找遍历等问题</li>
-</ul>
-<h2 id="数据表之数据结构体现方式"><a href="#数据表之数据结构体现方式" class="headerlink" title="数据表之数据结构体现方式"></a>数据表之数据结构体现方式</h2><h3 id="线性表-线性存储结构"><a href="#线性表-线性存储结构" class="headerlink" title="线性表-线性存储结构"></a>线性表-线性存储结构</h3><ul>
-<li><p>是最常用最简单的一种数据结构，它是n个数据元素的<strong>有限序列</strong>,这种是针对正常的线性表结构如：数组；其在创建的时候就需要指定该数组的长度;</p>
-</li>
-<li><p>代码中使用的体现方式</p>
-<ul>
-<li>数组 :最常见和最基本的线性结构存储方式</li>
-<li>ArrayList: 也就是可增加的<strong>动态数组</strong> </li>
-</ul>
-</li>
-<li><p>优势：可以通过下标进行数据的查找，访问和修改该对象元素，比较搞笑</p>
-</li>
-<li><p>缺点：插入删除花费开销大，比如，当在第一个位置插入数据的时候，首先需要把所有的数据往后移动一个位置，然后在进行插入处理，比较耗时，为了提高插入删除处理的效率可以用链式结构来实现线性表</p>
-</li>
-</ul>
-<h3 id="链表-链式存储结构"><a href="#链表-链式存储结构" class="headerlink" title="链表-链式存储结构"></a>链表-链式存储结构</h3><ul>
-<li><p>链表是物理存储单元上非连续、非顺序的存储结构，是由一系列“节点”组成，这些节点不必在内存中相连，其逻辑顺序是根据链表中的指针链接顺序来决定的，也就是根据指针来寻找自己指向的下一个节点</p>
-</li>
-<li><p>节点：是由数据部分:Data和链接部分指针Next组成，Next指向下一个节点，这样在添加删除数据时只需要改变指定的数据的Next的指向就可以了。</p>
-</li>
-<li><p>LinkedList: 双向链表结构，也就数有两个指针，一个指向上一个节点，一个指向下一个节点</p>
-</li>
-<li><p>其是数据单元在内存中存储的方式是没必要相连有序的存储类似于线性存储那样，并不是针对ArrayList使用时打印出来的就是有序的，LinkedList就是无需的，其只是内存中的存储，真正使用的时候，其遍历取值的时候也是经过转换有序的输出的，可能LinkedList查找更慢一点添加更快一点，ArrayList查找更快一点，添加更慢一点；</p>
-</li>
-<li><p>针对链式结构存储，所有的查找都是通过指针的，找到对应的指针，其实对应的指针就是下一个对象的索引对象(指向地址)</p>
-</li>
-</ul>
-<h3 id="特殊线性表-栈和队列存储结构"><a href="#特殊线性表-栈和队列存储结构" class="headerlink" title="特殊线性表-栈和队列存储结构"></a>特殊线性表-栈和队列存储结构</h3><ul>
-<li><p>栈 ：是限制插入和删除只能在一个位置上进行的表，该位置就是表的末端，就是栈顶；保持先进后出的数据存储方式，LIFO:last in first out，常见的运用存储是Activity的存储</p>
-</li>
-<li><p>队列：只能在表头进行数据的删除，在表尾部进行数据的添加；常见的运用是Handler的Message队列MessageQueen</p>
-</li>
-</ul>
-<h3 id="树与二叉树存储结构"><a href="#树与二叉树存储结构" class="headerlink" title="树与二叉树存储结构"></a>树与二叉树存储结构</h3><ul>
-<li>树： 是由n（n&gt;=1）个有限节点组成一个具有层次关系的集合。它具有以下特点：每个节点有零个或多个子节点；没有父节点的节点称为 根 节点；每一个非根节点有且只有一个 父节点 ；除了根节点外，每个子节点可以分为多个不相交的子树。：也就是每个节点可以有多个分支树</li>
-</ul>
-<ul>
-<li>二叉树：是每个节点最多有两棵子树的树结构。通常子树被称作“左子树”和“右子树”。二叉树常被用于实现二叉查找树和二叉堆。：也就是每个节点只有最多有两个分支树</li>
-</ul>
-<ul>
-<li><p>二叉树遍历</p>
-<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fuzrim5fa1j20mj0bp75e.jpg" alt="picture"></p>
-</li>
-</ul>
-<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p><a href="https://www.cnblogs.com/wanghuaijun/p/7302303.html" target="_blank" rel="noopener">常见的数据结构和算法整理</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2235,7 +2264,7 @@ public boolean equals(Object anObject) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
