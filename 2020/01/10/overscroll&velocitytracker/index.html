@@ -86,13 +86,15 @@
 <meta property="og:site_name" content="Sxf-Blog">
 <meta property="og:description" content="参考：  让控件如此丝滑Scroller和VelocityTracker的API讲解与实战——Android高级UI  Android应用开发之自定义View触摸相关工具类全解  VelocityTracker简介   OverScroll &amp;amp;&amp;amp; VelocityTracker  其实这两个类都是滑动的辅助工具类，其并不是内部主动调用滑动的，滑动需要自己进行scrollTo()或者">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1garopogoamj20nl0lndh9.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1garprngmd0j20m50fgab2.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1gauqw3p0o2j20op08hdgi.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1gauruh7apkj216v0b8q42.jpg">
-<meta property="og:updated_time" content="2020-01-13T03:37:24.272Z">
+<meta property="og:updated_time" content="2020-01-13T03:59:05.358Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OverScroll&amp;&amp;VelocityTracker">
 <meta name="twitter:description" content="参考：  让控件如此丝滑Scroller和VelocityTracker的API讲解与实战——Android高级UI  Android应用开发之自定义View触摸相关工具类全解  VelocityTracker简介   OverScroll &amp;amp;&amp;amp; VelocityTracker  其实这两个类都是滑动的辅助工具类，其并不是内部主动调用滑动的，滑动需要自己进行scrollTo()或者">
-<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1gauqw3p0o2j20op08hdgi.jpg">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1garopogoamj20nl0lndh9.jpg">
 
 
 
@@ -327,8 +329,8 @@ overX    :    就是滑动到X临界点后可以回弹的距离，也可以理�
 overY    ：    就是滑动到Y临界点后可以回弹的距离，也可以理解为缓冲区    
 </code></pre></li>
 </ul>
-<pre><code>![picture](http://ww1.sinaimg.cn/large/c82e4122gy1garopogoamj20nl0lndh9.jpg)
-</code></pre><ul>
+<p>  <img src="http://ww1.sinaimg.cn/large/c82e4122gy1garopogoamj20nl0lndh9.jpg" alt="picture"></p>
+<ul>
 <li><p>overScroll.springBack(int startX, int startY, int minX, int maxX, int minY, int maxY);<br> 结合fling（）使用，是做一些回滚操作，也就是回滚到设置的正确临界点，一般是讲fling的overX的距离回滚到正确的临界点</p>
 <pre><code>startX:        回滚的起点X,一般是getScrollX()
 startY：    回滚的起点Y,一般是getScrollY()
@@ -350,8 +352,8 @@ dx      :        移动的距离
 <p>  deltaX:        滑动的距离,这里需要注意，移动的是画布，所以，deltax为负数才是画布往右移动，通过onTouchEvent拿到的右移动手势dex是正的，所以需要取反一下<br>  scrollX:    当前已经移动了多少距离getScrollX();<br>  scrollRangeX： 可以滑动的总距离，这个可以根据你是否需要overScroll，来决定是正常临界点还是多一点,同上边的，如果是右边起步，那么该值就是负数，以下会有代码解读<br>  maxOverScrollX：这个值比较奇怪，看底部代码<br>  isTouchEvent:是否是事件拖动时调用，也就是是否是onMove是调用</p>
 </li>
 </ul>
-<pre><code>![picture](http://ww1.sinaimg.cn/large/c82e4122gy1garprngmd0j20m50fgab2.jpg)
-</code></pre><h4 id="onOverScrolled-int-scrollX-int-scrollY-boolean-clampedX-boolean-clampedY"><a href="#onOverScrolled-int-scrollX-int-scrollY-boolean-clampedX-boolean-clampedY" class="headerlink" title="onOverScrolled(int scrollX, int scrollY,boolean clampedX, boolean clampedY)"></a>onOverScrolled(int scrollX, int scrollY,boolean clampedX, boolean clampedY)</h4><pre><code>View的回调重写方法：overScrollBy()方法执行的内部回调函数，
+<p>  <img src="http://ww1.sinaimg.cn/large/c82e4122gy1garprngmd0j20m50fgab2.jpg" alt="picture"></p>
+<h4 id="onOverScrolled-int-scrollX-int-scrollY-boolean-clampedX-boolean-clampedY"><a href="#onOverScrolled-int-scrollX-int-scrollY-boolean-clampedX-boolean-clampedY" class="headerlink" title="onOverScrolled(int scrollX, int scrollY,boolean clampedX, boolean clampedY)"></a>onOverScrolled(int scrollX, int scrollY,boolean clampedX, boolean clampedY)</h4><pre><code>View的回调重写方法：overScrollBy()方法执行的内部回调函数，
 scrollX : 移动的距离、New X scroll value in pixels、、也就是最新的移动后的X轴上的距离  getScrollX()
 clampedX: x轴上的移动位置是否完成,也就是有没有到达上边overScrollBy()函数设置值的回调
 
