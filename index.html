@@ -232,6 +232,211 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2020/01/10/overscroll&velocitytracker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sxf">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/user_icon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sxf-Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/01/10/overscroll&velocitytracker/" itemprop="url">OverScroll&&VelocityTracker</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-10T15:31:41+08:00">
+                2020-01-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>参考：</p>
+<ul>
+<li><p><a href="https://blog.csdn.net/weixin_37625173/article/details/88108303" target="_blank" rel="noopener">让控件如此丝滑Scroller和VelocityTracker的API讲解与实战——Android高级UI</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/yanbober/article/details/50411919" target="_blank" rel="noopener">Android应用开发之自定义View触摸相关工具类全解</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/hudashi/article/details/7352157" target="_blank" rel="noopener">VelocityTracker简介</a></p>
+</li>
+</ul>
+<h3 id="OverScroll-amp-amp-VelocityTracker"><a href="#OverScroll-amp-amp-VelocityTracker" class="headerlink" title="OverScroll &amp;&amp; VelocityTracker"></a>OverScroll &amp;&amp; VelocityTracker</h3><p>  其实这两个类都是滑动的辅助工具类，其并不是内部主动调用滑动的，滑动需要自己进行scrollTo()或者scrollBy()的移动,其内部会有回调<br>  对应的x,y坐标，和滑动的距离，和当前的位置，然后我们根据其返回的应该滑动到的位置进行滑动处理</p>
+<h4 id="OverScroll-API"><a href="#OverScroll-API" class="headerlink" title="OverScroll API"></a>OverScroll API</h4><ul>
+<li><p>overScroll.fling(int startX, int startY, int velocityX, int velocityY,int minX, int maxX, int minY, int maxY, int overX, int overY)<br>滑动fling时触发调用    </p>
+<pre><code>startX:       fling的起始X位标
+startY:       fling的起始Y位标
+velocityX:  X轴的滑动速度
+velocityY:    Y轴的滑动速度
+minX    :    fling的最小的X坐标，也就是left的临界点：画布向左滑动，dexIndex的值是正的，向右滑动dexIndex的值是负的
+            所以如果你画布一进去就是从最右边开始绘制，也就是需要向右滑动查看其余的数据，那么这个值就是你总需要滑动的x的负数
+maxX    :    fling的最大的X坐标，也就是right的临界点，如果你一开始就在最右边，也就是画布没移动的时候，最初位置的时候，那么max就是0
+minY    :    同minX一样
+maxY    :    同maxX一样
+overX    :    就是滑动到X临界点后可以回弹的距离，也可以理解为缓冲区
+overY    ：    就是滑动到Y临界点后可以回弹的距离，也可以理解为缓冲区    
+</code></pre></li>
+</ul>
+<pre><code>![picture](http://ww1.sinaimg.cn/large/c82e4122gy1garopogoamj20nl0lndh9.jpg)
+</code></pre><ul>
+<li><p>overScroll.springBack(int startX, int startY, int minX, int maxX, int minY, int maxY);<br> 结合fling（）使用，是做一些回滚操作，也就是回滚到设置的正确临界点，一般是讲fling的overX的距离回滚到正确的临界点</p>
+<pre><code>startX:        回滚的起点X,一般是getScrollX()
+startY：    回滚的起点Y,一般是getScrollY()
+minX  :        这个就是正确的最小的临界点坐标X,
+maxX  :        这个就是正确的最大的临界点坐标X    ----》正常startX是大于maxX或者是小于minX,才会有回滚效果
+minY  :     同上
+maxY  :        同上
+</code></pre></li>
+</ul>
+<ul>
+<li><p>overScroll.startScroll(int startX, int startY, int dx, int dy)<br>  移动多少位置</p>
+<pre><code>startX:        移动点当前坐标
+dx      :        移动的距离
+</code></pre></li>
+</ul>
+<h4 id="原生View方法"><a href="#原生View方法" class="headerlink" title="原生View方法"></a>原生View方法</h4><p> 前面也说了以上都是协助滑动的方法，并不能让View滑动，View滑动还需自己通过ScrollTo()或者scrollBy()，这种滑动需要计算好别越界处理。但是有一个方法是内部View原生<br>计算好的封装方法：overScrollBy(); </p>
+<ul>
+<li><p>overScrollBy(int deltaX, int deltaY,int scrollX, int scrollY,int scrollRangeX, int scrollRangeY,int maxOverScrollX, int maxOverScrollY,boolean isTouchEvent)<br>  其内部就是执行的scrollBy，通过onOverScrolled（）的回调函数,但是在执行之前其对临界点判断做了处理</p>
+<p>  deltaX:        滑动的距离,这里需要注意，移动的是画布，所以，deltax为负数才是画布往右移动，通过onTouchEvent拿到的右移动手势dex是正的，所以需要取反一下<br>  scrollX:    当前已经移动了多少距离getScrollX();<br>  scrollRangeX： 可以滑动的总距离，这个可以根据你是否需要overScroll，来决定是正常临界点还是多一点,同上边的，如果是右边起步，那么该值就是负数，以下会有代码解读<br>  maxOverScrollX：这个值比较奇怪，看底部代码<br>  isTouchEvent:是否是事件拖动时调用，也就是是否是onMove是调用</p>
+</li>
+</ul>
+<pre><code>![picture](http://ww1.sinaimg.cn/large/c82e4122gy1garprngmd0j20m50fgab2.jpg)
+</code></pre><h4 id="onOverScrolled-int-scrollX-int-scrollY-boolean-clampedX-boolean-clampedY"><a href="#onOverScrolled-int-scrollX-int-scrollY-boolean-clampedX-boolean-clampedY" class="headerlink" title="onOverScrolled(int scrollX, int scrollY,boolean clampedX, boolean clampedY)"></a>onOverScrolled(int scrollX, int scrollY,boolean clampedX, boolean clampedY)</h4><pre><code>View的回调重写方法：overScrollBy()方法执行的内部回调函数，
+scrollX : 移动的距离、New X scroll value in pixels、、也就是最新的移动后的X轴上的距离  getScrollX()
+clampedX: x轴上的移动位置是否完成,也就是有没有到达上边overScrollBy()函数设置值的回调
+
+        @Override
+        protected void onOverScrolled(int scrollX, int scrollY, boolean clampedX, boolean clampedY) {
+            int oldScrollX = getScrollX();
+            int oldScrollY = getScrollY();
+            setScrollX(scrollX);
+            onScrollChanged(scrollX, scrollY, oldScrollX, oldScrollY);
+
+        }    
+</code></pre><p>  <img src="http://ww1.sinaimg.cn/large/c82e4122gy1gauqw3p0o2j20op08hdgi.jpg" alt="picture">    </p>
+<h4 id="onScrollChanged-int-l-int-t-int-oldl-int-oldt"><a href="#onScrollChanged-int-l-int-t-int-oldl-int-oldt" class="headerlink" title="onScrollChanged(int l, int t, int oldl, int oldt);"></a>onScrollChanged(int l, int t, int oldl, int oldt);</h4><pre><code>每次内部调用scrollTo()、scrollby()方法时都会执行该onScrollChanged()方法，内部函数会返回当前坐标和上一次坐标，从而view会判断是往哪个方向移动
+</code></pre><h4 id="VelocityTracker"><a href="#VelocityTracker" class="headerlink" title="VelocityTracker"></a>VelocityTracker</h4><ul>
+<li><p>介绍参考：</p>
+<p>  <a href="https://blog.csdn.net/hudashi/article/details/7352157" target="_blank" rel="noopener">VelocityTracker简介</a></p>
+<pre><code>ViewConfiguration viewConfiguration = ViewConfiguration.get(getContext());
+scaledTouchSlop = viewConfiguration.getScaledTouchSlop();
+scaledMaximumFlingVelocity = viewConfiguration.getScaledMaximumFlingVelocity();
+scaledMinimumFlingVelocity = viewConfiguration.getScaledMinimumFlingVelocity();
+velocityTracker = VelocityTracker.obtain();//创建方式
+velocityTracker.addMovement(event);//事件手势传入
+velocityTracker.computeCurrentVelocity(int units, float maxVelocity);//设置滑动的速度单位，units=1000,maxVelocity=scaledMaximumFlingVelocity表示1s内滑动的像素的最大值是scaledMaximumFlingVelocity
+velocityTracker.getXVelocity();//获取x轴上的滑动速度
+</code></pre></li>
+</ul>
+<h4 id="computeScroll"><a href="#computeScroll" class="headerlink" title="computeScroll()"></a>computeScroll()</h4><pre><code>         /**
+          * Called by a parent to request that a child update its values for mScrollX
+          * and mScrollY if necessary. This will typically be done if the child is
+          * animating a scroll using a {@link android.widget.Scroller Scroller}
+          * object.
+          */
+
+也就是通过对象Scroller或者是其子类OverScroller执行需要改变ScrollX\scrollY的操作时，会被调用,会被回调
+,so,上边的startScroll()\fling()\springBack()等Api的真时调用滑动的方法都是在computerScroll()的回调函数中做的
+</code></pre><p>  <img src="http://ww1.sinaimg.cn/large/c82e4122gy1gauruh7apkj216v0b8q42.jpg" alt="picture"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2020/01/07/path_canvas/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1257,161 +1462,6 @@ int screenHeight=displayMetrics.heightPixels;
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/leak_cancary/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sxf">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/user_icon.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sxf-Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/20/leak_cancary/" itemprop="url">内存泄漏案例以及优化</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
-                2019-12-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Android内存泄漏"><a href="#Android内存泄漏" class="headerlink" title="Android内存泄漏"></a>Android内存泄漏</h3><ul>
-<li><p>页面A即将关闭、但是页面或者是对象B持有页面A的引用，这时就会导致页面A的对象多为Context无法回收，这时就会导致内存泄漏</p>
-<ul>
-<li><p>一般体现是：单例模式创建静态变量时-持有页面的context,也常用于MVP-Persenter。</p>
-<ul>
-<li>单例模式处理一般context获取其Application层面的context</li>
-<li>使用Application层面的context并不会因为持有context是系统级别的不会被回收，：回收是对象A回收时，没有其他对应引用A</li>
-</ul>
-</li>
-<li><p>使用内部类对象时没有对内部类引用进行弱引用处理。</p>
-<ul>
-<li>内部类在创建对象时内部会获取外部类的引用、这样其才可以不限制使用外部类的变量或者是方法（类与类的作用域方法变量是分开的即使是内部类与外部类），所以在创建内部类时一般会用静态内部类，因为静态内部类创建时不包含外部类的引用</li>
-</ul>
-</li>
-<li><p>内部类经典案例Handler</p>
-<ul>
-<li>不规范的handler</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fx8t3iv5udj20q00bxq3q.jpg" alt="picture"></p>
-<pre><code>`这里的handler也是一个非静态匿名内部类，他跟上面的一样，也会持有Activity的引用，我们知道handler是运行在一个Looper线程中的，而Looper线程是轮询来处理消息队列中的消息的，假设我们处理的消息有十条，而当他执行到第6条的时候，用户点击了back返回键，销毁了当前的Activity，这个时候消息还没有处理完，handler还在持有Activity的引用，这个时候就会导致无法被GC回收，造成了内存泄漏。`
-</code></pre><ul>
-<li>正确的做法是：</li>
-</ul>
-<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fx8tqe5ylzj20ps0njjtc.jpg" alt="picture"></p>
-<pre><code>`该案例也说明了两点：1、内部类创建时静态内部类操作外部类对象时需要外部类对象，这时对外部类对象进行弱引用    
-                    2、内部类对象例如Handler正常第一种创建、其在使用的时候就是个内部类内部可以调用外部的对象就是持有外部的引用,这也是为什么会要继承Handler创建对象的原因`
-</code></pre><h3 id="待续…"><a href="#待续…" class="headerlink" title="待续…."></a>待续….</h3><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
-<li><p><a href="https://blog.csdn.net/qq_35373333/article/details/74909811" target="_blank" rel="noopener">Android——内存篇：Android中5种最常见的内存泄漏问题以及解决办法</a></p>
-</li>
-<li><p><a href="https://www.cnblogs.com/aademeng/articles/6192954.html" target="_blank" rel="noopener">java 内部类和静态内部类的区别</a></p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/nexus/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1529,6 +1579,161 @@ int screenHeight=displayMetrics.heightPixels;
 </ul>
 <p><img src="https://thumbnail0.baidupcs.com/thumbnail/9daed7c4c3c4fb0a141fcbe3bfed5e79?fid=3896323671-250528-568038031038468&amp;time=1510200000&amp;rt=sh&amp;sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-TofcDUeiwsSdAPrtMbYJJZ0xIjY%3D&amp;expires=8h&amp;chkv=0&amp;chkbd=0&amp;chkpc=&amp;dp-logid=7248130129196185689&amp;dp-callid=0&amp;size=c710_u400&amp;quality=100&amp;vuk=-&amp;ft=video" alt="picture"></p>
 <p><img src="https://thumbnail0.baidupcs.com/thumbnail/8faf1f06aa2998935602abc4130f16f4?fid=3896323671-250528-384719206046152&amp;time=1510200000&amp;rt=sh&amp;sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-02HSGdp49DnO5bDjSoYkIyzGb2s%3D&amp;expires=8h&amp;chkv=0&amp;chkbd=0&amp;chkpc=&amp;dp-logid=7248154652143227979&amp;dp-callid=0&amp;size=c710_u400&amp;quality=100&amp;vuk=-&amp;ft=video" alt="picture"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/leak_cancary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sxf">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/user_icon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sxf-Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/20/leak_cancary/" itemprop="url">内存泄漏案例以及优化</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
+                2019-12-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Android内存泄漏"><a href="#Android内存泄漏" class="headerlink" title="Android内存泄漏"></a>Android内存泄漏</h3><ul>
+<li><p>页面A即将关闭、但是页面或者是对象B持有页面A的引用，这时就会导致页面A的对象多为Context无法回收，这时就会导致内存泄漏</p>
+<ul>
+<li><p>一般体现是：单例模式创建静态变量时-持有页面的context,也常用于MVP-Persenter。</p>
+<ul>
+<li>单例模式处理一般context获取其Application层面的context</li>
+<li>使用Application层面的context并不会因为持有context是系统级别的不会被回收，：回收是对象A回收时，没有其他对应引用A</li>
+</ul>
+</li>
+<li><p>使用内部类对象时没有对内部类引用进行弱引用处理。</p>
+<ul>
+<li>内部类在创建对象时内部会获取外部类的引用、这样其才可以不限制使用外部类的变量或者是方法（类与类的作用域方法变量是分开的即使是内部类与外部类），所以在创建内部类时一般会用静态内部类，因为静态内部类创建时不包含外部类的引用</li>
+</ul>
+</li>
+<li><p>内部类经典案例Handler</p>
+<ul>
+<li>不规范的handler</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fx8t3iv5udj20q00bxq3q.jpg" alt="picture"></p>
+<pre><code>`这里的handler也是一个非静态匿名内部类，他跟上面的一样，也会持有Activity的引用，我们知道handler是运行在一个Looper线程中的，而Looper线程是轮询来处理消息队列中的消息的，假设我们处理的消息有十条，而当他执行到第6条的时候，用户点击了back返回键，销毁了当前的Activity，这个时候消息还没有处理完，handler还在持有Activity的引用，这个时候就会导致无法被GC回收，造成了内存泄漏。`
+</code></pre><ul>
+<li>正确的做法是：</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fx8tqe5ylzj20ps0njjtc.jpg" alt="picture"></p>
+<pre><code>`该案例也说明了两点：1、内部类创建时静态内部类操作外部类对象时需要外部类对象，这时对外部类对象进行弱引用    
+                    2、内部类对象例如Handler正常第一种创建、其在使用的时候就是个内部类内部可以调用外部的对象就是持有外部的引用,这也是为什么会要继承Handler创建对象的原因`
+</code></pre><h3 id="待续…"><a href="#待续…" class="headerlink" title="待续…."></a>待续….</h3><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><p><a href="https://blog.csdn.net/qq_35373333/article/details/74909811" target="_blank" rel="noopener">Android——内存篇：Android中5种最常见的内存泄漏问题以及解决办法</a></p>
+</li>
+<li><p><a href="https://www.cnblogs.com/aademeng/articles/6192954.html" target="_blank" rel="noopener">java 内部类和静态内部类的区别</a></p>
+</li>
+</ul>
 
           
         
@@ -1731,223 +1936,6 @@ public void run() {
 <li>sendMessage()方式进行消息传递：handler.removeCallBacksAndMessages(null)  </li>
 <li>post(runnable)方式：handler.removeCallBacks(runnable);</li>
 </ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/go_back/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sxf">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/user_icon.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sxf-Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/20/go_back/" itemprop="url">GO-BACK</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
-                2019-12-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="String、StringBuffer-、StringBuilder"><a href="#String、StringBuffer-、StringBuilder" class="headerlink" title="String、StringBuffer 、StringBuilder"></a>String、StringBuffer 、StringBuilder</h2><h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><ul>
-<li><p>String 是字符串对象常量、对象一旦创建之后该对象的值不可更改：String s=”abce”是一种非常特殊的形式,和new 有本质的区别。<strong>它是java中唯一不需要new 就可以产生对象的途径</strong></p>
-</li>
-<li><p>StringBuilder、StringBuffer 对象是变量的、其对象可以更改或者是说其对应的值是可以更改的</p>
-<pre><code>1 String str=&quot;abc&quot;;
-2 System.out.println(str);
-3 str=str+&quot;de&quot;;
-4 System.out.println(str);
-</code></pre></li>
-<li><p>如果运行这段代码会发现先输出“abc”，然后又输出“abcde”，好像是str这个对象被更改了，其实，这只是一种假象罢了，JVM对于这几行代码是这样处理的，<code>首先创建一个String对象str，并把“abc”赋值给str，然后在第三行中，其实JVM又创建了一个新的对象也名为str，然后再把原来的str的值和“de”加起来再赋值给新的str，而原来的str就会被JVM的垃圾回收机制（GC）给回收掉了</code>，所以，str实际上并没有被更改，也就是前面说的String对象一旦创建之后就不可更改了。所以，Java中对String对象进行的操作实际上是一个不断创建新的对象并且将旧的对象回收的一个过程，所以执行速度很慢</p>
-</li>
-<li><p>String实现继承-最后到内部存储都是以char[]str来存储对应的文本内容</p>
-<pre><code>public final class String implements java.io.Serializable, Comparable&lt;String&gt;, CharSequence
-</code></pre></li>
-<li><p>StringBuffer 实现继承-CharSequence（有序队列char）</p>
-<pre><code>public final class StringBuffer extends AbstractStringBuilder implements java.io.Serializable, CharSequence
-
-.....
-//String方法    
-@Override
-public synchronized StringBuffer append(String str) {
-    toStringCache = null;
-    super.append(str);
-    return this;
-}
-</code></pre></li>
-<li><p>其append方法都有synchronized 标志、顾当有多个线程调用相同对象进行添加时、<strong>其线程是安全的</strong></p>
-</li>
-<li><p>toString()：也验证了String内部存储转换：value：char[]</p>
-<pre><code>   @Override
-public synchronized String toString() {
-    if (toStringCache == null) {
-    toStringCache = Arrays.copyOfRange(value, 0, count);
-    }
-    return new String(toStringCache, 0, count);
-    }
-</code></pre></li>
-<li><p>StringBuilder -继承</p>
-<pre><code>public final class StringBuilder extends AbstractStringBuilder implements java.io.Serializable, CharSequence
-
-....
-//方法--线程不安全的
- @Override
-public StringBuilder append(String str) {
-    super.append(str);
-    return this;
-}
-</code></pre></li>
-<li><p>class 用final修饰、代表其无法实现被继承</p>
-</li>
-</ul>
-<h3 id="equals、"><a href="#equals、" class="headerlink" title="equals、=="></a>equals、==</h3><ul>
-<li>==：== 比较的是变量(栈)内存中存放的对象的(堆)内存地址，用来判断两个对象的地址是否相同，即是否是指相同一个对象。比较的是真正意义上的指针操作。</li>
-</ul>
-<ul>
-<li>1、比较的是操作符两端的操作数是否是同一个对象。<br>2、两边的操作数必须是同一类型的（可以是父子类之间）才能编译通过。<br>3、比较的是地址，如果是具体的阿拉伯数字的比较，值相等则为true，如：<br>int a=10 与 long b=10L 与 double c=10.0都是相同的（为true），因为他们都指向地址为10的堆。</li>
-</ul>
-<p><code>其实直接对应数值的比对也是进行地址的比对-地址指向的都是常量为10的堆地址</code></p>
-<ul>
-<li><p>　　equals用来比较的是两个对象的内容是否相等，由于所有的类都是继承自java.lang.Object类的，所以适用于所有对象，如果没有对该方法进行覆盖的话，调用的仍然是Object类中的方法，而Object中的equals方法返回的却是==的判断。</p>
-<pre><code>//Object内部equals方法：其实内部就是进行的==判断、也就是地址指针的判断
-  public boolean equals(Object obj) {
-        return (this == obj);
-    }
-
-//String内部的equals--先比较对象地址、然后比较长度、然后比较内部的char[]的数值
-
-public boolean equals(Object anObject) {
-    if (this == anObject) {
-    return true;
-    }
-    if (anObject instanceof String) {
-    String anotherString = (String) anObject;
-    int n = length();
-    if (n == anotherString.length()) {
-        int i = 0;
-        while (n-- != 0) {
-            if (charAt(i) != anotherString.charAt(i))
-                    return false;
-            i++;
-        }
-        return true;
-        }
-    }
-    return false;
-}
-</code></pre></li>
-</ul>
-<ul>
-<li>经典案例</li>
-</ul>
-<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fwydal4rg4j20ml0c0gm6.jpg" alt="picture"></p>
-<ul>
-<li>参考文献</li>
-</ul>
-<p><a href="https://www.cnblogs.com/Eason-S/p/5524837.html" target="_blank" rel="noopener">equals和==的区别小结</a>  </p>
-<p><a href="https://www.cnblogs.com/su-feng/p/6659064.html" target="_blank" rel="noopener">Java中的String，StringBuilder，StringBuffer三者的区别
-</a></p>
 
           
         
@@ -2264,7 +2252,7 @@ git stash pop //会提取出你之前存储的最新一次的记录
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
