@@ -79,20 +79,22 @@
 
 
 
-<meta name="description" content="Android内存泄漏 页面A即将关闭、但是页面或者是对象B持有页面A的引用，这时就会导致页面A的对象多为Context无法回收，这时就会导致内存泄漏  一般体现是：单例模式创建静态变量时-持有页面的context,也常用于MVP-Persenter。  单例模式处理一般context获取其Application层面的context 使用Application层面的context并不会因为持有co">
+<meta name="description" content="windowSoftInputMode adjustPan：输入框的高度高于键盘弹出的高度，那么软键盘弹出后页面不会顶上去，如果输入框的高度会被软键盘遮挡，那么软键盘弹出时，会将布局整体往上移动，直到输入框显示出来为止，值得注意的是:该移动方法并不会压缩布局，而是直接上移，不进行布局压缩,类似于整体布局scrollTo()操作   adjustResize ：这个情况有点复杂，移动会压缩布局，也就">
 <meta property="og:type" content="article">
-<meta property="og:title" content="内存泄漏案例以及优化">
-<meta property="og:url" content="https://shaoxuefei.github.io/2019/12/20/leak_cancary/index.html">
+<meta property="og:title" content="windowSoftInputMode">
+<meta property="og:url" content="https://shaoxuefei.github.io/2020/01/17/windowSoftInputMode/index.html">
 <meta property="og:site_name" content="Sxf-Blog">
-<meta property="og:description" content="Android内存泄漏 页面A即将关闭、但是页面或者是对象B持有页面A的引用，这时就会导致页面A的对象多为Context无法回收，这时就会导致内存泄漏  一般体现是：单例模式创建静态变量时-持有页面的context,也常用于MVP-Persenter。  单例模式处理一般context获取其Application层面的context 使用Application层面的context并不会因为持有co">
+<meta property="og:description" content="windowSoftInputMode adjustPan：输入框的高度高于键盘弹出的高度，那么软键盘弹出后页面不会顶上去，如果输入框的高度会被软键盘遮挡，那么软键盘弹出时，会将布局整体往上移动，直到输入框显示出来为止，值得注意的是:该移动方法并不会压缩布局，而是直接上移，不进行布局压缩,类似于整体布局scrollTo()操作   adjustResize ：这个情况有点复杂，移动会压缩布局，也就">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fx8t3iv5udj20q00bxq3q.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fx8tqe5ylzj20ps0njjtc.jpg">
-<meta property="og:updated_time" content="2018-11-15T08:39:05.203Z">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1gazt4vn8iuj20a70ifdg7.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1gaztwx0ovxj20ba0k2q4q.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1gaztri4fyuj20c60ixt91.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1gaztvcw6rdj20b40mj40u.jpg">
+<meta property="og:updated_time" content="2020-01-17T12:25:53.289Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="内存泄漏案例以及优化">
-<meta name="twitter:description" content="Android内存泄漏 页面A即将关闭、但是页面或者是对象B持有页面A的引用，这时就会导致页面A的对象多为Context无法回收，这时就会导致内存泄漏  一般体现是：单例模式创建静态变量时-持有页面的context,也常用于MVP-Persenter。  单例模式处理一般context获取其Application层面的context 使用Application层面的context并不会因为持有co">
-<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1fx8t3iv5udj20q00bxq3q.jpg">
+<meta name="twitter:title" content="windowSoftInputMode">
+<meta name="twitter:description" content="windowSoftInputMode adjustPan：输入框的高度高于键盘弹出的高度，那么软键盘弹出后页面不会顶上去，如果输入框的高度会被软键盘遮挡，那么软键盘弹出时，会将布局整体往上移动，直到输入框显示出来为止，值得注意的是:该移动方法并不会压缩布局，而是直接上移，不进行布局压缩,类似于整体布局scrollTo()操作   adjustResize ：这个情况有点复杂，移动会压缩布局，也就">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/c82e4122gy1gazt4vn8iuj20a70ifdg7.jpg">
 
 
 
@@ -122,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="https://shaoxuefei.github.io/2019/12/20/leak_cancary/"/>
+  <link rel="canonical" href="https://shaoxuefei.github.io/2020/01/17/windowSoftInputMode/"/>
 
 
 
 
 
-  <title>内存泄漏案例以及优化 | Sxf-Blog</title>
+  <title>windowSoftInputMode | Sxf-Blog</title>
   
 
 
@@ -235,7 +237,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/leak_cancary/">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2020/01/17/windowSoftInputMode/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sxf">
@@ -252,7 +254,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">内存泄漏案例以及优化</h1>
+          <h1 class="post-title" itemprop="name headline">windowSoftInputMode</h1>
         
 
         <div class="post-meta">
@@ -264,8 +266,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
-                2019-12-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-17T19:03:19+08:00">
+                2020-01-17
               </time>
             
 
@@ -302,40 +304,27 @@
       
 
       
-        <h3 id="Android内存泄漏"><a href="#Android内存泄漏" class="headerlink" title="Android内存泄漏"></a>Android内存泄漏</h3><ul>
-<li><p>页面A即将关闭、但是页面或者是对象B持有页面A的引用，这时就会导致页面A的对象多为Context无法回收，这时就会导致内存泄漏</p>
+        <h3 id="windowSoftInputMode"><a href="#windowSoftInputMode" class="headerlink" title="windowSoftInputMode"></a>windowSoftInputMode</h3><ul>
+<li>adjustPan：输入框的高度高于键盘弹出的高度，那么软键盘弹出后页面不会顶上去，如果输入框的高度会被软键盘遮挡，那么软键盘弹出时，会将布局整体往上移动，直到输入框显示出来为止，值得注意的是:该移动方法并不会压缩布局，而是直接上移，不进行布局压缩,类似于整体布局scrollTo()操作</li>
+</ul>
 <ul>
-<li><p>一般体现是：单例模式创建静态变量时-持有页面的context,也常用于MVP-Persenter。</p>
+<li><p>adjustResize ：这个情况有点复杂，移动会压缩布局，也就是键盘弹出后，整体的页面显示View会被压缩，压缩的高度就是软键盘的高度 </p>
 <ul>
-<li>单例模式处理一般context获取其Application层面的context</li>
-<li>使用Application层面的context并不会因为持有context是系统级别的不会被回收，：回收是对象A回收时，没有其他对应引用A</li>
+<li>假如输入框的高度大于软键盘的高度时：（布局底部View，时根布局最下部的View，要么是LinearLayout（child0有layout_weight=1表示）），要么RelativeLayout父布局有aliprentBottom</li>
+<li>点击输入框，底部会顶上去，不管输入框高度是否大于软键盘高度,前提是底部的VIew会顶上去</li>
+<li>LinearLayout为父布局时，底部以上的都会弹起</li>
 </ul>
 </li>
-<li><p>使用内部类对象时没有对内部类引用进行弱引用处理。</p>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1gazt4vn8iuj20a70ifdg7.jpg" alt="picture"></p>
+<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1gaztwx0ovxj20ba0k2q4q.jpg" alt="picture"></p>
+<pre><code>* RelativeLayout为父布局时，只有底部的会弹起，底部到键盘之间的遮挡控件不会上移,除非是跟底部有某种约束关系的View，比如aboveUp：bottomView
+* 虽然会压缩控件的布局，但是内部设置的margin还是真实存在的不会压缩，显示不下会往上顶
+</code></pre><p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1gaztri4fyuj20c60ixt91.jpg" alt="picture"><br><img src="http://ww1.sinaimg.cn/large/c82e4122gy1gaztvcw6rdj20b40mj40u.jpg" alt="picture">    </p>
 <ul>
-<li>内部类在创建对象时内部会获取外部类的引用、这样其才可以不限制使用外部类的变量或者是方法（类与类的作用域方法变量是分开的即使是内部类与外部类），所以在创建内部类时一般会用静态内部类，因为静态内部类创建时不包含外部类的引用</li>
-</ul>
+<li><p>adjustNothing:永远不会对父布局进行弹出或者是移动改变父布局</p>
 </li>
-<li><p>内部类经典案例Handler</p>
-<ul>
-<li>不规范的handler</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fx8t3iv5udj20q00bxq3q.jpg" alt="picture"></p>
-<pre><code>`这里的handler也是一个非静态匿名内部类，他跟上面的一样，也会持有Activity的引用，我们知道handler是运行在一个Looper线程中的，而Looper线程是轮询来处理消息队列中的消息的，假设我们处理的消息有十条，而当他执行到第6条的时候，用户点击了back返回键，销毁了当前的Activity，这个时候消息还没有处理完，handler还在持有Activity的引用，这个时候就会导致无法被GC回收，造成了内存泄漏。`
-</code></pre><ul>
-<li>正确的做法是：</li>
-</ul>
-<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fx8tqe5ylzj20ps0njjtc.jpg" alt="picture"></p>
-<pre><code>`该案例也说明了两点：1、内部类创建时静态内部类操作外部类对象时需要外部类对象，这时对外部类对象进行弱引用    
-                    2、内部类对象例如Handler正常第一种创建、其在使用的时候就是个内部类内部可以调用外部的对象就是持有外部的引用,这也是为什么会要继承Handler创建对象的原因`
-</code></pre><h3 id="待续…"><a href="#待续…" class="headerlink" title="待续…."></a>待续….</h3><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
-<li><p><a href="https://blog.csdn.net/qq_35373333/article/details/74909811" target="_blank" rel="noopener">Android——内存篇：Android中5种最常见的内存泄漏问题以及解决办法</a></p>
-</li>
-<li><p><a href="https://www.cnblogs.com/aademeng/articles/6192954.html" target="_blank" rel="noopener">java 内部类和静态内部类的区别</a></p>
+<li><p>adjustUnspecified:类似adjustPan</p>
 </li>
 </ul>
 
@@ -362,8 +351,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/12/20/nexus/" rel="next" title="Nexus 用户权限管理">
-                <i class="fa fa-chevron-left"></i> Nexus 用户权限管理
+              <a href="/2020/01/10/overscroll&velocitytracker/" rel="next" title="OverScroll&&VelocityTracker">
+                <i class="fa fa-chevron-left"></i> OverScroll&&VelocityTracker
               </a>
             
           </div>
@@ -371,10 +360,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/12/20/ontouchevent/" rel="prev" title="事件分发">
-                事件分发 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -492,7 +477,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Android内存泄漏"><span class="nav-number">1.</span> <span class="nav-text">Android内存泄漏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#待续…"><span class="nav-number">2.</span> <span class="nav-text">待续….</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#windowSoftInputMode"><span class="nav-number">1.</span> <span class="nav-text">windowSoftInputMode</span></a></li></ol></div>
             
 
           </div>
