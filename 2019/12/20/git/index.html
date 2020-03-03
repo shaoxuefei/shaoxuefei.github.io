@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Sxf-Blog">
 <meta property="og:description" content="新建本地仓库 在当前目录新建一个Git代码本地仓库    git init  添加指定文件到暂存区 git add [file] [file] ....    提交文件到本地   git commit [file] [file] ... -m[message] git commit -m[message]  提交到远端  git push  删除工作区文件 git rm [file] [file]">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-03-03T11:28:17.388Z">
+<meta property="og:updated_time" content="2020-03-03T11:37:30.813Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Git语法">
 <meta name="twitter:description" content="新建本地仓库 在当前目录新建一个Git代码本地仓库    git init  添加指定文件到暂存区 git add [file] [file] ....    提交文件到本地   git commit [file] [file] ... -m[message] git commit -m[message]  提交到远端  git push  删除工作区文件 git rm [file] [file]">
@@ -357,13 +357,6 @@ git status
 </code></pre></li>
 </ul>
 <hr>
-<h1 id="待续"><a href="#待续" class="headerlink" title="待续"></a>待续</h1><ul>
-<li>总归一句话：操作分支：git branch ..</li>
-<li>操作tag：git tag …</li>
-<li>操作远程提交tag/branch：git push origin 2.0—-//或者git push –tags(省略origin远程 )</li>
-<li>操作远程删除tag/branch:git push origin -d 2.0</li>
-<li>远程代码提交：git push 就可以了</li>
-</ul>
 <h1 id="多分支并行开发（都是以develop为基准分支）"><a href="#多分支并行开发（都是以develop为基准分支）" class="headerlink" title="多分支并行开发（都是以develop为基准分支）"></a>多分支并行开发（都是以develop为基准分支）</h1><ul>
 <li><p>正常逻辑</p>
 <pre><code>git branch native;//创建本地分支
@@ -439,12 +432,27 @@ git cherry-pick branchName  //将该branchName分支最新一条的commit 合并
 </ul>
 <pre><code>git pull --rebase ;//基于当前分支拉取代码        
 
+git rebase --continue;//当拉取代码冲突后--需执行
+
+git log //显示提交的信息
+
+git reset &quot;commitId&quot; //回退到当前提交--前提是没有push
+
 git commit --amend;//提交当前内容到临近的上一次提交，也就是将这次提交合并到上一次提价，减少commit的记录，前提是上一次commit还没有push
 
 git push 仓库地址 HEAD:refs/for/分支%r=代码审核人git用户名,代码审核人2   //提交添加审核人
+
+git branch hear
 </code></pre><h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><ul>
 <li><a href="http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html</a></li>
 <li><a href="https://blog.zengrong.net/post/1746.html" target="_blank" rel="noopener">https://blog.zengrong.net/post/1746.html</a></li>
+</ul>
+<h1 id="待续"><a href="#待续" class="headerlink" title="待续"></a>待续</h1><ul>
+<li>总归一句话：操作分支：git branch ..</li>
+<li>操作tag：git tag …</li>
+<li>操作远程提交tag/branch：git push origin 2.0—-//或者git push –tags(省略origin远程 )</li>
+<li>操作远程删除tag/branch:git push origin -d 2.0</li>
+<li>远程代码提交：git push 就可以了</li>
 </ul>
 
       
@@ -470,8 +478,8 @@ git push 仓库地址 HEAD:refs/for/分支%r=代码审核人git用户名,代码�
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/12/20/go_back/" rel="next" title="GO-BACK">
-                <i class="fa fa-chevron-left"></i> GO-BACK
+              <a href="/2019/12/20/data_structure/" rel="next" title="数据结构(表)和算法">
+                <i class="fa fa-chevron-left"></i> 数据结构(表)和算法
               </a>
             
           </div>
@@ -480,8 +488,8 @@ git push 仓库地址 HEAD:refs/for/分支%r=代码审核人git用户名,代码�
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/12/20/handler_handlerthread/" rel="prev" title="Handler&HandlerThread">
-                Handler&HandlerThread <i class="fa fa-chevron-right"></i>
+              <a href="/2019/12/20/go_back/" rel="prev" title="GO-BACK">
+                GO-BACK <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -600,7 +608,7 @@ git push 仓库地址 HEAD:refs/for/分支%r=代码审核人git用户名,代码�
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#新建本地仓库"><span class="nav-number">1.</span> <span class="nav-text">新建本地仓库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分支"><span class="nav-number">2.</span> <span class="nav-text">分支</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建Tag"><span class="nav-number">3.</span> <span class="nav-text">创建Tag</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#删除远程分支和Tag"><span class="nav-number">4.</span> <span class="nav-text">删除远程分支和Tag</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#删除本地分支和tag"><span class="nav-number">5.</span> <span class="nav-text">删除本地分支和tag</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#删除掉不存在远程分支的本地分支"><span class="nav-number">6.</span> <span class="nav-text">删除掉不存在远程分支的本地分支</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#重命名远程分支"><span class="nav-number">7.</span> <span class="nav-text">重命名远程分支</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#待续"><span class="nav-number">8.</span> <span class="nav-text">待续</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多分支并行开发（都是以develop为基准分支）"><span class="nav-number">9.</span> <span class="nav-text">多分支并行开发（都是以develop为基准分支）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文章"><span class="nav-number">10.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#新建本地仓库"><span class="nav-number">1.</span> <span class="nav-text">新建本地仓库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分支"><span class="nav-number">2.</span> <span class="nav-text">分支</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建Tag"><span class="nav-number">3.</span> <span class="nav-text">创建Tag</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#删除远程分支和Tag"><span class="nav-number">4.</span> <span class="nav-text">删除远程分支和Tag</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#删除本地分支和tag"><span class="nav-number">5.</span> <span class="nav-text">删除本地分支和tag</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#删除掉不存在远程分支的本地分支"><span class="nav-number">6.</span> <span class="nav-text">删除掉不存在远程分支的本地分支</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#重命名远程分支"><span class="nav-number">7.</span> <span class="nav-text">重命名远程分支</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多分支并行开发（都是以develop为基准分支）"><span class="nav-number">8.</span> <span class="nav-text">多分支并行开发（都是以develop为基准分支）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文章"><span class="nav-number">9.</span> <span class="nav-text">参考文章</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#待续"><span class="nav-number">10.</span> <span class="nav-text">待续</span></a></li></ol></div>
             
 
           </div>

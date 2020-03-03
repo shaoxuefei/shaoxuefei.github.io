@@ -232,272 +232,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/git/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sxf">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/user_icon.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sxf-Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/20/git/" itemprop="url">Git语法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
-                2019-12-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="新建本地仓库"><a href="#新建本地仓库" class="headerlink" title="新建本地仓库"></a>新建本地仓库</h1><ul>
-<li><p>在当前目录新建一个Git代码本地仓库</p>
-<p>   git init</p>
-</li>
-<li><p>添加指定文件到暂存区</p>
-<pre><code>git add [file] [file] ....  
-</code></pre></li>
-<li><p>提交文件到本地  </p>
-<pre><code>git commit [file] [file] ... -m[message]
-git commit -m[message]
-</code></pre></li>
-<li><p>提交到远端 </p>
-<pre><code>git push
-</code></pre></li>
-<li><p>删除工作区文件</p>
-<pre><code>git rm [file] [file] ....
-</code></pre></li>
-<li><p>提交显示时所有的diff信息</p>
-<pre><code>git commit -v
-git status
-</code></pre><h1 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h1></li>
-<li><code>git branch</code>//查看本地分支</li>
-<li><code>git branch -r</code>//查看远程分支</li>
-<li><code>git branch -a</code>//查看本地和远程分支</li>
-<li><code>git branch [branch-name]</code>//创建新分支，但是仍然停留在改分支</li>
-<li><code>git checkout [branch-name]</code>//切换到当前分支—<code>git checkout -b [branch-name]</code>//也同样可以实现</li>
-<li><code>git merge [branch]</code>//合并指定分支(branch)到<em>当前分支</em></li>
-<li><code>git branch -d [branch-name]</code>//删除本地分支</li>
-<li><code>git branch -d origin [branch-name]</code>//删除远程分支</li>
-</ul>
-<h1 id="创建Tag"><a href="#创建Tag" class="headerlink" title="创建Tag"></a>创建Tag</h1><ul>
-<li><code>git tag</code>//列出所有tag</li>
-<li><code>git tag [tag]</code>//创建一个tag在本地</li>
-<li><code>git push [remote] [tag]</code>//提交tag到指定远端</li>
-<li><code>git push [remote] --tags</code>//提交所有tag到远端分支[origin]</li>
-</ul>
-<h1 id="删除远程分支和Tag"><a href="#删除远程分支和Tag" class="headerlink" title="删除远程分支和Tag"></a>删除远程分支和Tag</h1><ul>
-<li><code>git push origin --delete &lt;brancnName&gt;</code></li>
-<li><code>git push origin --delete tag &lt;tagName&gt;</code><h1 id="删除本地分支和tag"><a href="#删除本地分支和tag" class="headerlink" title="删除本地分支和tag"></a>删除本地分支和tag</h1></li>
-<li><code>git tag -d [tag]</code></li>
-<li><code>git branch -d [branch]</code><h1 id="删除掉不存在远程分支的本地分支"><a href="#删除掉不存在远程分支的本地分支" class="headerlink" title="删除掉不存在远程分支的本地分支"></a>删除掉不存在远程分支的本地分支</h1></li>
-<li><code>git fetch -p</code> //会删除所有的没有跟远程分支对应上的本地分子  </li>
-<li>git checkout branchX //切换到不复合的本地分支  然后使用<br><code>git remote prune origin</code>可以清除对应的分支  <h1 id="重命名远程分支"><a href="#重命名远程分支" class="headerlink" title="重命名远程分支"></a>重命名远程分支</h1></li>
-<li>在git中重命名远程分支，其实就是先删除远程分支，然后重命名本地分支，再重新提交一个远程分支</li>
-<li><p>先查看远程的分支  </p>
-<pre><code>git branch -a  
-</code></pre></li>
-<li><p>删除远端分支  </p>
-<pre><code>git push --delete origin develop
-</code></pre></li>
-<li><p>重命名本地分支(develop–&gt;devel)</p>
-<pre><code>git branch -m develop devel
-</code></pre></li>
-<li><p>推送本地分支  </p>
-<pre><code>git push origin devel
-</code></pre></li>
-</ul>
-<hr>
-<h1 id="待续"><a href="#待续" class="headerlink" title="待续"></a>待续</h1><ul>
-<li>总归一句话：操作分支：git branch ..</li>
-<li>操作tag：git tag …</li>
-<li>操作远程提交tag/branch：git push origin 2.0—-//或者git push –tags(省略origin远程 )</li>
-<li>操作远程删除tag/branch:git push origin -d 2.0</li>
-<li>远程代码提交：git push 就可以了</li>
-</ul>
-<h1 id="多分支并行开发（都是以develop为基准分支）"><a href="#多分支并行开发（都是以develop为基准分支）" class="headerlink" title="多分支并行开发（都是以develop为基准分支）"></a>多分支并行开发（都是以develop为基准分支）</h1><ul>
-<li><p>正常逻辑</p>
-<pre><code>git branch native;//创建本地分支
-git checkout native;//切换到native分支,前提是需要将develop的代码进行提交后再切换
-... ... native分支一顿修改
-此时如果 git checkout develop
-develop上会有native分支上边的修改
-但是其实修改还是算native分支上边的修改，并不是develop分支上的
-</code></pre></li>
-<li><p>方案一：将native分支推送到远端origin</p>
-<pre><code>git push origin native
-//切换分支前将native内容提交到远端然后再切换
-git commit -xxx
-git push
-git checkout develop
-</code></pre></li>
-<li><p>方案二：只是小功能点不需要提交到远端</p>
-<pre><code>native分支修改后进行commit，然后再切换
-git commit -xxx
-git checkout develop//这时develop上就不会有native分支新增内容，跟方案一是一样的
-</code></pre></li>
-<li><p>方案三：可以不commit的话可以用stash</p>
-<pre><code>切换到native分支后一顿修改，然后可以
-git stash//将修改的内容暂时先存储在git的栈中
-//等你下次切回来后
-git stash pop //会提取出你之前存储的最新一次的记录
-
-git stash save &quot;messageTxt&quot; //暂存代码添加备注信息
-
-git stash list //查看暂存区间列表
-
-git stash show //显示暂存区间第一个0 的修改文件
-
-git stash show stash@{$number} //比如第二个就是git stash show stasg@{$1}
-
-git stash pop   //取出暂存区某个暂存，并删除 stash@{$number}
-
-git stash apply  //取出暂存区某个暂存，不删除存储空间里的存储  stash@{$number}
-
-git stash clear;        //删除所有缓存的stash
-</code></pre></li>
-</ul>
-<ul>
-<li><p>值得注意的是：</p>
-<ul>
-<li>不过这种一般会用在develop修改，然后还没改好，需要切换到native分支上，这时会用到，因为不提交的话是切换不到native分支的，，子分支可以不提交直接切父分支，父分支不可以不提交直接切子分支，，正常子分支是建立在父分支的基租上创建的，所以正常是子分支代码量是大于父分支的</li>
-</ul>
-</li>
-<li><p>des</p>
-<ul>
-<li>native修改后忘记commit，然后遗忘，在master上继续修改，切换到native上commit后，在切换develop，develop上就没有对应的修改了</li>
-<li>大概意思就是不管你在哪个分支修改，最终commit的分支为最终分支的提交，之前其他分支修改没有提交的都会还原到上一次提交的最新状态</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><p>git cherry-pick</p>
-<pre><code>git cherry-pick &quot;commit_id&quot;  //合并另一个分支的某个提交到当前分支，当然前提是当前分支需要pull最新代码,如果成功，会在当前分支本地有一条提交记录
-
-//遇见冲突、解决冲突
-git status //查看冲突文件
-git add .//解决完添加
-git commit &quot;新的commitIdMessage&quot;
-
-git cherry-pick --continue //继续执行其他cherry-pick
-
-git cherry-pick --quite //cherry-pick 退出本次cherrypick
-
-git cherry-pick --abort //cherry-pick 回退本次 cherry-pick
-
-git cherry-pick branchName  //将该branchName分支最新一条的commit 合并过来
-</code></pre></li>
-</ul>
-<pre><code>git pull --rebase ;//基于当前分支拉取代码        
-
-git commit --amend;//提交当前内容到临近的上一次提交，也就是将这次提交合并到上一次提价，减少commit的记录，前提是上一次commit还没有push
-
-git push 仓库地址 HEAD:refs/for/分支%r=代码审核人git用户名,代码审核人2   //提交添加审核人
-</code></pre><h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><ul>
-<li><a href="http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html</a></li>
-<li><a href="https://blog.zengrong.net/post/1746.html" target="_blank" rel="noopener">https://blog.zengrong.net/post/1746.html</a></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/go_back/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -667,6 +401,280 @@ public boolean equals(Object anObject) {
 <p><a href="https://www.cnblogs.com/Eason-S/p/5524837.html" target="_blank" rel="noopener">equals和==的区别小结</a>  </p>
 <p><a href="https://www.cnblogs.com/su-feng/p/6659064.html" target="_blank" rel="noopener">Java中的String，StringBuilder，StringBuffer三者的区别
 </a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/git/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sxf">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/user_icon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sxf-Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/20/git/" itemprop="url">Git语法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
+                2019-12-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="新建本地仓库"><a href="#新建本地仓库" class="headerlink" title="新建本地仓库"></a>新建本地仓库</h1><ul>
+<li><p>在当前目录新建一个Git代码本地仓库</p>
+<p>   git init</p>
+</li>
+<li><p>添加指定文件到暂存区</p>
+<pre><code>git add [file] [file] ....  
+</code></pre></li>
+<li><p>提交文件到本地  </p>
+<pre><code>git commit [file] [file] ... -m[message]
+git commit -m[message]
+</code></pre></li>
+<li><p>提交到远端 </p>
+<pre><code>git push
+</code></pre></li>
+<li><p>删除工作区文件</p>
+<pre><code>git rm [file] [file] ....
+</code></pre></li>
+<li><p>提交显示时所有的diff信息</p>
+<pre><code>git commit -v
+git status
+</code></pre><h1 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h1></li>
+<li><code>git branch</code>//查看本地分支</li>
+<li><code>git branch -r</code>//查看远程分支</li>
+<li><code>git branch -a</code>//查看本地和远程分支</li>
+<li><code>git branch [branch-name]</code>//创建新分支，但是仍然停留在改分支</li>
+<li><code>git checkout [branch-name]</code>//切换到当前分支—<code>git checkout -b [branch-name]</code>//也同样可以实现</li>
+<li><code>git merge [branch]</code>//合并指定分支(branch)到<em>当前分支</em></li>
+<li><code>git branch -d [branch-name]</code>//删除本地分支</li>
+<li><code>git branch -d origin [branch-name]</code>//删除远程分支</li>
+</ul>
+<h1 id="创建Tag"><a href="#创建Tag" class="headerlink" title="创建Tag"></a>创建Tag</h1><ul>
+<li><code>git tag</code>//列出所有tag</li>
+<li><code>git tag [tag]</code>//创建一个tag在本地</li>
+<li><code>git push [remote] [tag]</code>//提交tag到指定远端</li>
+<li><code>git push [remote] --tags</code>//提交所有tag到远端分支[origin]</li>
+</ul>
+<h1 id="删除远程分支和Tag"><a href="#删除远程分支和Tag" class="headerlink" title="删除远程分支和Tag"></a>删除远程分支和Tag</h1><ul>
+<li><code>git push origin --delete &lt;brancnName&gt;</code></li>
+<li><code>git push origin --delete tag &lt;tagName&gt;</code><h1 id="删除本地分支和tag"><a href="#删除本地分支和tag" class="headerlink" title="删除本地分支和tag"></a>删除本地分支和tag</h1></li>
+<li><code>git tag -d [tag]</code></li>
+<li><code>git branch -d [branch]</code><h1 id="删除掉不存在远程分支的本地分支"><a href="#删除掉不存在远程分支的本地分支" class="headerlink" title="删除掉不存在远程分支的本地分支"></a>删除掉不存在远程分支的本地分支</h1></li>
+<li><code>git fetch -p</code> //会删除所有的没有跟远程分支对应上的本地分子  </li>
+<li>git checkout branchX //切换到不复合的本地分支  然后使用<br><code>git remote prune origin</code>可以清除对应的分支  <h1 id="重命名远程分支"><a href="#重命名远程分支" class="headerlink" title="重命名远程分支"></a>重命名远程分支</h1></li>
+<li>在git中重命名远程分支，其实就是先删除远程分支，然后重命名本地分支，再重新提交一个远程分支</li>
+<li><p>先查看远程的分支  </p>
+<pre><code>git branch -a  
+</code></pre></li>
+<li><p>删除远端分支  </p>
+<pre><code>git push --delete origin develop
+</code></pre></li>
+<li><p>重命名本地分支(develop–&gt;devel)</p>
+<pre><code>git branch -m develop devel
+</code></pre></li>
+<li><p>推送本地分支  </p>
+<pre><code>git push origin devel
+</code></pre></li>
+</ul>
+<hr>
+<h1 id="多分支并行开发（都是以develop为基准分支）"><a href="#多分支并行开发（都是以develop为基准分支）" class="headerlink" title="多分支并行开发（都是以develop为基准分支）"></a>多分支并行开发（都是以develop为基准分支）</h1><ul>
+<li><p>正常逻辑</p>
+<pre><code>git branch native;//创建本地分支
+git checkout native;//切换到native分支,前提是需要将develop的代码进行提交后再切换
+... ... native分支一顿修改
+此时如果 git checkout develop
+develop上会有native分支上边的修改
+但是其实修改还是算native分支上边的修改，并不是develop分支上的
+</code></pre></li>
+<li><p>方案一：将native分支推送到远端origin</p>
+<pre><code>git push origin native
+//切换分支前将native内容提交到远端然后再切换
+git commit -xxx
+git push
+git checkout develop
+</code></pre></li>
+<li><p>方案二：只是小功能点不需要提交到远端</p>
+<pre><code>native分支修改后进行commit，然后再切换
+git commit -xxx
+git checkout develop//这时develop上就不会有native分支新增内容，跟方案一是一样的
+</code></pre></li>
+<li><p>方案三：可以不commit的话可以用stash</p>
+<pre><code>切换到native分支后一顿修改，然后可以
+git stash//将修改的内容暂时先存储在git的栈中
+//等你下次切回来后
+git stash pop //会提取出你之前存储的最新一次的记录
+
+git stash save &quot;messageTxt&quot; //暂存代码添加备注信息
+
+git stash list //查看暂存区间列表
+
+git stash show //显示暂存区间第一个0 的修改文件
+
+git stash show stash@{$number} //比如第二个就是git stash show stasg@{$1}
+
+git stash pop   //取出暂存区某个暂存，并删除 stash@{$number}
+
+git stash apply  //取出暂存区某个暂存，不删除存储空间里的存储  stash@{$number}
+
+git stash clear;        //删除所有缓存的stash
+</code></pre></li>
+</ul>
+<ul>
+<li><p>值得注意的是：</p>
+<ul>
+<li>不过这种一般会用在develop修改，然后还没改好，需要切换到native分支上，这时会用到，因为不提交的话是切换不到native分支的，，子分支可以不提交直接切父分支，父分支不可以不提交直接切子分支，，正常子分支是建立在父分支的基租上创建的，所以正常是子分支代码量是大于父分支的</li>
+</ul>
+</li>
+<li><p>des</p>
+<ul>
+<li>native修改后忘记commit，然后遗忘，在master上继续修改，切换到native上commit后，在切换develop，develop上就没有对应的修改了</li>
+<li>大概意思就是不管你在哪个分支修改，最终commit的分支为最终分支的提交，之前其他分支修改没有提交的都会还原到上一次提交的最新状态</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>git cherry-pick</p>
+<pre><code>git cherry-pick &quot;commit_id&quot;  //合并另一个分支的某个提交到当前分支，当然前提是当前分支需要pull最新代码,如果成功，会在当前分支本地有一条提交记录
+
+//遇见冲突、解决冲突
+git status //查看冲突文件
+git add .//解决完添加
+git commit &quot;新的commitIdMessage&quot;
+
+git cherry-pick --continue //继续执行其他cherry-pick
+
+git cherry-pick --quite //cherry-pick 退出本次cherrypick
+
+git cherry-pick --abort //cherry-pick 回退本次 cherry-pick
+
+git cherry-pick branchName  //将该branchName分支最新一条的commit 合并过来
+</code></pre></li>
+</ul>
+<pre><code>git pull --rebase ;//基于当前分支拉取代码        
+
+git rebase --continue;//当拉取代码冲突后--需执行
+
+git log //显示提交的信息
+
+git reset &quot;commitId&quot; //回退到当前提交--前提是没有push
+
+git commit --amend;//提交当前内容到临近的上一次提交，也就是将这次提交合并到上一次提价，减少commit的记录，前提是上一次commit还没有push
+
+git push 仓库地址 HEAD:refs/for/分支%r=代码审核人git用户名,代码审核人2   //提交添加审核人
+
+git branch hear
+</code></pre><h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><ul>
+<li><a href="http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html</a></li>
+<li><a href="https://blog.zengrong.net/post/1746.html" target="_blank" rel="noopener">https://blog.zengrong.net/post/1746.html</a></li>
+</ul>
+<h1 id="待续"><a href="#待续" class="headerlink" title="待续"></a>待续</h1><ul>
+<li>总归一句话：操作分支：git branch ..</li>
+<li>操作tag：git tag …</li>
+<li>操作远程提交tag/branch：git push origin 2.0—-//或者git push –tags(省略origin远程 )</li>
+<li>操作远程删除tag/branch:git push origin -d 2.0</li>
+<li>远程代码提交：git push 就可以了</li>
+</ul>
 
           
         
@@ -1296,126 +1304,6 @@ RGB_565 代表16位RGB位图
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/audio_float_notification/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sxf">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/user_icon.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sxf-Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/20/audio_float_notification/" itemprop="url">Android应用浮窗按钮&自定义音频通知栏</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
-                2019-12-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Android-应用悬浮按钮"><a href="#Android-应用悬浮按钮" class="headerlink" title="Android 应用悬浮按钮"></a>Android 应用悬浮按钮</h3><p>* </p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/adnroid_proxy/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1540,6 +1428,126 @@ if (UserUtils.isLogin()) {
 <li>又用到了之前的Chrome的SwitchyOmega插件—为了是防止代理翻墙网络有限，有些不用翻墙的用外网浪费，这个是自动内外网切换!!!</li>
 </ul>
 <h4 id="未完待续…反编译"><a href="#未完待续…反编译" class="headerlink" title="未完待续…反编译"></a>未完待续…反编译</h4>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/audio_float_notification/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sxf">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/user_icon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sxf-Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/20/audio_float_notification/" itemprop="url">Android应用浮窗按钮&自定义音频通知栏</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
+                2019-12-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Android-应用悬浮按钮"><a href="#Android-应用悬浮按钮" class="headerlink" title="Android 应用悬浮按钮"></a>Android 应用悬浮按钮</h3><p>* </p>
+
           
         
       

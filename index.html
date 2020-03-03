@@ -1218,179 +1218,6 @@ private void doLazyLoad() {
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/ontouchevent/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sxf">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/user_icon.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sxf-Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/20/ontouchevent/" itemprop="url">事件分发</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
-                2019-12-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="事件传递的过程分析"><a href="#事件传递的过程分析" class="headerlink" title="事件传递的过程分析"></a>事件传递的过程分析</h3><ul>
-<li>事件传递 从最外层父View将事件 传递到 内部View  首先传递前 判断自己的<em>dispatchTouchEvent</em> 方法是否支持分发，支持分发的话，会传递自己View的<em>onInterceptTouchEvent</em> 方法，看自己是否进行拦截处理，若拦截则会传递到自己的<em>onTouchEvent</em>,若不拦截会传递到子View的<em>dispatchTouchEvent</em> 方法进行处理，内部处理流程和上一层View的处理流程一样：  dispatchTouchEvent–&gt;onInterceptTouchEvent–&gt;onTouchEvent</li>
-</ul>
-<h3 id="DispatchTouchEvent之return"><a href="#DispatchTouchEvent之return" class="headerlink" title="DispatchTouchEvent之return"></a>DispatchTouchEvent之return</h3><ul>
-<li><p>false: 返回给父View的OnTouchEvent事件</p>
-</li>
-<li><p>true ：停止传递分发、事件不传递、<em>也就是不会有onTouchEvnet事件之说，因为onTouchEvent事件，执行的时候是事件全部传到最底部View后才会执行，最底部的onTouchEvent不消费的话，才会向上一级的父View的onTouchEvent传递(也就是才会执行到父View的该方法、、当然除非是中间拦截了，才会不向下传递、直接执行自己的OnTouchEvent方法)</em></p>
-</li>
-<li><p>super.DispatchTouchEvent之return：支持分发(也就是该事件已经产生、会进行处理、直到有人将其消费、如果返回上边的，该事件就相当于没有产生，直接返给窗体View、直接被扼杀在摇篮里)、会传递到该View的onInterceptTouchEvent方法，由该方法来处理看是否继续向下传递；</p>
-</li>
-</ul>
-<h3 id="onInterceptTouchEvent之return"><a href="#onInterceptTouchEvent之return" class="headerlink" title="onInterceptTouchEvent之return"></a>onInterceptTouchEvent之return</h3><ul>
-<li>false: 不拦截传递给下一层子View进行事件分发方法：dispatchTouchEvent() 流程相同继续走。</li>
-<li>true： 拦截事件，不向下传递事件，会传递给自己的onTouchEvent()事件处理响应。</li>
-<li>super.onInterceptTouchEvent(): 等同于true，即进行拦截，交由自己的onTouchEvnent进行处理</li>
-</ul>
-<h3 id="onTouchEvent-之return"><a href="#onTouchEvent-之return" class="headerlink" title="onTouchEvent()之return"></a>onTouchEvent()之return</h3><ul>
-<li>false： 不消费、传递到上一层的View的onTouchEvnet?</li>
-<li>true : 消费，自己执行onTouchEvnet方法</li>
-<li><p>super.onTouchEvnet(): 等同于false 传递到上一层父View的 onTouchEvent进行处理</p>
-<pre><code>event.getPointerCount()//判断手指
-MotionEvent.ACTION_XXX
-MotionEvent.ACTION_UP//需要全部手指全部离开屏幕才会调用
-MotionEvent.ACTION_POINTER_UP//当存在多个手指触碰时，抬起一指就会执行该方法
-MotionEvent.ACTION_POINTER_DOWN
-</code></pre></li>
-</ul>
-<h3 id="GestureDetector-手势管理之OnGestureListener"><a href="#GestureDetector-手势管理之OnGestureListener" class="headerlink" title="GestureDetector 手势管理之OnGestureListener"></a>GestureDetector 手势管理之OnGestureListener</h3><ul>
-<li><p>void onShowPress(MotionEvent e);</p>
-</li>
-<li><p>boolean onSingleTapUp(MotionEvent e);</p>
-</li>
-<li><p>void onLongPress(MotionEvent e);</p>
-</li>
-<li><p>boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY);</p>
-</li>
-</ul>
-<h3 id="接收方式"><a href="#接收方式" class="headerlink" title="接收方式"></a>接收方式</h3><ul>
-<li>onTouchEvent 内部调用—mGestureDetector.onTouchEvent(event);</li>
-</ul>
-<h3 id="子View控制父View拦截"><a href="#子View控制父View拦截" class="headerlink" title="子View控制父View拦截"></a>子View控制父View拦截</h3><p><code>getParent().requestDisallowInterceptTouchEvent(true);</code></p>
-<ul>
-<li><p>true：表示父View对事件进行拦截无效例如：onInterceptTouchEvent内部对事件down、move返回true，也是不起作用的</p>
-</li>
-<li><p>false：表示父View对内部子View的拦截是有效的</p>
-</li>
-</ul>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
-<li><p>所有的事件都是先往最底层传递的、最底层没有消费时才会一层一层的往外层传到各自的onTouchEvent()方法中，但是事件首先都是会执行DispatchTouchEvent方法进行分发传递到下一层的，其中会走每一层的：DispatchTouchEvent和onInterceptTouchEvent方法判断是不是需要拦截，不拦截就继续往下一层走，所以onInterceptTouchEvent的Down事件是都会走的，：包括MOVE事件、UP事件，当最外层的事件把Down拦截了，下边的就不会走了，当没有拦截，会一层一层走，，当最底层有方法表示</p>
-<pre><code>`getParent().requestDisallowInterceptTouchEvent(true);`  
-</code></pre><p>谁都不能拦截我的事件，那么事件就不会往上在传递到外层的move、up等事件了就会到该处消费结束！！！也就是说这个时候onInterceptTouchEvent的MOVE事件和UP事件都不会走了（对应的方法都不走了），其他情况还是每一层新的事件都会进行传递所以会出现那种：不拦截Down事件拦截Move事件的情况，，所以如果底部有拦截但是外层也想获取点击的坐标位置：就可以在onInterceptTouchEvent方法的down事件中进行获取点击的坐标位置、</p>
-</li>
-</ul>
-<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fxp372f46rj217r0ngadh.jpg" alt="picture"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/question/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1556,6 +1383,179 @@ int screenHeight=displayMetrics.heightPixels;
 </li>
 </ul>
 <h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p><a href="https://www.jianshu.com/p/e99b5e8bd67b" target="_blank" rel="noopener">事件分发经典参考</a><br><a href="http://blog.csdn.net/a_running_wolf/article/details/50477965" target="_blank" rel="noopener">Android完美获取状态栏高度、标题栏高度、编辑区域高度的获取</a><br><a href="https://www.jianshu.com/p/f09723b7e887" target="_blank" rel="noopener">使用CoordinatorLayout打造各种炫酷的效果</a>   </p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/ontouchevent/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sxf">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/user_icon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sxf-Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/20/ontouchevent/" itemprop="url">事件分发</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
+                2019-12-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="事件传递的过程分析"><a href="#事件传递的过程分析" class="headerlink" title="事件传递的过程分析"></a>事件传递的过程分析</h3><ul>
+<li>事件传递 从最外层父View将事件 传递到 内部View  首先传递前 判断自己的<em>dispatchTouchEvent</em> 方法是否支持分发，支持分发的话，会传递自己View的<em>onInterceptTouchEvent</em> 方法，看自己是否进行拦截处理，若拦截则会传递到自己的<em>onTouchEvent</em>,若不拦截会传递到子View的<em>dispatchTouchEvent</em> 方法进行处理，内部处理流程和上一层View的处理流程一样：  dispatchTouchEvent–&gt;onInterceptTouchEvent–&gt;onTouchEvent</li>
+</ul>
+<h3 id="DispatchTouchEvent之return"><a href="#DispatchTouchEvent之return" class="headerlink" title="DispatchTouchEvent之return"></a>DispatchTouchEvent之return</h3><ul>
+<li><p>false: 返回给父View的OnTouchEvent事件</p>
+</li>
+<li><p>true ：停止传递分发、事件不传递、<em>也就是不会有onTouchEvnet事件之说，因为onTouchEvent事件，执行的时候是事件全部传到最底部View后才会执行，最底部的onTouchEvent不消费的话，才会向上一级的父View的onTouchEvent传递(也就是才会执行到父View的该方法、、当然除非是中间拦截了，才会不向下传递、直接执行自己的OnTouchEvent方法)</em></p>
+</li>
+<li><p>super.DispatchTouchEvent之return：支持分发(也就是该事件已经产生、会进行处理、直到有人将其消费、如果返回上边的，该事件就相当于没有产生，直接返给窗体View、直接被扼杀在摇篮里)、会传递到该View的onInterceptTouchEvent方法，由该方法来处理看是否继续向下传递；</p>
+</li>
+</ul>
+<h3 id="onInterceptTouchEvent之return"><a href="#onInterceptTouchEvent之return" class="headerlink" title="onInterceptTouchEvent之return"></a>onInterceptTouchEvent之return</h3><ul>
+<li>false: 不拦截传递给下一层子View进行事件分发方法：dispatchTouchEvent() 流程相同继续走。</li>
+<li>true： 拦截事件，不向下传递事件，会传递给自己的onTouchEvent()事件处理响应。</li>
+<li>super.onInterceptTouchEvent(): 等同于true，即进行拦截，交由自己的onTouchEvnent进行处理</li>
+</ul>
+<h3 id="onTouchEvent-之return"><a href="#onTouchEvent-之return" class="headerlink" title="onTouchEvent()之return"></a>onTouchEvent()之return</h3><ul>
+<li>false： 不消费、传递到上一层的View的onTouchEvnet?</li>
+<li>true : 消费，自己执行onTouchEvnet方法</li>
+<li><p>super.onTouchEvnet(): 等同于false 传递到上一层父View的 onTouchEvent进行处理</p>
+<pre><code>event.getPointerCount()//判断手指
+MotionEvent.ACTION_XXX
+MotionEvent.ACTION_UP//需要全部手指全部离开屏幕才会调用
+MotionEvent.ACTION_POINTER_UP//当存在多个手指触碰时，抬起一指就会执行该方法
+MotionEvent.ACTION_POINTER_DOWN
+</code></pre></li>
+</ul>
+<h3 id="GestureDetector-手势管理之OnGestureListener"><a href="#GestureDetector-手势管理之OnGestureListener" class="headerlink" title="GestureDetector 手势管理之OnGestureListener"></a>GestureDetector 手势管理之OnGestureListener</h3><ul>
+<li><p>void onShowPress(MotionEvent e);</p>
+</li>
+<li><p>boolean onSingleTapUp(MotionEvent e);</p>
+</li>
+<li><p>void onLongPress(MotionEvent e);</p>
+</li>
+<li><p>boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY);</p>
+</li>
+</ul>
+<h3 id="接收方式"><a href="#接收方式" class="headerlink" title="接收方式"></a>接收方式</h3><ul>
+<li>onTouchEvent 内部调用—mGestureDetector.onTouchEvent(event);</li>
+</ul>
+<h3 id="子View控制父View拦截"><a href="#子View控制父View拦截" class="headerlink" title="子View控制父View拦截"></a>子View控制父View拦截</h3><p><code>getParent().requestDisallowInterceptTouchEvent(true);</code></p>
+<ul>
+<li><p>true：表示父View对事件进行拦截无效例如：onInterceptTouchEvent内部对事件down、move返回true，也是不起作用的</p>
+</li>
+<li><p>false：表示父View对内部子View的拦截是有效的</p>
+</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li><p>所有的事件都是先往最底层传递的、最底层没有消费时才会一层一层的往外层传到各自的onTouchEvent()方法中，但是事件首先都是会执行DispatchTouchEvent方法进行分发传递到下一层的，其中会走每一层的：DispatchTouchEvent和onInterceptTouchEvent方法判断是不是需要拦截，不拦截就继续往下一层走，所以onInterceptTouchEvent的Down事件是都会走的，：包括MOVE事件、UP事件，当最外层的事件把Down拦截了，下边的就不会走了，当没有拦截，会一层一层走，，当最底层有方法表示</p>
+<pre><code>`getParent().requestDisallowInterceptTouchEvent(true);`  
+</code></pre><p>谁都不能拦截我的事件，那么事件就不会往上在传递到外层的move、up等事件了就会到该处消费结束！！！也就是说这个时候onInterceptTouchEvent的MOVE事件和UP事件都不会走了（对应的方法都不走了），其他情况还是每一层新的事件都会进行传递所以会出现那种：不拦截Down事件拦截Move事件的情况，，所以如果底部有拦截但是外层也想获取点击的坐标位置：就可以在onInterceptTouchEvent方法的down事件中进行获取点击的坐标位置、</p>
+</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fxp372f46rj217r0ngadh.jpg" alt="picture"></p>
 
           
         
