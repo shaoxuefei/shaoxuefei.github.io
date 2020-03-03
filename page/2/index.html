@@ -394,7 +394,23 @@ git checkout develop//这时develop上就不会有native分支新增内容，跟
 git stash//将修改的内容暂时先存储在git的栈中
 //等你下次切回来后
 git stash pop //会提取出你之前存储的最新一次的记录
+
+git stash save &quot;messageTxt&quot; //暂存代码添加备注信息
+
+git stash list //查看暂存区间列表
+
+git stash show //显示暂存区间第一个0 的修改文件
+
+git stash show stash@{$number} //比如第二个就是git stash show stasg@{$1}
+
+git stash pop   //取出暂存区某个暂存，并删除 stash@{$number}
+
+git stash apply  //取出暂存区某个暂存，不删除存储空间里的存储  stash@{$number}
+
+git stash clear;        //删除所有缓存的stash
 </code></pre></li>
+</ul>
+<ul>
 <li><p>值得注意的是：</p>
 <ul>
 <li>不过这种一般会用在develop修改，然后还没改好，需要切换到native分支上，这时会用到，因为不提交的话是切换不到native分支的，，子分支可以不提交直接切父分支，父分支不可以不提交直接切子分支，，正常子分支是建立在父分支的基租上创建的，所以正常是子分支代码量是大于父分支的</li>
@@ -407,7 +423,30 @@ git stash pop //会提取出你之前存储的最新一次的记录
 </ul>
 </li>
 </ul>
-<h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><ul>
+<ul>
+<li><p>git cherry-pick</p>
+<pre><code>git cherry-pick &quot;commit_id&quot;  //合并另一个分支的某个提交到当前分支，当然前提是当前分支需要pull最新代码,如果成功，会在当前分支本地有一条提交记录
+
+//遇见冲突、解决冲突
+git status //查看冲突文件
+git add .//解决完添加
+git commit &quot;新的commitIdMessage&quot;
+
+git cherry-pick --continue //继续执行其他cherry-pick
+
+git cherry-pick --quite //cherry-pick 退出本次cherrypick
+
+git cherry-pick --abort //cherry-pick 回退本次 cherry-pick
+
+git cherry-pick branchName  //将该branchName分支最新一条的commit 合并过来
+</code></pre></li>
+</ul>
+<pre><code>git pull --rebase ;//基于当前分支拉取代码        
+
+git commit --amend;//提交当前内容到临近的上一次提交，也就是将这次提交合并到上一次提价，减少commit的记录，前提是上一次commit还没有push
+
+git push 仓库地址 HEAD:refs/for/分支%r=代码审核人git用户名,代码审核人2   //提交添加审核人
+</code></pre><h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><ul>
 <li><a href="http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html</a></li>
 <li><a href="https://blog.zengrong.net/post/1746.html" target="_blank" rel="noopener">https://blog.zengrong.net/post/1746.html</a></li>
 </ul>
@@ -628,175 +667,6 @@ public boolean equals(Object anObject) {
 <p><a href="https://www.cnblogs.com/Eason-S/p/5524837.html" target="_blank" rel="noopener">equals和==的区别小结</a>  </p>
 <p><a href="https://www.cnblogs.com/su-feng/p/6659064.html" target="_blank" rel="noopener">Java中的String，StringBuilder，StringBuffer三者的区别
 </a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/data_structure/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sxf">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/user_icon.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sxf-Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/20/data_structure/" itemprop="url">数据结构(表)和算法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
-                2019-12-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><ul>
-<li>就是以某种形式将数据存储在一起的集合，它不仅存储数据，而且还支持查找访问，删除，添加，数据处理等操作。</li>
-</ul>
-<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><ul>
-<li>是为了求解一个问题需要循环的，被清楚指定的简单的指令集合，也就是代码算法规则，为了更简洁方便的解决复杂的循环查找遍历等问题</li>
-</ul>
-<h2 id="数据表之数据结构体现方式"><a href="#数据表之数据结构体现方式" class="headerlink" title="数据表之数据结构体现方式"></a>数据表之数据结构体现方式</h2><h3 id="线性表-线性存储结构"><a href="#线性表-线性存储结构" class="headerlink" title="线性表-线性存储结构"></a>线性表-线性存储结构</h3><ul>
-<li><p>是最常用最简单的一种数据结构，它是n个数据元素的<strong>有限序列</strong>,这种是针对正常的线性表结构如：数组；其在创建的时候就需要指定该数组的长度;</p>
-</li>
-<li><p>代码中使用的体现方式</p>
-<ul>
-<li>数组 :最常见和最基本的线性结构存储方式</li>
-<li>ArrayList: 也就是可增加的<strong>动态数组</strong> </li>
-</ul>
-</li>
-<li><p>优势：可以通过下标进行数据的查找，访问和修改该对象元素，比较搞笑</p>
-</li>
-<li><p>缺点：插入删除花费开销大，比如，当在第一个位置插入数据的时候，首先需要把所有的数据往后移动一个位置，然后在进行插入处理，比较耗时，为了提高插入删除处理的效率可以用链式结构来实现线性表</p>
-</li>
-</ul>
-<h3 id="链表-链式存储结构"><a href="#链表-链式存储结构" class="headerlink" title="链表-链式存储结构"></a>链表-链式存储结构</h3><ul>
-<li><p>链表是物理存储单元上非连续、非顺序的存储结构，是由一系列“节点”组成，这些节点不必在内存中相连，其逻辑顺序是根据链表中的指针链接顺序来决定的，也就是根据指针来寻找自己指向的下一个节点</p>
-</li>
-<li><p>节点：是由数据部分:Data和链接部分指针Next组成，Next指向下一个节点，这样在添加删除数据时只需要改变指定的数据的Next的指向就可以了。</p>
-</li>
-<li><p>LinkedList: 双向链表结构，也就数有两个指针，一个指向上一个节点，一个指向下一个节点</p>
-</li>
-<li><p>其是数据单元在内存中存储的方式是没必要相连有序的存储类似于线性存储那样，并不是针对ArrayList使用时打印出来的就是有序的，LinkedList就是无需的，其只是内存中的存储，真正使用的时候，其遍历取值的时候也是经过转换有序的输出的，可能LinkedList查找更慢一点添加更快一点，ArrayList查找更快一点，添加更慢一点；</p>
-</li>
-<li><p>针对链式结构存储，所有的查找都是通过指针的，找到对应的指针，其实对应的指针就是下一个对象的索引对象(指向地址)</p>
-</li>
-</ul>
-<h3 id="特殊线性表-栈和队列存储结构"><a href="#特殊线性表-栈和队列存储结构" class="headerlink" title="特殊线性表-栈和队列存储结构"></a>特殊线性表-栈和队列存储结构</h3><ul>
-<li><p>栈 ：是限制插入和删除只能在一个位置上进行的表，该位置就是表的末端，就是栈顶；保持先进后出的数据存储方式，LIFO:last in first out，常见的运用存储是Activity的存储</p>
-</li>
-<li><p>队列：只能在表头进行数据的删除，在表尾部进行数据的添加；常见的运用是Handler的Message队列MessageQueen</p>
-</li>
-</ul>
-<h3 id="树与二叉树存储结构"><a href="#树与二叉树存储结构" class="headerlink" title="树与二叉树存储结构"></a>树与二叉树存储结构</h3><ul>
-<li>树： 是由n（n&gt;=1）个有限节点组成一个具有层次关系的集合。它具有以下特点：每个节点有零个或多个子节点；没有父节点的节点称为 根 节点；每一个非根节点有且只有一个 父节点 ；除了根节点外，每个子节点可以分为多个不相交的子树。：也就是每个节点可以有多个分支树</li>
-</ul>
-<ul>
-<li>二叉树：是每个节点最多有两棵子树的树结构。通常子树被称作“左子树”和“右子树”。二叉树常被用于实现二叉查找树和二叉堆。：也就是每个节点只有最多有两个分支树</li>
-</ul>
-<ul>
-<li><p>二叉树遍历</p>
-<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fuzrim5fa1j20mj0bp75e.jpg" alt="picture"></p>
-</li>
-</ul>
-<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p><a href="https://www.cnblogs.com/wanghuaijun/p/7302303.html" target="_blank" rel="noopener">常见的数据结构和算法整理</a></p>
 
           
         
@@ -1099,6 +969,175 @@ RGB_565 代表16位RGB位图
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/data_structure/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sxf">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/user_icon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sxf-Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/20/data_structure/" itemprop="url">数据结构(表)和算法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
+                2019-12-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><ul>
+<li>就是以某种形式将数据存储在一起的集合，它不仅存储数据，而且还支持查找访问，删除，添加，数据处理等操作。</li>
+</ul>
+<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><ul>
+<li>是为了求解一个问题需要循环的，被清楚指定的简单的指令集合，也就是代码算法规则，为了更简洁方便的解决复杂的循环查找遍历等问题</li>
+</ul>
+<h2 id="数据表之数据结构体现方式"><a href="#数据表之数据结构体现方式" class="headerlink" title="数据表之数据结构体现方式"></a>数据表之数据结构体现方式</h2><h3 id="线性表-线性存储结构"><a href="#线性表-线性存储结构" class="headerlink" title="线性表-线性存储结构"></a>线性表-线性存储结构</h3><ul>
+<li><p>是最常用最简单的一种数据结构，它是n个数据元素的<strong>有限序列</strong>,这种是针对正常的线性表结构如：数组；其在创建的时候就需要指定该数组的长度;</p>
+</li>
+<li><p>代码中使用的体现方式</p>
+<ul>
+<li>数组 :最常见和最基本的线性结构存储方式</li>
+<li>ArrayList: 也就是可增加的<strong>动态数组</strong> </li>
+</ul>
+</li>
+<li><p>优势：可以通过下标进行数据的查找，访问和修改该对象元素，比较搞笑</p>
+</li>
+<li><p>缺点：插入删除花费开销大，比如，当在第一个位置插入数据的时候，首先需要把所有的数据往后移动一个位置，然后在进行插入处理，比较耗时，为了提高插入删除处理的效率可以用链式结构来实现线性表</p>
+</li>
+</ul>
+<h3 id="链表-链式存储结构"><a href="#链表-链式存储结构" class="headerlink" title="链表-链式存储结构"></a>链表-链式存储结构</h3><ul>
+<li><p>链表是物理存储单元上非连续、非顺序的存储结构，是由一系列“节点”组成，这些节点不必在内存中相连，其逻辑顺序是根据链表中的指针链接顺序来决定的，也就是根据指针来寻找自己指向的下一个节点</p>
+</li>
+<li><p>节点：是由数据部分:Data和链接部分指针Next组成，Next指向下一个节点，这样在添加删除数据时只需要改变指定的数据的Next的指向就可以了。</p>
+</li>
+<li><p>LinkedList: 双向链表结构，也就数有两个指针，一个指向上一个节点，一个指向下一个节点</p>
+</li>
+<li><p>其是数据单元在内存中存储的方式是没必要相连有序的存储类似于线性存储那样，并不是针对ArrayList使用时打印出来的就是有序的，LinkedList就是无需的，其只是内存中的存储，真正使用的时候，其遍历取值的时候也是经过转换有序的输出的，可能LinkedList查找更慢一点添加更快一点，ArrayList查找更快一点，添加更慢一点；</p>
+</li>
+<li><p>针对链式结构存储，所有的查找都是通过指针的，找到对应的指针，其实对应的指针就是下一个对象的索引对象(指向地址)</p>
+</li>
+</ul>
+<h3 id="特殊线性表-栈和队列存储结构"><a href="#特殊线性表-栈和队列存储结构" class="headerlink" title="特殊线性表-栈和队列存储结构"></a>特殊线性表-栈和队列存储结构</h3><ul>
+<li><p>栈 ：是限制插入和删除只能在一个位置上进行的表，该位置就是表的末端，就是栈顶；保持先进后出的数据存储方式，LIFO:last in first out，常见的运用存储是Activity的存储</p>
+</li>
+<li><p>队列：只能在表头进行数据的删除，在表尾部进行数据的添加；常见的运用是Handler的Message队列MessageQueen</p>
+</li>
+</ul>
+<h3 id="树与二叉树存储结构"><a href="#树与二叉树存储结构" class="headerlink" title="树与二叉树存储结构"></a>树与二叉树存储结构</h3><ul>
+<li>树： 是由n（n&gt;=1）个有限节点组成一个具有层次关系的集合。它具有以下特点：每个节点有零个或多个子节点；没有父节点的节点称为 根 节点；每一个非根节点有且只有一个 父节点 ；除了根节点外，每个子节点可以分为多个不相交的子树。：也就是每个节点可以有多个分支树</li>
+</ul>
+<ul>
+<li>二叉树：是每个节点最多有两棵子树的树结构。通常子树被称作“左子树”和“右子树”。二叉树常被用于实现二叉查找树和二叉堆。：也就是每个节点只有最多有两个分支树</li>
+</ul>
+<ul>
+<li><p>二叉树遍历</p>
+<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fuzrim5fa1j20mj0bp75e.jpg" alt="picture"></p>
+</li>
+</ul>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p><a href="https://www.cnblogs.com/wanghuaijun/p/7302303.html" target="_blank" rel="noopener">常见的数据结构和算法整理</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/bitmap_compress/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1209,6 +1248,126 @@ RGB_565 代表16位RGB位图
 <pre><code>Bitmap.createBitmap(@NonNull Bitmap source, int x, int y, int width, int height,@Nullable Matrix m, boolean filter)
 </code></pre></li>
 </ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/audio_float_notification/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sxf">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/user_icon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sxf-Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/20/audio_float_notification/" itemprop="url">Android应用浮窗按钮&自定义音频通知栏</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
+                2019-12-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Android-应用悬浮按钮"><a href="#Android-应用悬浮按钮" class="headerlink" title="Android 应用悬浮按钮"></a>Android 应用悬浮按钮</h3><p>* </p>
 
           
         
@@ -1381,126 +1540,6 @@ if (UserUtils.isLogin()) {
 <li>又用到了之前的Chrome的SwitchyOmega插件—为了是防止代理翻墙网络有限，有些不用翻墙的用外网浪费，这个是自动内外网切换!!!</li>
 </ul>
 <h4 id="未完待续…反编译"><a href="#未完待续…反编译" class="headerlink" title="未完待续…反编译"></a>未完待续…反编译</h4>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/audio_float_notification/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sxf">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/user_icon.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sxf-Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/20/audio_float_notification/" itemprop="url">Android应用浮窗按钮&自定义音频通知栏</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
-                2019-12-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Android-应用悬浮按钮"><a href="#Android-应用悬浮按钮" class="headerlink" title="Android 应用悬浮按钮"></a>Android 应用悬浮按钮</h3><p>* </p>
-
           
         
       

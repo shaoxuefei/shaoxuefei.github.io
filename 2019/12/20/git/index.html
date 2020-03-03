@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Sxf-Blog">
 <meta property="og:description" content="新建本地仓库 在当前目录新建一个Git代码本地仓库    git init  添加指定文件到暂存区 git add [file] [file] ....    提交文件到本地   git commit [file] [file] ... -m[message] git commit -m[message]  提交到远端  git push  删除工作区文件 git rm [file] [file]">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-12-05T07:43:19.390Z">
+<meta property="og:updated_time" content="2020-03-03T11:28:17.388Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Git语法">
 <meta name="twitter:description" content="新建本地仓库 在当前目录新建一个Git代码本地仓库    git init  添加指定文件到暂存区 git add [file] [file] ....    提交文件到本地   git commit [file] [file] ... -m[message] git commit -m[message]  提交到远端  git push  删除工作区文件 git rm [file] [file]">
@@ -390,7 +390,23 @@ git checkout develop//这时develop上就不会有native分支新增内容，跟
 git stash//将修改的内容暂时先存储在git的栈中
 //等你下次切回来后
 git stash pop //会提取出你之前存储的最新一次的记录
+
+git stash save &quot;messageTxt&quot; //暂存代码添加备注信息
+
+git stash list //查看暂存区间列表
+
+git stash show //显示暂存区间第一个0 的修改文件
+
+git stash show stash@{$number} //比如第二个就是git stash show stasg@{$1}
+
+git stash pop   //取出暂存区某个暂存，并删除 stash@{$number}
+
+git stash apply  //取出暂存区某个暂存，不删除存储空间里的存储  stash@{$number}
+
+git stash clear;        //删除所有缓存的stash
 </code></pre></li>
+</ul>
+<ul>
 <li><p>值得注意的是：</p>
 <ul>
 <li>不过这种一般会用在develop修改，然后还没改好，需要切换到native分支上，这时会用到，因为不提交的话是切换不到native分支的，，子分支可以不提交直接切父分支，父分支不可以不提交直接切子分支，，正常子分支是建立在父分支的基租上创建的，所以正常是子分支代码量是大于父分支的</li>
@@ -403,7 +419,30 @@ git stash pop //会提取出你之前存储的最新一次的记录
 </ul>
 </li>
 </ul>
-<h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><ul>
+<ul>
+<li><p>git cherry-pick</p>
+<pre><code>git cherry-pick &quot;commit_id&quot;  //合并另一个分支的某个提交到当前分支，当然前提是当前分支需要pull最新代码,如果成功，会在当前分支本地有一条提交记录
+
+//遇见冲突、解决冲突
+git status //查看冲突文件
+git add .//解决完添加
+git commit &quot;新的commitIdMessage&quot;
+
+git cherry-pick --continue //继续执行其他cherry-pick
+
+git cherry-pick --quite //cherry-pick 退出本次cherrypick
+
+git cherry-pick --abort //cherry-pick 回退本次 cherry-pick
+
+git cherry-pick branchName  //将该branchName分支最新一条的commit 合并过来
+</code></pre></li>
+</ul>
+<pre><code>git pull --rebase ;//基于当前分支拉取代码        
+
+git commit --amend;//提交当前内容到临近的上一次提交，也就是将这次提交合并到上一次提价，减少commit的记录，前提是上一次commit还没有push
+
+git push 仓库地址 HEAD:refs/for/分支%r=代码审核人git用户名,代码审核人2   //提交添加审核人
+</code></pre><h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><ul>
 <li><a href="http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html</a></li>
 <li><a href="https://blog.zengrong.net/post/1746.html" target="_blank" rel="noopener">https://blog.zengrong.net/post/1746.html</a></li>
 </ul>
