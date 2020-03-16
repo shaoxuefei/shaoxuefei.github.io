@@ -232,6 +232,223 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/go_back/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sxf">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/user_icon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sxf-Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/20/go_back/" itemprop="url">GO-BACK</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
+                2019-12-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="String、StringBuffer-、StringBuilder"><a href="#String、StringBuffer-、StringBuilder" class="headerlink" title="String、StringBuffer 、StringBuilder"></a>String、StringBuffer 、StringBuilder</h2><h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><ul>
+<li><p>String 是字符串对象常量、对象一旦创建之后该对象的值不可更改：String s=”abce”是一种非常特殊的形式,和new 有本质的区别。<strong>它是java中唯一不需要new 就可以产生对象的途径</strong></p>
+</li>
+<li><p>StringBuilder、StringBuffer 对象是变量的、其对象可以更改或者是说其对应的值是可以更改的</p>
+<pre><code>1 String str=&quot;abc&quot;;
+2 System.out.println(str);
+3 str=str+&quot;de&quot;;
+4 System.out.println(str);
+</code></pre></li>
+<li><p>如果运行这段代码会发现先输出“abc”，然后又输出“abcde”，好像是str这个对象被更改了，其实，这只是一种假象罢了，JVM对于这几行代码是这样处理的，<code>首先创建一个String对象str，并把“abc”赋值给str，然后在第三行中，其实JVM又创建了一个新的对象也名为str，然后再把原来的str的值和“de”加起来再赋值给新的str，而原来的str就会被JVM的垃圾回收机制（GC）给回收掉了</code>，所以，str实际上并没有被更改，也就是前面说的String对象一旦创建之后就不可更改了。所以，Java中对String对象进行的操作实际上是一个不断创建新的对象并且将旧的对象回收的一个过程，所以执行速度很慢</p>
+</li>
+<li><p>String实现继承-最后到内部存储都是以char[]str来存储对应的文本内容</p>
+<pre><code>public final class String implements java.io.Serializable, Comparable&lt;String&gt;, CharSequence
+</code></pre></li>
+<li><p>StringBuffer 实现继承-CharSequence（有序队列char）</p>
+<pre><code>public final class StringBuffer extends AbstractStringBuilder implements java.io.Serializable, CharSequence
+
+.....
+//String方法    
+@Override
+public synchronized StringBuffer append(String str) {
+    toStringCache = null;
+    super.append(str);
+    return this;
+}
+</code></pre></li>
+<li><p>其append方法都有synchronized 标志、顾当有多个线程调用相同对象进行添加时、<strong>其线程是安全的</strong></p>
+</li>
+<li><p>toString()：也验证了String内部存储转换：value：char[]</p>
+<pre><code>   @Override
+public synchronized String toString() {
+    if (toStringCache == null) {
+    toStringCache = Arrays.copyOfRange(value, 0, count);
+    }
+    return new String(toStringCache, 0, count);
+    }
+</code></pre></li>
+<li><p>StringBuilder -继承</p>
+<pre><code>public final class StringBuilder extends AbstractStringBuilder implements java.io.Serializable, CharSequence
+
+....
+//方法--线程不安全的
+ @Override
+public StringBuilder append(String str) {
+    super.append(str);
+    return this;
+}
+</code></pre></li>
+<li><p>class 用final修饰、代表其无法实现被继承</p>
+</li>
+</ul>
+<h3 id="equals、"><a href="#equals、" class="headerlink" title="equals、=="></a>equals、==</h3><ul>
+<li>==：== 比较的是变量(栈)内存中存放的对象的(堆)内存地址，用来判断两个对象的地址是否相同，即是否是指相同一个对象。比较的是真正意义上的指针操作。</li>
+</ul>
+<ul>
+<li>1、比较的是操作符两端的操作数是否是同一个对象。<br>2、两边的操作数必须是同一类型的（可以是父子类之间）才能编译通过。<br>3、比较的是地址，如果是具体的阿拉伯数字的比较，值相等则为true，如：<br>int a=10 与 long b=10L 与 double c=10.0都是相同的（为true），因为他们都指向地址为10的堆。</li>
+</ul>
+<p><code>其实直接对应数值的比对也是进行地址的比对-地址指向的都是常量为10的堆地址</code></p>
+<ul>
+<li><p>　　equals用来比较的是两个对象的内容是否相等，由于所有的类都是继承自java.lang.Object类的，所以适用于所有对象，如果没有对该方法进行覆盖的话，调用的仍然是Object类中的方法，而Object中的equals方法返回的却是==的判断。</p>
+<pre><code>//Object内部equals方法：其实内部就是进行的==判断、也就是地址指针的判断
+  public boolean equals(Object obj) {
+        return (this == obj);
+    }
+
+//String内部的equals--先比较对象地址、然后比较长度、然后比较内部的char[]的数值
+
+public boolean equals(Object anObject) {
+    if (this == anObject) {
+    return true;
+    }
+    if (anObject instanceof String) {
+    String anotherString = (String) anObject;
+    int n = length();
+    if (n == anotherString.length()) {
+        int i = 0;
+        while (n-- != 0) {
+            if (charAt(i) != anotherString.charAt(i))
+                    return false;
+            i++;
+        }
+        return true;
+        }
+    }
+    return false;
+}
+</code></pre></li>
+</ul>
+<ul>
+<li>经典案例</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fwydal4rg4j20ml0c0gm6.jpg" alt="picture"></p>
+<ul>
+<li>参考文献</li>
+</ul>
+<p><a href="https://www.cnblogs.com/Eason-S/p/5524837.html" target="_blank" rel="noopener">equals和==的区别小结</a>  </p>
+<p><a href="https://www.cnblogs.com/su-feng/p/6659064.html" target="_blank" rel="noopener">Java中的String，StringBuilder，StringBuffer三者的区别
+</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/git/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -444,7 +661,7 @@ git reset &quot;commitId&quot; //回退到当前提交--前提是没有push
 
 git commit --amend;//提交当前内容到临近的上一次提交，也就是将这次提交合并到上一次提价，减少commit的记录，前提是上一次commit还没有push
 
-git push 仓库地址 HEAD:refs/for/分支%r=代码审核人git用户名,代码审核人2   //提交添加审核人
+git push 仓库地址 HEAD:refs/for/分支%r=代码审核人git用户名,r=代码审核人2,r=xxx   //提交添加审核人
 
 git branch hear//操作 git 命令有时候 as 编译git命令 环境 编译格式会有问题
 </code></pre><h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><ul>
@@ -458,223 +675,6 @@ git branch hear//操作 git 命令有时候 as 编译git命令 环境 编译格�
 <li>操作远程删除tag/branch:git push origin -d 2.0</li>
 <li>远程代码提交：git push 就可以了</li>
 </ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/go_back/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sxf">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/user_icon.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sxf-Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/20/go_back/" itemprop="url">GO-BACK</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
-                2019-12-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="String、StringBuffer-、StringBuilder"><a href="#String、StringBuffer-、StringBuilder" class="headerlink" title="String、StringBuffer 、StringBuilder"></a>String、StringBuffer 、StringBuilder</h2><h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><ul>
-<li><p>String 是字符串对象常量、对象一旦创建之后该对象的值不可更改：String s=”abce”是一种非常特殊的形式,和new 有本质的区别。<strong>它是java中唯一不需要new 就可以产生对象的途径</strong></p>
-</li>
-<li><p>StringBuilder、StringBuffer 对象是变量的、其对象可以更改或者是说其对应的值是可以更改的</p>
-<pre><code>1 String str=&quot;abc&quot;;
-2 System.out.println(str);
-3 str=str+&quot;de&quot;;
-4 System.out.println(str);
-</code></pre></li>
-<li><p>如果运行这段代码会发现先输出“abc”，然后又输出“abcde”，好像是str这个对象被更改了，其实，这只是一种假象罢了，JVM对于这几行代码是这样处理的，<code>首先创建一个String对象str，并把“abc”赋值给str，然后在第三行中，其实JVM又创建了一个新的对象也名为str，然后再把原来的str的值和“de”加起来再赋值给新的str，而原来的str就会被JVM的垃圾回收机制（GC）给回收掉了</code>，所以，str实际上并没有被更改，也就是前面说的String对象一旦创建之后就不可更改了。所以，Java中对String对象进行的操作实际上是一个不断创建新的对象并且将旧的对象回收的一个过程，所以执行速度很慢</p>
-</li>
-<li><p>String实现继承-最后到内部存储都是以char[]str来存储对应的文本内容</p>
-<pre><code>public final class String implements java.io.Serializable, Comparable&lt;String&gt;, CharSequence
-</code></pre></li>
-<li><p>StringBuffer 实现继承-CharSequence（有序队列char）</p>
-<pre><code>public final class StringBuffer extends AbstractStringBuilder implements java.io.Serializable, CharSequence
-
-.....
-//String方法    
-@Override
-public synchronized StringBuffer append(String str) {
-    toStringCache = null;
-    super.append(str);
-    return this;
-}
-</code></pre></li>
-<li><p>其append方法都有synchronized 标志、顾当有多个线程调用相同对象进行添加时、<strong>其线程是安全的</strong></p>
-</li>
-<li><p>toString()：也验证了String内部存储转换：value：char[]</p>
-<pre><code>   @Override
-public synchronized String toString() {
-    if (toStringCache == null) {
-    toStringCache = Arrays.copyOfRange(value, 0, count);
-    }
-    return new String(toStringCache, 0, count);
-    }
-</code></pre></li>
-<li><p>StringBuilder -继承</p>
-<pre><code>public final class StringBuilder extends AbstractStringBuilder implements java.io.Serializable, CharSequence
-
-....
-//方法--线程不安全的
- @Override
-public StringBuilder append(String str) {
-    super.append(str);
-    return this;
-}
-</code></pre></li>
-<li><p>class 用final修饰、代表其无法实现被继承</p>
-</li>
-</ul>
-<h3 id="equals、"><a href="#equals、" class="headerlink" title="equals、=="></a>equals、==</h3><ul>
-<li>==：== 比较的是变量(栈)内存中存放的对象的(堆)内存地址，用来判断两个对象的地址是否相同，即是否是指相同一个对象。比较的是真正意义上的指针操作。</li>
-</ul>
-<ul>
-<li>1、比较的是操作符两端的操作数是否是同一个对象。<br>2、两边的操作数必须是同一类型的（可以是父子类之间）才能编译通过。<br>3、比较的是地址，如果是具体的阿拉伯数字的比较，值相等则为true，如：<br>int a=10 与 long b=10L 与 double c=10.0都是相同的（为true），因为他们都指向地址为10的堆。</li>
-</ul>
-<p><code>其实直接对应数值的比对也是进行地址的比对-地址指向的都是常量为10的堆地址</code></p>
-<ul>
-<li><p>　　equals用来比较的是两个对象的内容是否相等，由于所有的类都是继承自java.lang.Object类的，所以适用于所有对象，如果没有对该方法进行覆盖的话，调用的仍然是Object类中的方法，而Object中的equals方法返回的却是==的判断。</p>
-<pre><code>//Object内部equals方法：其实内部就是进行的==判断、也就是地址指针的判断
-  public boolean equals(Object obj) {
-        return (this == obj);
-    }
-
-//String内部的equals--先比较对象地址、然后比较长度、然后比较内部的char[]的数值
-
-public boolean equals(Object anObject) {
-    if (this == anObject) {
-    return true;
-    }
-    if (anObject instanceof String) {
-    String anotherString = (String) anObject;
-    int n = length();
-    if (n == anotherString.length()) {
-        int i = 0;
-        while (n-- != 0) {
-            if (charAt(i) != anotherString.charAt(i))
-                    return false;
-            i++;
-        }
-        return true;
-        }
-    }
-    return false;
-}
-</code></pre></li>
-</ul>
-<ul>
-<li>经典案例</li>
-</ul>
-<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fwydal4rg4j20ml0c0gm6.jpg" alt="picture"></p>
-<ul>
-<li>参考文献</li>
-</ul>
-<p><a href="https://www.cnblogs.com/Eason-S/p/5524837.html" target="_blank" rel="noopener">equals和==的区别小结</a>  </p>
-<p><a href="https://www.cnblogs.com/su-feng/p/6659064.html" target="_blank" rel="noopener">Java中的String，StringBuilder，StringBuffer三者的区别
-</a></p>
 
           
         
@@ -1304,6 +1304,126 @@ RGB_565 代表16位RGB位图
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/audio_float_notification/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sxf">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/user_icon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sxf-Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/20/audio_float_notification/" itemprop="url">Android应用浮窗按钮&自定义音频通知栏</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
+                2019-12-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Android-应用悬浮按钮"><a href="#Android-应用悬浮按钮" class="headerlink" title="Android 应用悬浮按钮"></a>Android 应用悬浮按钮</h3><p>* </p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/adnroid_proxy/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1428,126 +1548,6 @@ if (UserUtils.isLogin()) {
 <li>又用到了之前的Chrome的SwitchyOmega插件—为了是防止代理翻墙网络有限，有些不用翻墙的用外网浪费，这个是自动内外网切换!!!</li>
 </ul>
 <h4 id="未完待续…反编译"><a href="#未完待续…反编译" class="headerlink" title="未完待续…反编译"></a>未完待续…反编译</h4>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/audio_float_notification/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sxf">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/user_icon.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sxf-Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/20/audio_float_notification/" itemprop="url">Android应用浮窗按钮&自定义音频通知栏</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
-                2019-12-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Android-应用悬浮按钮"><a href="#Android-应用悬浮按钮" class="headerlink" title="Android 应用悬浮按钮"></a>Android 应用悬浮按钮</h3><p>* </p>
-
           
         
       
