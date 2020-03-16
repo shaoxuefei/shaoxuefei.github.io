@@ -779,199 +779,6 @@ rCubicTo()
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/viewflipper_pager_fragment/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sxf">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/user_icon.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sxf-Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/20/viewflipper_pager_fragment/" itemprop="url">Fragment生命周期之ViewPager懒加载</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
-                2019-12-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Fragment生命周期"><a href="#Fragment生命周期" class="headerlink" title="Fragment生命周期"></a>Fragment生命周期</h3><ul>
-<li><p>onCreateView() :每次加载Fragment的时候会执行该方法、配对的生命周期是： onDestroyView()</p>
-</li>
-<li><p>onCreateView() :onCreateView()方法执行完后进行执行，代表View绘制完成</p>
-</li>
-<li><p>onResume() :该Fragment被执行了show操作、或者是<strong>该页面从后台显示到前台</strong>，或者是其依赖的Activity的生命周期的改变;那种ViewPager+Fragment的那种，ViewPager切换的时候，其Fragment是不执行onResume和onPause的，因为其Activity的声明周期没有改变，而且也没有执行hide和show操作,其移动就是将该Fragment进行了移动，并没有移出到后台?所以没有执行Fragment的生命周期、、、、、其实Fragment的生命周期都是根据Activity来的，除了自己的创建、尤其是onResume和onPause都是根据Activity的声明周期的onResume和onPause、、、、真正的判断实现的方法有两个:setUserVisibleHint（）和onHiddenChanged()—针对show\hide的Fragment</p>
-</li>
-</ul>
-<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fupinhsfx5j20f40o70vn.jpg" alt="picture"></p>
-<h3 id="ViewPager-Fragment-“预”加载方式解析"><a href="#ViewPager-Fragment-“预”加载方式解析" class="headerlink" title="ViewPager+Fragment “预”加载方式解析"></a>ViewPager+Fragment “预”加载方式解析</h3><ul>
-<li><p>viewPager.setOffscreenPageLimit(x): 不设置默认ViewPager会预加载相邻的1个Fragment，当切换Fragment时之前相邻的Fragment会执行onDestroyView()将Fragment销毁，当再次切换到该Fragment时其会重新生成该Fragment，也就是重新调用onCreateView()方法,<strong>也就是每次点击非相邻的Tab会重新加载渲染一次Fragment</strong></p>
-</li>
-<li><p>viewPager.setOffscreenPageLimit(n)：设置值后，一般设置fragmentList-1，这样其切换Fragment的时候所有的Fragment不会重走生命周期，也就是不会走onDestroyView()和onCreateView()进行Fragment的重复创建，这种的话刚启动加载第一个Fragment的时候，其余的都会执行onCreateView()、、onCreateView()方法进行预加载，当然这种当Activity执行生命周期onPause时，所有的都会执行onPause</p>
-</li>
-<li><p>其实ViewPager就是ViewGroup就是一个View的容器，类似于容器也就是说不管内部有多少View其都会“一次全部”加载到容器内，也就是不管现在在屏幕中的还是没有在屏幕中显示的View，其已经全部加载到该容器中了，不会因为你不在该屏幕上显示就说你没有加载到ViewGroup中，排除外来因素(手动进行ViewGroup的移出添加、或者是手动调用内部View的相关方法)，勉强解释为什么setOffscreenPageLimit（n），切换Fragment的时候，不走Fragment的声明周期</p>
-</li>
-</ul>
-<h3 id="ViewPager-Fragment-“懒”加载方式解析"><a href="#ViewPager-Fragment-“懒”加载方式解析" class="headerlink" title="ViewPager+Fragment “懒”加载方式解析"></a>ViewPager+Fragment “懒”加载方式解析</h3><h4 id="Fragment的是否显示在前台方法-onResume-onPause在上边的那种情况代表不了"><a href="#Fragment的是否显示在前台方法-onResume-onPause在上边的那种情况代表不了" class="headerlink" title="Fragment的是否显示在前台方法(onResume\onPause在上边的那种情况代表不了)"></a>Fragment的是否显示在前台方法(onResume\onPause在上边的那种情况代表不了)</h4><ul>
-<li><p>setUserVisibleHint(boolean isVisibleToUser): isVisibleToUser为ture表示该Fragment在前台展示，isVisibleToUser为false表示该Frament没有在前台展示(并不代表其跑到了后台，如果都是这样那么Fragment的onResume和onPause就可以判断了)，在ViewPager+Fragment模式下设置了setOffscreenPageLimit(n)并且切换Tab的时候一样会改变该值</p>
-</li>
-<li><p>setUserVisibleHint: 该方法有可能会被多次回调，也就是说在判断是否显示在前台前，最好还是判断一下该View是否加载完成，然后在决定是否进行网络请求；当然为了防止每次点击都加载数据，还可以添加个别的变量isFirst来判断是否是第一次加载</p>
-</li>
-<li><p>这种一般设置在BaseFragment中，向外部抛出abstract方法</p>
-<p>  <code>public abstract void fragmentIsVisible(boolean isVisibleToUser);</code></p>
-</li>
-</ul>
-<pre><code>  @Override
-public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-super.onViewCreated(view, savedInstanceState);
-isViewCreated = true;
-isFirstCreate = true;
-doLazyLoad();
-}
-
-..............................
-    /**
- * 返回True  表示当前View是否加载到窗口、就是是否是当前窗口展示
- *
- * @param isVisibleToUser
- */
-    @Override
-public void setUserVisibleHint(boolean isVisibleToUser) {
-super.setUserVisibleHint(isVisibleToUser);
-if (isVisibleToUser) {
-    //该方法有可能会调用多次、包括有可能View还没创建就进行调用、、、防止重复加载、防止View还没创建就进行View的调用操作
-    isViewVisible = true;
-    doLazyLoad();
-    } else {
-    isViewVisible = false;
-        }
-     }
-
-......................................
-
-   //需要区分是否是第一次加载、防止每次切换都进行数据的调用  更新
-private void doLazyLoad() {
-    if (isViewCreated &amp;&amp; isViewVisible) {
-        if (isFirstCreate) {
-        fragmentIsVisible(true);
-        isFirstCreate = false;
-        }
-    } else {
-        fragmentIsVisible(false);
-    }
-}
-</code></pre><h3 id="ViewPager-的进制左右滑动"><a href="#ViewPager-的进制左右滑动" class="headerlink" title="ViewPager 的进制左右滑动"></a>ViewPager 的进制左右滑动</h3><ul>
-<li><p>dispatchTouchEvent(MotionEvent ev):不变还是之前的 return super.dispatchTouchEvent(ev)-支持向下分发</p>
-</li>
-<li><p>onInterceptTouchEvent（MotionEvent ev）：改变return false；不进行事件拦截，进行向底部View传递</p>
-</li>
-<li><p>onTouchEvent(MotionEvent ev) ：改变 return false:底部View没有响应消费的话，事件回传过来自己也不进行消费，再往外传，不进行滑动响应</p>
-</li>
-</ul>
-<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fupjsp44faj21570jegnc.jpg" alt="picture"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/stringbuffer/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1170,6 +977,199 @@ screenSize：设备的屏幕的尺寸信息发生了改变，旋转屏幕时也�
 </code></pre><ul>
 <li>不设置config属性时，当页面状态改变时，会重新创建Activity，会重新走Activity的生命周期</li>
 </ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://shaoxuefei.github.io/2019/12/20/viewflipper_pager_fragment/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sxf">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/user_icon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sxf-Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/20/viewflipper_pager_fragment/" itemprop="url">Fragment生命周期之ViewPager懒加载</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-20T11:40:24+08:00">
+                2019-12-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Fragment生命周期"><a href="#Fragment生命周期" class="headerlink" title="Fragment生命周期"></a>Fragment生命周期</h3><ul>
+<li><p>onCreateView() :每次加载Fragment的时候会执行该方法、配对的生命周期是： onDestroyView()</p>
+</li>
+<li><p>onCreateView() :onCreateView()方法执行完后进行执行，代表View绘制完成</p>
+</li>
+<li><p>onResume() :该Fragment被执行了show操作、或者是<strong>该页面从后台显示到前台</strong>，或者是其依赖的Activity的生命周期的改变;那种ViewPager+Fragment的那种，ViewPager切换的时候，其Fragment是不执行onResume和onPause的，因为其Activity的声明周期没有改变，而且也没有执行hide和show操作,其移动就是将该Fragment进行了移动，并没有移出到后台?所以没有执行Fragment的生命周期、、、、、其实Fragment的生命周期都是根据Activity来的，除了自己的创建、尤其是onResume和onPause都是根据Activity的声明周期的onResume和onPause、、、、真正的判断实现的方法有两个:setUserVisibleHint（）和onHiddenChanged()—针对show\hide的Fragment</p>
+</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fupinhsfx5j20f40o70vn.jpg" alt="picture"></p>
+<h3 id="ViewPager-Fragment-“预”加载方式解析"><a href="#ViewPager-Fragment-“预”加载方式解析" class="headerlink" title="ViewPager+Fragment “预”加载方式解析"></a>ViewPager+Fragment “预”加载方式解析</h3><ul>
+<li><p>viewPager.setOffscreenPageLimit(x): 不设置默认ViewPager会预加载相邻的1个Fragment，当切换Fragment时之前相邻的Fragment会执行onDestroyView()将Fragment销毁，当再次切换到该Fragment时其会重新生成该Fragment，也就是重新调用onCreateView()方法,<strong>也就是每次点击非相邻的Tab会重新加载渲染一次Fragment</strong></p>
+</li>
+<li><p>viewPager.setOffscreenPageLimit(n)：设置值后，一般设置fragmentList-1，这样其切换Fragment的时候所有的Fragment不会重走生命周期，也就是不会走onDestroyView()和onCreateView()进行Fragment的重复创建，这种的话刚启动加载第一个Fragment的时候，其余的都会执行onCreateView()、、onCreateView()方法进行预加载，当然这种当Activity执行生命周期onPause时，所有的都会执行onPause</p>
+</li>
+<li><p>其实ViewPager就是ViewGroup就是一个View的容器，类似于容器也就是说不管内部有多少View其都会“一次全部”加载到容器内，也就是不管现在在屏幕中的还是没有在屏幕中显示的View，其已经全部加载到该容器中了，不会因为你不在该屏幕上显示就说你没有加载到ViewGroup中，排除外来因素(手动进行ViewGroup的移出添加、或者是手动调用内部View的相关方法)，勉强解释为什么setOffscreenPageLimit（n），切换Fragment的时候，不走Fragment的声明周期</p>
+</li>
+</ul>
+<h3 id="ViewPager-Fragment-“懒”加载方式解析"><a href="#ViewPager-Fragment-“懒”加载方式解析" class="headerlink" title="ViewPager+Fragment “懒”加载方式解析"></a>ViewPager+Fragment “懒”加载方式解析</h3><h4 id="Fragment的是否显示在前台方法-onResume-onPause在上边的那种情况代表不了"><a href="#Fragment的是否显示在前台方法-onResume-onPause在上边的那种情况代表不了" class="headerlink" title="Fragment的是否显示在前台方法(onResume\onPause在上边的那种情况代表不了)"></a>Fragment的是否显示在前台方法(onResume\onPause在上边的那种情况代表不了)</h4><ul>
+<li><p>setUserVisibleHint(boolean isVisibleToUser): isVisibleToUser为ture表示该Fragment在前台展示，isVisibleToUser为false表示该Frament没有在前台展示(并不代表其跑到了后台，如果都是这样那么Fragment的onResume和onPause就可以判断了)，在ViewPager+Fragment模式下设置了setOffscreenPageLimit(n)并且切换Tab的时候一样会改变该值</p>
+</li>
+<li><p>setUserVisibleHint: 该方法有可能会被多次回调，也就是说在判断是否显示在前台前，最好还是判断一下该View是否加载完成，然后在决定是否进行网络请求；当然为了防止每次点击都加载数据，还可以添加个别的变量isFirst来判断是否是第一次加载</p>
+</li>
+<li><p>这种一般设置在BaseFragment中，向外部抛出abstract方法</p>
+<p>  <code>public abstract void fragmentIsVisible(boolean isVisibleToUser);</code></p>
+</li>
+</ul>
+<pre><code>  @Override
+public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+super.onViewCreated(view, savedInstanceState);
+isViewCreated = true;
+isFirstCreate = true;
+doLazyLoad();
+}
+
+..............................
+    /**
+ * 返回True  表示当前View是否加载到窗口、就是是否是当前窗口展示
+ *
+ * @param isVisibleToUser
+ */
+    @Override
+public void setUserVisibleHint(boolean isVisibleToUser) {
+super.setUserVisibleHint(isVisibleToUser);
+if (isVisibleToUser) {
+    //该方法有可能会调用多次、包括有可能View还没创建就进行调用、、、防止重复加载、防止View还没创建就进行View的调用操作
+    isViewVisible = true;
+    doLazyLoad();
+    } else {
+    isViewVisible = false;
+        }
+     }
+
+......................................
+
+   //需要区分是否是第一次加载、防止每次切换都进行数据的调用  更新
+private void doLazyLoad() {
+    if (isViewCreated &amp;&amp; isViewVisible) {
+        if (isFirstCreate) {
+        fragmentIsVisible(true);
+        isFirstCreate = false;
+        }
+    } else {
+        fragmentIsVisible(false);
+    }
+}
+</code></pre><h3 id="ViewPager-的进制左右滑动"><a href="#ViewPager-的进制左右滑动" class="headerlink" title="ViewPager 的进制左右滑动"></a>ViewPager 的进制左右滑动</h3><ul>
+<li><p>dispatchTouchEvent(MotionEvent ev):不变还是之前的 return super.dispatchTouchEvent(ev)-支持向下分发</p>
+</li>
+<li><p>onInterceptTouchEvent（MotionEvent ev）：改变return false；不进行事件拦截，进行向底部View传递</p>
+</li>
+<li><p>onTouchEvent(MotionEvent ev) ：改变 return false:底部View没有响应消费的话，事件回传过来自己也不进行消费，再往外传，不进行滑动响应</p>
+</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/c82e4122gy1fupjsp44faj21570jegnc.jpg" alt="picture"></p>
 
           
         
