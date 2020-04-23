@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Sxf-Blog">
 <meta property="og:description" content="参考 为什么要用HandlerThread,怎么用  Handler理解 Handler一般用于进行线程间通讯，一般是子线程向主线程发送数据变动，更新UI操作。 Handler的消息回调接收是是跟你创建Handler的线程绑定的，即你在那个线程创建的Handler，其不管在那个线程发送消息，最后回调的方法实现都是在你创建Handler的线程里完成。 Handler跟Thread没有关系，其内部不能">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-12-24T11:58:16.938Z">
+<meta property="og:updated_time" content="2020-04-23T10:51:23.355Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Handler&amp;HandlerThread">
 <meta name="twitter:description" content="参考 为什么要用HandlerThread,怎么用  Handler理解 Handler一般用于进行线程间通讯，一般是子线程向主线程发送数据变动，更新UI操作。 Handler的消息回调接收是是跟你创建Handler的线程绑定的，即你在那个线程创建的Handler，其不管在那个线程发送消息，最后回调的方法实现都是在你创建Handler的线程里完成。 Handler跟Thread没有关系，其内部不能">
@@ -361,6 +361,11 @@ public void run() {
               //该Handler是在子线程中创建的--所以其handlerMessage()回调仍然在子线程中--回调线程是个创建Handler的线程在一起
               //故这个回调里也不能更新UI
               //需要handler.sendMessage();才能走改回调
+
+              //因为其已经创建过Looper.prepare()&lt;---&gt;Looper.loop(),顾Toast可以show;
+              Toast.makeText(Main2Activity.this, &quot;异步回调&quot;, Toast.LENGTH_SHORT).show();
+              //Only the original thread that created a view hierarchy can touch its views
+              //btnHandlerThread.setText(&quot;thread&quot;);
               return false;
           }
       });//该Handler就是在子线程中生命的Handler---并且 你不需要Looper.prepare();Looper.loop(),HandlerThread内部已经创建了Looper对象;
@@ -371,9 +376,8 @@ public void run() {
           handler.post(new Runnable() {
               @Override
               public void run() {
-                  //仍是子Thread-不能更新UI
-                 //异步请求：子线程中弹Toast:toast的创建需要Looper对象，所以在子线程中showToast的话也需要创建Looper
-                 //handler.post()直接走改run方法(handler.postDelayed(runnable,1000),延迟发送
+                ///这个是主线程回调不是子线程-可以更新UI，，message.callBack=runable；\跟普通View.post(new Runable{})不知道有啥区别
+                btnHandlerThread.setText(&quot;main-thread&quot;);
                 Toast.makeText(Main2Activity.this,&quot;异步请求&quot;,Toast.LENGTH_SHORT).show();
               }
           });
@@ -382,6 +386,7 @@ public void run() {
 <li>sendMessage()方式进行消息传递：handler.removeCallBacksAndMessages(null)  </li>
 <li>post(runnable)方式：handler.removeCallBacks(runnable);</li>
 </ul>
+<h3 id="Handler-创建会持有外部类对象，造成内存泄漏"><a href="#Handler-创建会持有外部类对象，造成内存泄漏" class="headerlink" title="Handler 创建会持有外部类对象，造成内存泄漏"></a>Handler 创建会持有外部类对象，造成内存泄漏</h3><p><a href="https://www.jianshu.com/p/ed9e15eff47a" target="_blank" rel="noopener">详解 Handler 内存泄露的原因</a></p>
 
       
     </div>
@@ -406,8 +411,8 @@ public void run() {
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/12/20/git/" rel="next" title="Git语法">
-                <i class="fa fa-chevron-left"></i> Git语法
+              <a href="/2019/12/20/go_back/" rel="next" title="GO-BACK">
+                <i class="fa fa-chevron-left"></i> GO-BACK
               </a>
             
           </div>
@@ -536,7 +541,7 @@ public void run() {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Handler理解"><span class="nav-number"></span> <span class="nav-text">Handler理解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Handler机制"><span class="nav-number"></span> <span class="nav-text">Handler机制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Looper"><span class="nav-number"></span> <span class="nav-text">Looper</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Handler-Message-amp-Runable"><span class="nav-number"></span> <span class="nav-text">Handler-Message&amp;Runable</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#子线程创建Handler对象（子线程需要借助Looper处理）"><span class="nav-number"></span> <span class="nav-text">子线程创建Handler对象（子线程需要借助Looper处理）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Destory取消队列循环"><span class="nav-number"></span> <span class="nav-text">Destory取消队列循环</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Handler理解"><span class="nav-number"></span> <span class="nav-text">Handler理解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Handler机制"><span class="nav-number"></span> <span class="nav-text">Handler机制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Looper"><span class="nav-number"></span> <span class="nav-text">Looper</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Handler-Message-amp-Runable"><span class="nav-number"></span> <span class="nav-text">Handler-Message&amp;Runable</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#子线程创建Handler对象（子线程需要借助Looper处理）"><span class="nav-number"></span> <span class="nav-text">子线程创建Handler对象（子线程需要借助Looper处理）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Destory取消队列循环"><span class="nav-number"></span> <span class="nav-text">Destory取消队列循环</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Handler-创建会持有外部类对象，造成内存泄漏"><span class="nav-number">1.</span> <span class="nav-text">Handler 创建会持有外部类对象，造成内存泄漏</span></a></li></ol></div>
             
 
           </div>

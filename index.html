@@ -2057,6 +2057,11 @@ public void run() {
               //该Handler是在子线程中创建的--所以其handlerMessage()回调仍然在子线程中--回调线程是个创建Handler的线程在一起
               //故这个回调里也不能更新UI
               //需要handler.sendMessage();才能走改回调
+
+              //因为其已经创建过Looper.prepare()&lt;---&gt;Looper.loop(),顾Toast可以show;
+              Toast.makeText(Main2Activity.this, &quot;异步回调&quot;, Toast.LENGTH_SHORT).show();
+              //Only the original thread that created a view hierarchy can touch its views
+              //btnHandlerThread.setText(&quot;thread&quot;);
               return false;
           }
       });//该Handler就是在子线程中生命的Handler---并且 你不需要Looper.prepare();Looper.loop(),HandlerThread内部已经创建了Looper对象;
@@ -2067,9 +2072,8 @@ public void run() {
           handler.post(new Runnable() {
               @Override
               public void run() {
-                  //仍是子Thread-不能更新UI
-                 //异步请求：子线程中弹Toast:toast的创建需要Looper对象，所以在子线程中showToast的话也需要创建Looper
-                 //handler.post()直接走改run方法(handler.postDelayed(runnable,1000),延迟发送
+                ///这个是主线程回调不是子线程-可以更新UI，，message.callBack=runable；\跟普通View.post(new Runable{})不知道有啥区别
+                btnHandlerThread.setText(&quot;main-thread&quot;);
                 Toast.makeText(Main2Activity.this,&quot;异步请求&quot;,Toast.LENGTH_SHORT).show();
               }
           });
@@ -2078,6 +2082,7 @@ public void run() {
 <li>sendMessage()方式进行消息传递：handler.removeCallBacksAndMessages(null)  </li>
 <li>post(runnable)方式：handler.removeCallBacks(runnable);</li>
 </ul>
+<h3 id="Handler-创建会持有外部类对象，造成内存泄漏"><a href="#Handler-创建会持有外部类对象，造成内存泄漏" class="headerlink" title="Handler 创建会持有外部类对象，造成内存泄漏"></a>Handler 创建会持有外部类对象，造成内存泄漏</h3><p><a href="https://www.jianshu.com/p/ed9e15eff47a" target="_blank" rel="noopener">详解 Handler 内存泄露的原因</a></p>
 
           
         
